@@ -120,18 +120,27 @@ public class ChatHandler implements IConfigurationChanged
 
     public String formatChatMessage(String message, RunsafePlayer player)
     {
-		String formatChatMessage = this.playerChatMessage;
-        String chatColor = (this.chatColor != null) ? this.chatColor : "";
+		return this.formatMessage(message, player, this.playerChatMessage);
+    }
+
+	public String formatPlayerSystemMessage(String message, RunsafePlayer player)
+	{
+		return this.formatMessage(message, player, this.playerSystemMessage);
+	}
+
+	private String formatMessage(String message, RunsafePlayer player, String formatMessage)
+	{
+		String chatColor = this.systemMessageColor;
 		String playerName = this.formatPlayerName(player);
 
-        if (!player.hasPermission("nChat.allowColorCodes")|| !this.configuration.getConfigValueAsBoolean("nChat.enableColorCodes"))
-            message = this.stripColors(message);
+		if (!player.hasPermission("nChat.allowColorCodes") && !this.configuration.getConfigValueAsBoolean("nChat.enableColorCodes"))
+			message = this.stripColors(message);
 
-		formatChatMessage = formatChatMessage.replace(Constants.FORMAT_MESSAGE, chatColor + message);
-		formatChatMessage = formatChatMessage.replace(Constants.FORMAT_PLAYER_NAME, playerName);
+		formatMessage = formatMessage.replace(Constants.FORMAT_MESSAGE, chatColor + message);
+		formatMessage = formatMessage.replace(Constants.FORMAT_PLAYER_NAME, playerName);
 
-        return this.convertColors(formatChatMessage).trim();
-    }
+		return this.convertColors(formatMessage);
+	}
 
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
@@ -151,6 +160,7 @@ public class ChatHandler implements IConfigurationChanged
 		this.enablePlayerTags = configuration.getConfigValueAsBoolean("nChat.enablePlayerTags");
 		this.enableOpTag = configuration.getConfigValueAsBoolean("nChat.enableOpTag");
 		this.chatColor = this.configuration.getConfigValueAsString("chatFormatting.chatColor");
+		this.systemMessageColor = this.configuration.getConfigValueAsString("chatFormatting.systemMessageColor");
 		this.opTagFormat = this.configuration.getConfigValueAsString("chatFormatting.opTagFormat");
 	}
 
@@ -167,6 +177,7 @@ public class ChatHandler implements IConfigurationChanged
     private ConfigurationSection playerTags;
     private String playerTagFormat;
     private String chatColor;
+	private String systemMessageColor;
     private String opTagFormat;
     private String playerChatMessage;
 	private String playerSystemMessage;
