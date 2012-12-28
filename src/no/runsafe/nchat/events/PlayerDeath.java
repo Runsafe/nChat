@@ -1,8 +1,6 @@
 package no.runsafe.nchat.events;
 
-import no.runsafe.framework.event.entity.IEntityDeathEvent;
 import no.runsafe.framework.event.player.IPlayerDeathEvent;
-import no.runsafe.framework.server.event.entity.RunsafeEntityDeathEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerDeathEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;

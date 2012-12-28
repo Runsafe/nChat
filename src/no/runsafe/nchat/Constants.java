@@ -4,9 +4,6 @@ import org.bukkit.ChatColor;
 
 public class Constants
 {
-	public static String DEFAULT_CONFIGURATION_FILE = "defaults.yml";
-	public static String CONFIGURATION_FILE = "plugins/nChat/config.yml";
-
 	public static String COLOR_CHARACTER = "&%s";
 
 	public static String FORMAT_PLAYER_NAME = "#name";
