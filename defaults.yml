@@ -25,6 +25,9 @@ worldPrefixes:
 channels:
   staff:
     name: 'Staff'
+chatMessage:
+  joinServer: 'has joined the server'
+  leaveServer: 'has left the server'
 chatFormatting:
   playerName: '#op#world #group #tags #name'
   playerChatMessage: '#player: #message'
