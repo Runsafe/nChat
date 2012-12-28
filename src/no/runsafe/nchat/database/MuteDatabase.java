@@ -66,7 +66,7 @@ public class MuteDatabase implements ISchemaChanges
 	{
 		console.fine("Updating mute database with " + playerName);
 		PreparedStatement update = database.prepare(
-			"INSERT IGNORE INTO nchat_muted (`playerName`) VALUES (?)"
+			"INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)"
 		);
 
 		try
@@ -84,7 +84,7 @@ public class MuteDatabase implements ISchemaChanges
 	{
 		console.fine("Updating mute database with removal of " + playerName);
 		PreparedStatement update = database.prepare(
-			"DELETE FROM nchat_muted WHERE playerName = ?"
+			"DELETE FROM nchat_muted WHERE player = ?"
 		);
 
 		try

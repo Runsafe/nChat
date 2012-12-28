@@ -24,7 +24,7 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
-		this.leaveServerMessage = iConfiguration.getConfigValueAsString("chatMessages.leaveMessage");
+		this.leaveServerMessage = iConfiguration.getConfigValueAsString("chatMessage.leaveServer");
 	}
 
 	private ChatHandler chatHandler;

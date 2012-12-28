@@ -9,11 +9,11 @@ nChat:
   enableColorCodes: true
   enableChatChannels: true
 spamControl:
-  muteChat: true
+  muteChat: false
 chatGroupPrefixes:
   admin: '&4[A]'
   moderator: '&e[M]'
-  super: '&5[SU]'
+  superuser: '&5[SU]'
   builder: '&a[B]'
   guest: '&f[G]'
   troll: '&7[TROLL]'
@@ -26,15 +26,13 @@ channels:
   staff:
     name: 'Staff'
 chatMessage:
-  joinServer: 'has joined the server'
-  leaveServer: 'has left the server'
+  joinServer: 'has joined the server.'
+  leaveServer: 'has left the server.'
 chatFormatting:
-  playerName: '#op#world #group #tags #name'
-  playerChatMessage: '#player: #message'
-  playerSystemMessage: '#player #message'
+  playerName: '#op#world#group#tags #player'
+  playerChatMessage: '#player: &f#message'
+  playerSystemMessage: '#player &e#message'
   channelTagFormat: '&e[%s]'
-  chatColor: '&f'
-  systemMessageColor: '&e'
   playerTagFormat: '&7[%s]'
   opTagFormat: '@'
 playerNicknames:

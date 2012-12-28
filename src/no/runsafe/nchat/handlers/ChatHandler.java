@@ -2,6 +2,7 @@ package no.runsafe.nchat.handlers;
 
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
+import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
@@ -13,10 +14,11 @@ import java.util.*;
 
 public class ChatHandler implements IConfigurationChanged
 {
-    public ChatHandler(IConfiguration configuration, Globals globals)
+    public ChatHandler(IConfiguration configuration, Globals globals, IOutput console)
     {
         this.configuration = configuration;
         this.globals = globals;
+		this.console = console;
     }
 
     public String convertColors(String theString)
@@ -43,23 +45,7 @@ public class ChatHandler implements IConfigurationChanged
 
     public String getGroupPrefix(RunsafePlayer player)
     {
-        ConfigurationSection chatPrefixesSection = this.chatGroupPrefixes;
-        Set<String> chatPrefixes = chatPrefixesSection.getKeys(true);
-        Iterator<String> chatPrefixesIterator = chatPrefixes.iterator();
-
-        String finalChatPrefix = "";
-
-        while (chatPrefixesIterator.hasNext())
-        {
-            String chatPrefixID = chatPrefixesIterator.next();
-
-            finalChatPrefix = (String) this.chatGroupPrefixes.get(chatPrefixID);
-
-            if (player.hasPermission("nChat.groupPrefix." + chatPrefixID))
-                return finalChatPrefix;
-        }
-
-        return finalChatPrefix;
+		return (String) this.chatGroupPrefixes.get(player.getGroups().get(0).toLowerCase());
     }
 
     public String getWorldPrefix(String worldName)
@@ -130,13 +116,12 @@ public class ChatHandler implements IConfigurationChanged
 
 	private String formatMessage(String message, RunsafePlayer player, String formatMessage)
 	{
-		String chatColor = this.systemMessageColor;
 		String playerName = this.formatPlayerName(player);
 
 		if (!player.hasPermission("nChat.allowColorCodes") && !this.configuration.getConfigValueAsBoolean("nChat.enableColorCodes"))
 			message = this.stripColors(message);
 
-		formatMessage = formatMessage.replace(Constants.FORMAT_MESSAGE, chatColor + message);
+		formatMessage = formatMessage.replace(Constants.FORMAT_MESSAGE, message);
 		formatMessage = formatMessage.replace(Constants.FORMAT_PLAYER_NAME, playerName);
 
 		return this.convertColors(formatMessage);
@@ -145,7 +130,6 @@ public class ChatHandler implements IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		// TODO: Check this does not need to be called on construct
 		this.chatGroupPrefixes = configuration.getSection("chatGroupPrefixes");
 		this.worldPrefixes = configuration.getSection("worldPrefixes");
 		this.playerNicknames = configuration.getSection("playerNicknames");
@@ -155,12 +139,10 @@ public class ChatHandler implements IConfigurationChanged
 		this.playerChatMessage = configuration.getConfigValueAsString("chatFormatting.playerChatMessage");
 		this.playerSystemMessage = configuration.getConfigValueAsString("chatFormatting.playerSystemMessage");
 		this.enableWorldPrefixes = configuration.getConfigValueAsBoolean("nChat.enableWorldPrefixes");
-		this.enableChatGroupPrefixes = configuration.getConfigValueAsBoolean("nChat.enableChatPrefixes");
+		this.enableChatGroupPrefixes = configuration.getConfigValueAsBoolean("nChat.enableChatGroupPrefixes");
 		this.enableNicknames = configuration.getConfigValueAsBoolean("nChat.enableNicknames");
 		this.enablePlayerTags = configuration.getConfigValueAsBoolean("nChat.enablePlayerTags");
 		this.enableOpTag = configuration.getConfigValueAsBoolean("nChat.enableOpTag");
-		this.chatColor = this.configuration.getConfigValueAsString("chatFormatting.chatColor");
-		this.systemMessageColor = this.configuration.getConfigValueAsString("chatFormatting.systemMessageColor");
 		this.opTagFormat = this.configuration.getConfigValueAsString("chatFormatting.opTagFormat");
 	}
 
@@ -176,10 +158,9 @@ public class ChatHandler implements IConfigurationChanged
     private ConfigurationSection playerNicknames;
     private ConfigurationSection playerTags;
     private String playerTagFormat;
-    private String chatColor;
-	private String systemMessageColor;
     private String opTagFormat;
     private String playerChatMessage;
 	private String playerSystemMessage;
 	private String playerNameFormat;
+	private IOutput console;
 }

@@ -11,3 +11,6 @@ commands:
   mute:
     description: Mutes a player or the entire server
     usage: /mute server or <playername>
+  unmute:
+    description: Unmutes a player or the entire server
+    usage: /unmute server or <playername>

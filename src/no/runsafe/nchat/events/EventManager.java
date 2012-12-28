@@ -11,10 +11,9 @@ import no.runsafe.nchat.Globals;
 
 public class EventManager implements IPlayerChatEvent, IConfigurationChanged
 {
-    public EventManager(IConfiguration configuration, ChatHandler chatHandler, Globals globals)
+    public EventManager(ChatHandler chatHandler)
     {
         this.chatHandler = chatHandler;
-        this.configuration = configuration;
     }
 
     @Override
@@ -46,6 +45,5 @@ public class EventManager implements IPlayerChatEvent, IConfigurationChanged
     }
 
     private ChatHandler chatHandler;
-    private IConfiguration configuration;
     private boolean chatMuted;
 }

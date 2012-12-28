@@ -40,7 +40,6 @@ public class ChatChannelHandler implements IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
-		// TODO: Check these don't need to be loaded on construct
 		this.channels = iConfiguration.getSection("channels");
 		this.channelTagFormat = iConfiguration.getConfigValueAsString("nChat.channelTagFormat");
 	}
