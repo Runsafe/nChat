@@ -8,10 +8,6 @@ nChat:
   enableOpTag: true
   enableColorCodes: true
   enableChatChannels: true
-  channelTagFormat: '&e[%s]'
-  chatColor: '&f'
-  playerTagFormat: '&7[%s]'
-  opTagFormat: '@'
 spamControl:
   muteChat: true
 chatGroupPrefixes:
@@ -30,7 +26,14 @@ channels:
   staff:
     name: 'Staff'
 chatFormatting:
-  playerChatMessage: '#op#world #group #tags #name: #message'
+  playerName: '#op#world #group #tags #name'
+  playerChatMessage: '#player: #message'
+  playerSystemMessage: '#player #message'
+  channelTagFormat: '&e[%s]'
+  chatColor: '&f'
+  systemMessageColor: '&e'
+  playerTagFormat: '&7[%s]'
+  opTagFormat: '@'
 playerNicknames:
   ExampleMan: 'Hagrid the Elder'
 playerTags:

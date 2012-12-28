@@ -99,58 +99,38 @@ public class ChatHandler implements IConfigurationChanged
         return returnTags;
     }
 
+	public String formatPlayerName(RunsafePlayer player)
+	{
+		String formatName = this.playerNameFormat;
+		RunsafeWorld world = player.getWorld();
+
+		HashMap<String, String> replacements = new HashMap<String, String>();
+
+		if (formatName == null) return null;
+
+		replacements.put(Constants.FORMAT_OP, (this.enableOpTag && player.isOP()) ? this.opTagFormat : "");
+		replacements.put(Constants.FORMAT_WORLD, (this.enableWorldPrefixes) ? this.getWorldPrefix(world.getName()) : world.getName());
+		replacements.put(Constants.FORMAT_GROUP, (this.enableChatGroupPrefixes) ? this.getGroupPrefix(player) : "");
+		replacements.put(Constants.FORMAT_TAG, (this.enablePlayerTags) ? this.globals.joinList(this.getPlayerTags(player.getName())) : "");
+		replacements.put(Constants.FORMAT_PLAYER_NAME, (this.enableNicknames) ? this.getPlayerNickname(player.getName()) : player.getName());
+
+		formatName = this.globals.mapReplace(formatName, replacements);
+		return this.convertColors(formatName);
+	}
+
     public String formatChatMessage(String message, RunsafePlayer player)
     {
-        String formatMessage = this.playerChatMessage;
-        RunsafeWorld world = player.getWorld();
+		String formatChatMessage = this.playerChatMessage;
+        String chatColor = (this.chatColor != null) ? this.chatColor : "";
+		String playerName = this.formatPlayerName(player);
 
-        HashMap<String, String> replacements = new HashMap<String, String>();
-
-        if (formatMessage == null)
-            return null;
-
-        if (this.enableOpTag && player.isOP())
-            replacements.put(Constants.FORMAT_OP, this.opTagFormat);
-        else
-            replacements.put(Constants.FORMAT_OP, "");
-
-        if (this.enableWorldPrefixes)
-            replacements.put(Constants.FORMAT_WORLD, this.getWorldPrefix((world.getName())));
-        else
-            replacements.put(Constants.FORMAT_WORLD, world.getName());
-
-        if (this.enableChatGroupPrefixes)
-            replacements.put(Constants.FORMAT_GROUP, this.getGroupPrefix(player));
-        else
-            replacements.put(Constants.FORMAT_GROUP, "");
-
-        if (this.enablePlayerTags)
-        {
-            List<String> playerTags = this.getPlayerTags(player.getName());
-            replacements.put(Constants.FORMAT_TAG, this.globals.joinList(playerTags));
-        }
-        else
-        {
-            replacements.put(Constants.FORMAT_TAG, "");
-        }
-
-        if (this.enableNicknames)
-            replacements.put(Constants.FORMAT_PLAYER_NAME, this.getPlayerNickname(player.getName()));
-        else
-            replacements.put(Constants.FORMAT_PLAYER_NAME, player.getName());
-
-        String chatColor = this.chatColor;
-        if (chatColor == null)
-            chatColor = "";
-
-        String chatMessage = message;
         if (!player.hasPermission("nChat.allowColorCodes")|| !this.configuration.getConfigValueAsBoolean("nChat.enableColorCodes"))
-            chatMessage = this.stripColors(chatMessage);
+            message = this.stripColors(message);
 
-        replacements.put(Constants.FORMAT_MESSAGE, chatColor + chatMessage);
+		formatChatMessage = formatChatMessage.replace(Constants.FORMAT_MESSAGE, chatColor + message);
+		formatChatMessage = formatChatMessage.replace(Constants.FORMAT_PLAYER_NAME, playerName);
 
-        formatMessage = this.globals.mapReplace(formatMessage, replacements);
-        return this.convertColors(formatMessage).trim();
+        return this.convertColors(formatChatMessage).trim();
     }
 
 	@Override
@@ -161,15 +141,17 @@ public class ChatHandler implements IConfigurationChanged
 		this.worldPrefixes = configuration.getSection("worldPrefixes");
 		this.playerNicknames = configuration.getSection("playerNicknames");
 		this.playerTags = configuration.getSection("playerTags");
-		this.playerTagFormat = configuration.getConfigValueAsString("nChat.playerTagFormat");
+		this.playerTagFormat = configuration.getConfigValueAsString("chatFormatting.playerTagFormat");
+		this.playerNameFormat = configuration.getConfigValueAsString("chatFormatting.playerName");
 		this.playerChatMessage = configuration.getConfigValueAsString("chatFormatting.playerChatMessage");
+		this.playerSystemMessage = configuration.getConfigValueAsString("chatFormatting.playerSystemMessage");
 		this.enableWorldPrefixes = configuration.getConfigValueAsBoolean("nChat.enableWorldPrefixes");
 		this.enableChatGroupPrefixes = configuration.getConfigValueAsBoolean("nChat.enableChatPrefixes");
 		this.enableNicknames = configuration.getConfigValueAsBoolean("nChat.enableNicknames");
 		this.enablePlayerTags = configuration.getConfigValueAsBoolean("nChat.enablePlayerTags");
 		this.enableOpTag = configuration.getConfigValueAsBoolean("nChat.enableOpTag");
-		this.chatColor = this.configuration.getConfigValueAsString("nChat.chatColor");
-		this.opTagFormat = this.configuration.getConfigValueAsString("nChat.opTagFormat");
+		this.chatColor = this.configuration.getConfigValueAsString("chatFormatting.chatColor");
+		this.opTagFormat = this.configuration.getConfigValueAsString("chatFormatting.opTagFormat");
 	}
 
     private Globals globals;
@@ -187,4 +169,6 @@ public class ChatHandler implements IConfigurationChanged
     private String chatColor;
     private String opTagFormat;
     private String playerChatMessage;
+	private String playerSystemMessage;
+	private String playerNameFormat;
 }
