@@ -88,14 +88,14 @@ public class ChatHandler implements IConfigurationChanged
 	public String formatPlayerName(RunsafePlayer player)
 	{
 		String formatName = this.playerNameFormat;
-		RunsafeWorld world = player.getWorld();
+		String worldName = (player.isOnline()) ? player.getWorld().getName() : "console";
 
 		HashMap<String, String> replacements = new HashMap<String, String>();
 
 		if (formatName == null) return null;
 
 		replacements.put(Constants.FORMAT_OP, (this.enableOpTag && player.isOP()) ? this.opTagFormat : "");
-		replacements.put(Constants.FORMAT_WORLD, (this.enableWorldPrefixes) ? this.getWorldPrefix(world.getName()) : world.getName());
+		replacements.put(Constants.FORMAT_WORLD, (this.enableWorldPrefixes) ? this.getWorldPrefix(worldName) : worldName);
 		replacements.put(Constants.FORMAT_GROUP, (this.enableChatGroupPrefixes) ? this.getGroupPrefix(player) : "");
 		replacements.put(Constants.FORMAT_TAG, (this.enablePlayerTags) ? this.globals.joinList(this.getPlayerTags(player.getName())) : "");
 		replacements.put(Constants.FORMAT_PLAYER_NAME, (this.enableNicknames) ? this.getPlayerNickname(player.getName()) : player.getName());

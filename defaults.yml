@@ -22,6 +22,7 @@ worldPrefixes:
   Creative: '&a[C]'
   world_nether: '&4[N]'
   world_the_end: '&9[E]'
+  console: '&3[?]'
 channels:
   staff:
     name: 'Staff'

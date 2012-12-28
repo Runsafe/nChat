@@ -14,3 +14,6 @@ commands:
   unmute:
     description: Unmutes a player or the entire server
     usage: /unmute server or <playername>
+  puppet:
+    description: Allows you to puppet a player, sending a message as them
+    usage: /puppet <player> <message>

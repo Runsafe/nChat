@@ -3,7 +3,9 @@ package no.runsafe.nchat.command;
 import no.runsafe.framework.command.RunsafeCommand;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.ChatHandler;
+import org.apache.commons.lang.StringUtils;
 
 public class PuppetCommand extends RunsafeCommand
 {
@@ -16,10 +18,28 @@ public class PuppetCommand extends RunsafeCommand
 	@Override
 	public boolean Execute(RunsafePlayer player, String[] args)
 	{
-		if (args.length == 2)
+		if (player.hasPermission("runsafe.nchat.puppet"))
 		{
-			RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args[0]);
-			RunsafeServer.Instance.broadcastMessage(this.chatHandler.formatChatMessage(args[1],targetPlayer));
+			if (args.length > 1)
+			{
+				RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args[0]);
+
+				if (targetPlayer != null)
+				{
+					String message = StringUtils.join(args, " ", 1, args.length);
+					RunsafeServer.Instance.broadcastMessage(this.chatHandler.formatChatMessage(message ,targetPlayer));
+				}
+				else
+				{
+					player.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
+				}
+				return true;
+			}
+		}
+		else
+		{
+			player.sendMessage(Constants.COMMAND_NO_PERMISSION);
+			return true;
 		}
 		return false;
 	}

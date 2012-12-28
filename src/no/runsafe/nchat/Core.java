@@ -26,7 +26,7 @@ public class Core extends RunsafeConfigurablePlugin
 		// TODO: Implement anti-spam feature
 		// TODO: Implement emote command
 		// TODO: Implement custom kick/ban messages
-		// TODO: Implement ability to puppet a player
+		// TODO: Implement fake quit/join
 
 		// Core
 		this.addComponent(Globals.class);
