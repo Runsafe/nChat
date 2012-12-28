@@ -1,0 +1,39 @@
+# default config.yml
+
+nChat:
+  enableChatGroupPrefixes: true
+  enableWorldPrefixes: true
+  enableNicknames: true
+  enablePlayerTags: true
+  enableOpTag: true
+  enableColorCodes: true
+  enableChatChannels: true
+  channelTagFormat: '&e[%s]'
+  chatColor: '&f'
+  playerTagFormat: '&7[%s]'
+  opTagFormat: '@'
+spamControl:
+  muteChat: true
+chatGroupPrefixes:
+  admin: '&4[A]'
+  moderator: '&e[M]'
+  super: '&5[SU]'
+  builder: '&a[B]'
+  guest: '&f[G]'
+  troll: '&7[TROLL]'
+worldPrefixes:
+  world: '&2[S]'
+  Creative: '&a[C]'
+  world_nether: '&4[N]'
+  world_the_end: '&9[E]'
+channels:
+  staff:
+    name: 'Staff'
+chatFormatting:
+  playerChatMessage: '#op#world #group #tags #name: #message'
+playerNicknames:
+  ExampleMan: 'Hagrid the Elder'
+playerTags:
+  ExampleMan:
+    - CLANTAG
+    - AWESOMETAG
