@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 
 public class Constants
 {
-	public static String DEFAULT_CONFIGURATION_FILE = "defaultConfig.yml";
+	public static String DEFAULT_CONFIGURATION_FILE = "defaults.yml";
 	public static String CONFIGURATION_FILE = "plugins/nChat/config.yml";
 
 	public static String COLOR_CHARACTER = "&%s";
@@ -32,4 +32,5 @@ public class Constants
 	public static String COMMAND_ENTER_PLAYER = "Please enter a player name";
 	public static String COMMAND_NO_PERMISSION = ChatColor.RED + "You do not have permission to do that.";
 	public static String COMMAND_TARGET_EXEMPT = ChatColor.RED + "You cannot use that on the specified player.";
+	public static String COMMAND_TARGET_NO_EXISTS = ChatColor.RED + "That player does not exist.";
 }

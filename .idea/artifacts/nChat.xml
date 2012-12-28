@@ -7,7 +7,7 @@
       </element>
       <element id="module-output" name="nChat" />
       <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
-      <element id="file-copy" path="$PROJECT_DIR$/defaultConfig.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/defaults.yml" />
     </root>
   </artifact>
 </component>
