@@ -27,6 +27,7 @@ public class Core extends RunsafeConfigurablePlugin
 		// TODO: Implement emote command
 		// TODO: Implement custom kick/ban messages
 		// TODO: Implement fake quit/join
+		// TODO: Implement an AFK system
 
 		// Core
 		this.addComponent(Globals.class);
