@@ -13,7 +13,7 @@ public class UnMuteCommand extends RunsafeCommand
 {
 	public UnMuteCommand(IConfiguration configuration, IOutput console, MuteHandler muteHandler)
 	{
-		super("unmute", null);
+		super("unmute");
 		this.configuration = configuration;
 		this.console = console;
 		this.muteHandler = muteHandler;

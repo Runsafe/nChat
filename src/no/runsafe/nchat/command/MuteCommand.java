@@ -14,7 +14,7 @@ public class MuteCommand extends RunsafeCommand
 
     public MuteCommand(IConfiguration configuration, IOutput console, MuteHandler muteHandler)
     {
-        super("mute", null);
+        super("mute");
         this.configuration = configuration;
 		this.console = console;
 		this.muteHandler = muteHandler;

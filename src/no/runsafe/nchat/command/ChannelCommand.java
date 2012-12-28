@@ -10,7 +10,7 @@ public class ChannelCommand extends RunsafeCommand
 {
     public ChannelCommand(ChatChannelHandler chatChannelHandler, Globals globals)
     {
-        super("channel", null);
+        super("channel");
         this.chatChannelHandler = chatChannelHandler;
         this.globals = globals;
     }
