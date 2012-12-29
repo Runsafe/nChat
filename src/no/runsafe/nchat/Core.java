@@ -31,6 +31,7 @@ public class Core extends RunsafeConfigurablePlugin
 
 		// Core
 		this.addComponent(Globals.class);
+		this.addComponent(DeathParser.class);
 
 		// Database
 		this.addComponent(MuteDatabase.class);

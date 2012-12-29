@@ -3,3 +3,18 @@ Permissions:
     - nChat.commands.muteServer : Allows muting/un-muting of the entire server.
     - nChat.commands.mutePlayer : Allows muting/un-muting of specific players.
     - nChat.muteExempt : Makes the target player/group exempt from global and/or targeted mutes.
+
+Death Messages:
+
+    - slain_EntityName : EntityName = Skeleton, VillagerGolem, Player etc.
+    - fall : Death from falling
+    - suffocation : Death from snu snu
+    - drowned : Someone forgot they wern't a fish
+    - explosion : TNT, creeper bang, ghast fireball etc
+    - lava : Swam in some lava without protection
+    - unknown : Server death, command, anvil etc
+    - cactus : Got freaky with a cactus
+    - fire : Burnt to death or fried by lightning
+    - arrow_EntityName : Shot by EntityName IE Skeleton or Player
+    - starvation : Ran out of hunger
+    - magic : Potions or a wizard did it
