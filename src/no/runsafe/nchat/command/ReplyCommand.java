@@ -4,6 +4,7 @@ import no.runsafe.framework.command.RunsafeCommand;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.WhisperHandler;
+import org.apache.commons.lang.StringUtils;
 
 public class ReplyCommand extends RunsafeCommand
 {
@@ -27,7 +28,10 @@ public class ReplyCommand extends RunsafeCommand
 		if (whisperer != null)
 		{
 			if (this.whisperHandler.canWhisper(executor, whisperer))
-				this.whisperHandler.sendWhisper(executor, whisperer, args[0]);
+			{
+				String message = StringUtils.join(args, " ", 0, args.length);
+				this.whisperHandler.sendWhisper(executor, whisperer, message);
+			}
 			else
 				executor.sendMessage(Constants.WHISPER_TARGET_OFFLINE);
 		}
