@@ -4,10 +4,6 @@ version: 1.0
 author: Kruithne
 description: Allows advanced chat features
 commands:
-  channel:
-    description: Sends a message to the specified channel
-    usage: /c <channel> <message>
-    aliases: [c]
   mute:
     description: Mutes a player or the entire server
     usage: /mute server or <playername>
