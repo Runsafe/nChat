@@ -28,7 +28,7 @@ public class WhisperCommand extends RunsafeCommand
 				this.whisperHandler.sendWhisper(executor, targetPlayer, message);
 			}
 			else
-				executor.sendMessage(String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayer.getPrettyName()));
+				executor.sendMessage(String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayer.getName()));
 		}
 		else
 		{
