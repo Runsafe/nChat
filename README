@@ -6,6 +6,7 @@ Permissions:
     - runsafe.nchat.mute.server : Allows the user to mute the entire server.
     - runsafe.nchat.mute.exempt : Makes the user exempt from being muted.
     - runsafe.nchat.colors : Allows the player to use colored text (override global)
+    - runsafe.nchat.whisper : Allows the player to whisper/reply to another player.
 
 Death Messages:
 

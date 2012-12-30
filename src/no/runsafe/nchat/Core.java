@@ -9,6 +9,7 @@ import no.runsafe.nchat.events.*;
 import no.runsafe.nchat.handlers.ChatChannelHandler;
 import no.runsafe.nchat.handlers.ChatHandler;
 import no.runsafe.nchat.handlers.MuteHandler;
+import no.runsafe.nchat.handlers.WhisperHandler;
 
 import java.io.InputStream;
 
@@ -18,11 +19,7 @@ public class Core extends RunsafeConfigurablePlugin
 	protected void PluginSetup()
 	{
 		// TODO: Implement anti-spam feature
-		// TODO: Implement fake quit/join
 		// TODO: Implement an AFK system
-		// TODO: Private messaging
-
-		// TODO: Properly implement colours
 
 		// Core
 		this.addComponent(Globals.class);
@@ -35,6 +32,7 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(ChatChannelHandler.class);
 		this.addComponent(ChatHandler.class);
 		this.addComponent(MuteHandler.class);
+		this.addComponent(WhisperHandler.class);
 
 		// Commands
 		//this.addComponent(ChannelCommand.class);
@@ -43,6 +41,8 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(PlayerDeath.class);
 		this.addComponent(PuppetCommand.class);
 		this.addComponent(EmoteCommand.class);
+		this.addComponent(WhisperCommand.class);
+		this.addComponent(ReplyCommand.class);
 
 		// Events
 		this.addComponent(JoinEvent.class);

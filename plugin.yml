@@ -16,3 +16,11 @@ commands:
   me:
     description: Allows you to broadcast an emote
     usage: /me <message>
+  whisper:
+    description: Allows you to whisper a player
+    usage: /whisper <player> <message>
+    aliases: [w, message, m, tell, t]
+  reply:
+    description: Allows you to reply to a whisper easily
+    usage: /reply <message>
+    aliases: [r]
