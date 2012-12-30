@@ -34,7 +34,7 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(MuteHandler.class);
 
 		// Commands
-		this.addComponent(ChannelCommand.class);
+		//this.addComponent(ChannelCommand.class);
 		this.addComponent(MuteCommand.class);
 		this.addComponent(UnMuteCommand.class);
 		this.addComponent(PlayerDeath.class);
