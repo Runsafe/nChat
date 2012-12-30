@@ -22,5 +22,11 @@ public class EmoteCommand extends RunsafePlayerCommand
 		return null;
 	}
 
+	@Override
+	public String requiredPermission()
+	{
+		return "nchat.emote";
+	}
+
 	private ChatHandler chatHandler;
 }
