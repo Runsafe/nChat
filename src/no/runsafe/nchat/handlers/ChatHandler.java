@@ -2,6 +2,7 @@ package no.runsafe.nchat.handlers;
 
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
+import no.runsafe.framework.hook.IPlayerNameDecorator;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.player.RunsafePlayer;
@@ -12,7 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.*;
 
-public class ChatHandler implements IConfigurationChanged
+public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 {
     public ChatHandler(IConfiguration configuration, Globals globals)
     {
@@ -62,14 +63,15 @@ public class ChatHandler implements IConfigurationChanged
         return "";
     }
 
-    public String getPlayerNickname(String playerName)
+    public String getPlayerNickname(RunsafePlayer player, String nameString)
     {
+		String playerName = player.getName();
         String playerNickname = (String) this.playerNicknames.get(playerName);
 
         if (playerNickname != null)
-            return playerNickname;
+            return nameString.replace(playerName, playerNickname);
 
-        return playerName;
+        return nameString;
     }
 
     public List<String> getPlayerTags(String playerName)
@@ -89,7 +91,7 @@ public class ChatHandler implements IConfigurationChanged
         return returnTags;
     }
 
-	public String formatPlayerName(RunsafePlayer player)
+	public String formatPlayerName(RunsafePlayer player, String editedName)
 	{
 		String formatName = this.playerNameFormat;
 		String worldName = (player.isOnline()) ? player.getWorld().getName() : "console";
@@ -102,13 +104,19 @@ public class ChatHandler implements IConfigurationChanged
 		replacements.put(Constants.FORMAT_WORLD, (this.enableWorldPrefixes) ? this.getWorldPrefix(worldName) : worldName);
 		replacements.put(Constants.FORMAT_GROUP, (this.enableChatGroupPrefixes) ? this.getGroupPrefix(player) : "");
 		replacements.put(Constants.FORMAT_TAG, (this.enablePlayerTags) ? this.globals.joinList(this.getPlayerTags(player.getName())) : "");
-		replacements.put(Constants.FORMAT_PLAYER_NAME, (this.enableNicknames) ? this.getPlayerNickname(player.getName()) : player.getName());
+		replacements.put(Constants.FORMAT_PLAYER_NAME, (this.enableNicknames) ? this.getPlayerNickname(player, editedName) : editedName);
 
 		formatName = this.globals.mapReplace(formatName, replacements);
 		return this.convertColors(formatName);
 	}
 
-    public String formatChatMessage(String message, RunsafePlayer player)
+	@Override
+	public String DecorateName(RunsafePlayer runsafePlayer, String s)
+	{
+		return this.formatPlayerName(runsafePlayer, s);
+	}
+
+	public String formatChatMessage(String message, RunsafePlayer player)
     {
 		return this.formatMessage(message, player, this.playerChatMessage);
     }
@@ -120,7 +128,7 @@ public class ChatHandler implements IConfigurationChanged
 
 	private String formatMessage(String message, RunsafePlayer player, String formatMessage)
 	{
-		String playerName = this.formatPlayerName(player);
+		String playerName = this.formatPlayerName(player, player.getName());
 		message = message.replace("%", "%%");
 
 		if (!player.hasPermission("nChat.allowColorCodes") && !this.configuration.getConfigValueAsBoolean("nChat.enableColorCodes"))

@@ -56,7 +56,7 @@ public class PlayerDeath implements IPlayerDeathEvent
 
 				if (killer != null)
 				{
-					entityName = this.chatHandler.formatPlayerName(killer);
+					entityName = this.chatHandler.formatPlayerName(killer, killer.getName());
 					customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, entityName);
 				}
 			}
