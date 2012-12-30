@@ -16,9 +16,11 @@ public class KickEvent implements IPlayerKickEvent, IConfigurationChanged
 	@Override
 	public void OnPlayerKick(RunsafePlayerKickEvent runsafePlayerKickEvent)
 	{
-		runsafePlayerKickEvent.setLeaveMessage(this.chatHandler.formatPlayerSystemMessage(
-				this.kickMessage.replace("#reason", runsafePlayerKickEvent.getReason()),
-				runsafePlayerKickEvent.getPlayer())
+		runsafePlayerKickEvent.setLeaveMessage(
+			(this.suppressKickMessages) ? null : this.chatHandler.formatPlayerSystemMessage(
+					this.kickMessage.replace("#reason", runsafePlayerKickEvent.getReason()),
+					runsafePlayerKickEvent.getPlayer()
+				)
 		);
 	}
 
@@ -26,8 +28,10 @@ public class KickEvent implements IPlayerKickEvent, IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
 		this.kickMessage = iConfiguration.getConfigValueAsString("chatMessage.kicked");
+		this.suppressKickMessages = iConfiguration.getConfigValueAsBoolean("spamControl.suppressKickMessages");
 	}
 
 	private String kickMessage;
+	private boolean suppressKickMessages;
 	private ChatHandler chatHandler;
 }

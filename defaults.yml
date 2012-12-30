@@ -10,6 +10,7 @@ nChat:
   enableChatChannels: true
 spamControl:
   muteChat: false
+  suppressKickMessages: false
 chatGroupPrefixes:
   admin: '&4[A]'
   moderator: '&e[M]'

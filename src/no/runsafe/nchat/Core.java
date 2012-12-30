@@ -18,7 +18,6 @@ public class Core extends RunsafeConfigurablePlugin
 	protected void PluginSetup()
 	{
 		// TODO: Implement anti-spam feature
-		// TODO: Implement custom kick/ban messages
 		// TODO: Implement fake quit/join
 		// TODO: Implement an AFK system
 
