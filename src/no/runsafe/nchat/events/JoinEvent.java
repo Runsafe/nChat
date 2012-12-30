@@ -22,7 +22,10 @@ public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 		runsafePlayerJoinEvent.setJoinMessage(this.chatHandler.formatPlayerSystemMessage(this.joinServerMessage, player));
 
 		// Set their name in the tab list
-		player.setPlayerListName(this.chatHandler.convertColors(this.chatHandler.getTabListPrefix(player)) + player.getName());
+		// TODO: Handle player group not having prefix properly
+		String playerName = player.getName();
+		String displayName = (playerName.length() > 14) ? playerName.substring(0, 14) : playerName;
+		player.setPlayerListName(this.chatHandler.convertColors(this.chatHandler.getTabListPrefix(player)) + displayName);
 	}
 
 	@Override
