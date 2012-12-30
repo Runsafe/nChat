@@ -34,7 +34,7 @@ public class UnMuteCommand extends RunsafeCommand
 					{
 						this.configuration.setConfigValue("spamControl.muteChat", false);
 						player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_UNMUTED);
-						console.write(ChatColor.YELLOW + String.format("%s un-muted server chat.", player.getName()));
+						console.write(String.format("%s un-muted server chat.", player.getName()));
 					}
 					else
 					{
@@ -51,7 +51,7 @@ public class UnMuteCommand extends RunsafeCommand
 						{
 							if (!unMutePlayer.hasPermission("nChat.muteExempt"))
 							{
-								console.write(ChatColor.YELLOW + String.format(
+								console.write(String.format(
 										"%s un-muted %s",
 										player.getName(),
 										unMutePlayer.getName()

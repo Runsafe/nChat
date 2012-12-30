@@ -20,6 +20,7 @@ public class MuteCommand extends RunsafeCommand
 		this.muteHandler = muteHandler;
     }
 
+	// TODO: Use OnExecute. Docpify smells.
     @Override
     public boolean Execute(RunsafePlayer player, String[] args)
     {
@@ -35,7 +36,7 @@ public class MuteCommand extends RunsafeCommand
                     {
 						this.configuration.setConfigValue("spamControl.muteChat", true);
 						player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED);
-						console.write(ChatColor.YELLOW + String.format("%s muted server chat.", player.getName()));
+						console.write(String.format("%s muted server chat.", player.getName()));
                     }
 					else
 					{
@@ -52,7 +53,7 @@ public class MuteCommand extends RunsafeCommand
 						{
 							if (!mutePlayer.hasPermission("nChat.muteExempt"))
 							{
-								console.write(ChatColor.YELLOW + String.format(
+								console.write(String.format(
 										"%s muted %s",
 										player.getName(),
 										mutePlayer.getName()

@@ -8,20 +8,24 @@ import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.Globals;
+import no.runsafe.nchat.handlers.MuteHandler;
 
 public class EventManager implements IPlayerChatEvent, IConfigurationChanged
 {
-    public EventManager(ChatHandler chatHandler)
+	// TODO: Move this into proper event class
+    public EventManager(ChatHandler chatHandler, MuteHandler muteHandler)
     {
         this.chatHandler = chatHandler;
+		this.muteHandler = muteHandler;
     }
 
     @Override
     public void OnPlayerChatEvent(RunsafePlayerChatEvent event)
     {
         RunsafePlayer thePlayer = event.getPlayer();
+		boolean isMuted = (this.chatMuted || this.muteHandler.isPlayerMuted(thePlayer));
 
-        if (!this.chatMuted || thePlayer.hasPermission("nChat.muteExempt"))
+        if (!isMuted || thePlayer.hasPermission("nChat.muteExempt"))
         {
             String chatMessage = this.chatHandler.formatChatMessage(event.getMessage(), thePlayer);
 
@@ -45,5 +49,6 @@ public class EventManager implements IPlayerChatEvent, IConfigurationChanged
     }
 
     private ChatHandler chatHandler;
+	private MuteHandler muteHandler;
     private boolean chatMuted;
 }
