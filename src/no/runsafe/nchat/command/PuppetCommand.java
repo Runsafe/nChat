@@ -11,37 +11,34 @@ public class PuppetCommand extends RunsafeCommand
 {
 	public PuppetCommand(ChatHandler chatHandler)
 	{
-		super("puppet");
+		super("puppet", "player", "message");
 		this.chatHandler = chatHandler;
 	}
 
 	@Override
-	public boolean Execute(RunsafePlayer player, String[] args)
+	public String requiredPermission()
 	{
-		if (player.hasPermission("runsafe.nchat.puppet"))
-		{
-			if (args.length > 1)
-			{
-				RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args[0]);
+		return "nchat.commands.puppet";
+	}
 
-				if (targetPlayer != null)
-				{
-					String message = StringUtils.join(args, " ", 1, args.length);
-					RunsafeServer.Instance.broadcastMessage(this.chatHandler.formatChatMessage(message ,targetPlayer));
-				}
-				else
-				{
-					player.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
-				}
-				return true;
+	@Override
+	public String OnExecute(RunsafePlayer executor, String[] args)
+	{
+		if (args.length > 1)
+		{
+			RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args[0]);
+
+			if (targetPlayer != null)
+			{
+				String message = StringUtils.join(args, " ", 1, args.length);
+				RunsafeServer.Instance.broadcastMessage(this.chatHandler.formatChatMessage(message, targetPlayer));
+			}
+			else
+			{
+				executor.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
 			}
 		}
-		else
-		{
-			player.sendMessage(Constants.COMMAND_NO_PERMISSION);
-			return true;
-		}
-		return false;
+		return null;
 	}
 
 	private ChatHandler chatHandler;

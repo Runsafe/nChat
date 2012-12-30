@@ -24,6 +24,8 @@ public class Core extends RunsafeConfigurablePlugin
 		// TODO: Private messaging
 		// TODO: Colours in tab text.
 
+		// TODO: Properly implement colours
+
 		// Core
 		this.addComponent(Globals.class);
 		this.addComponent(DeathParser.class);

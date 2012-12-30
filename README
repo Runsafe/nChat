@@ -1,9 +1,13 @@
 Permissions:
 
+    // TODO: Sort these perms out
     - nChat.commands.muteServer : Allows muting/un-muting of the entire server.
     - nChat.commands.mutePlayer : Allows muting/un-muting of specific players.
     - nChat.muteExempt : Makes the target player/group exempt from global and/or targeted mutes.
     - nChat.emote : Allows the user to do emotes
+
+    // Sorted
+    - nchat.commands.puppet : Allows you to send chat from a player.
 
 Death Messages:
 
