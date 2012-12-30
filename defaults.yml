@@ -29,6 +29,7 @@ channels:
 chatMessage:
   joinServer: 'has joined the server.'
   leaveServer: 'has left the server.'
+  kicked: 'has been kicked from the server for #reason.'
 chatFormatting:
   playerName: '#op#world#group#tags #player'
   playerChatMessage: '#player: &f#message'
