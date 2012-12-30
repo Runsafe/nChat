@@ -12,76 +12,63 @@ public class MuteCommand extends RunsafeCommand
 
     public MuteCommand(IOutput console, MuteHandler muteHandler)
     {
-        super("mute");
+        super("mute", "player");
 		this.console = console;
 		this.muteHandler = muteHandler;
     }
 
-	// TODO: Use OnExecute. Docpify smells.
-    @Override
-    public boolean Execute(RunsafePlayer player, String[] args)
-    {
-        if (args.length == 1)
-        {
-            String mutePlayerName = args[0].trim();
+	@Override
+	public String requiredPermission()
+	{
+		return "runsafe.nchat.mute";
+	}
 
-            if (!mutePlayerName.isEmpty())
-            {
-                if (mutePlayerName.equalsIgnoreCase("server"))
-                {
-                    if (player.hasPermission("nChat.commands.muteServer"))
-                    {
-						this.muteHandler.muteServer();
-						player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED);
-						console.write(String.format("%s muted server chat.", player.getName()));
-                    }
-					else
-					{
-						player.sendMessage(Constants.COMMAND_NO_PERMISSION);
-					}
-                }
-                else
-                {
-                    if (player.hasPermission("nChat.commands.mutePlayer"))
-                    {
-                        RunsafePlayer mutePlayer = RunsafeServer.Instance.getPlayer(mutePlayerName);
+	@Override
+	public String OnExecute(RunsafePlayer executor, String[] args)
+	{
+		String mutePlayerName = args[0].trim();
 
-						if (mutePlayer != null)
-						{
-							if (!mutePlayer.hasPermission("nChat.muteExempt"))
-							{
-								console.write(String.format(
-										"%s muted %s",
-										player.getName(),
-										mutePlayer.getName()
-								));
-								this.muteHandler.mutePlayer(mutePlayer);
-							}
-							else
-							{
-								player.sendMessage(Constants.COMMAND_TARGET_EXEMPT);
-							}
-						}
-						else
-						{
-							player.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
-						}
-					}
-					else
-					{
-						player.sendMessage(Constants.COMMAND_NO_PERMISSION);
-					}
-                }
-            }
+		if (mutePlayerName.equalsIgnoreCase("server"))
+		{
+			if (executor.hasPermission("runsafe.nchat.mute.server"))
+			{
+				this.muteHandler.muteServer();
+				executor.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED);
+				console.write(String.format("%s muted server chat.", executor.getName()));
+			}
 			else
 			{
-				player.sendMessage(Constants.COMMAND_ENTER_PLAYER);
+				executor.sendMessage(Constants.COMMAND_NO_PERMISSION);
 			}
+		}
+		else
+		{
+			RunsafePlayer mutePlayer = RunsafeServer.Instance.getPlayer(mutePlayerName);
 
-			return true;
-        }
-        return false;
-    }
+			if (mutePlayer != null)
+			{
+				if (!mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
+				{
+					console.write(String.format(
+							"%s muted %s",
+							executor.getName(),
+							mutePlayer.getName()
+					));
+					this.muteHandler.mutePlayer(mutePlayer);
+				}
+				else
+				{
+					executor.sendMessage(Constants.COMMAND_TARGET_EXEMPT);
+				}
+			}
+			else
+			{
+				executor.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
+			}
+		}
+
+		return null;
+	}
 
 	private IOutput console;
 	private MuteHandler muteHandler;

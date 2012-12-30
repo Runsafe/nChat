@@ -18,7 +18,7 @@ public class PuppetCommand extends RunsafeCommand
 	@Override
 	public String requiredPermission()
 	{
-		return "nchat.commands.puppet";
+		return "runsafe.nchat.puppet";
 	}
 
 	@Override

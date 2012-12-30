@@ -25,7 +25,7 @@ public class EmoteCommand extends RunsafePlayerCommand
 	@Override
 	public String requiredPermission()
 	{
-		return "nchat.emote";
+		return "runsafe.nchat.emote";
 	}
 
 	private ChatHandler chatHandler;
