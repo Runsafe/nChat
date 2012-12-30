@@ -20,9 +20,7 @@ public class Core extends RunsafeConfigurablePlugin
 		// TODO: Implement anti-spam feature
 		// TODO: Implement fake quit/join
 		// TODO: Implement an AFK system
-		// TODO: Annoucement command???
 		// TODO: Private messaging
-		// TODO: Colours in tab text.
 
 		// TODO: Properly implement colours
 

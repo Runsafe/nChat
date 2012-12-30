@@ -94,7 +94,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	public String formatPlayerName(RunsafePlayer player, String editedName)
 	{
 		String formatName = this.playerNameFormat;
-		String worldName = (player.isOnline()) ? player.getWorld().getName() : "console";
+		String worldName = (player.isOnline() && !player.isVanished()) ? player.getWorld().getName() : "console";
 
 		HashMap<String, String> replacements = new HashMap<String, String>();
 
