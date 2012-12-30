@@ -17,3 +17,6 @@ commands:
   puppet:
     description: Allows you to puppet a player, sending a message as them
     usage: /puppet <player> <message>
+  me:
+    description: Allows you to broadcast an emote
+    usage: /me <message>

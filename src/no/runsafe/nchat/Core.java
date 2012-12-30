@@ -3,10 +3,7 @@ package no.runsafe.nchat;
 import no.runsafe.framework.RunsafeConfigurablePlugin;
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.framework.configuration.IConfigurationFile;
-import no.runsafe.nchat.command.ChannelCommand;
-import no.runsafe.nchat.command.MuteCommand;
-import no.runsafe.nchat.command.PuppetCommand;
-import no.runsafe.nchat.command.UnMuteCommand;
+import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.events.EventManager;
 import no.runsafe.nchat.events.JoinEvent;
@@ -24,7 +21,6 @@ public class Core extends RunsafeConfigurablePlugin
 	protected void PluginSetup()
 	{
 		// TODO: Implement anti-spam feature
-		// TODO: Implement emote command
 		// TODO: Implement custom kick/ban messages
 		// TODO: Implement fake quit/join
 		// TODO: Implement an AFK system
@@ -47,6 +43,7 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(UnMuteCommand.class);
 		this.addComponent(PlayerDeath.class);
 		this.addComponent(PuppetCommand.class);
+		this.addComponent(EmoteCommand.class);
 
 		// Events
 		this.addComponent(JoinEvent.class);
