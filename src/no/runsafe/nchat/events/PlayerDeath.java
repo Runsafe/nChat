@@ -29,13 +29,14 @@ public class PlayerDeath implements IPlayerDeathEvent
 		String deathTag;
 		String entityName = null;
 
+
 		if (deathType.hasEntityInvolved())
 		{
-			entityName = this.deathParser.getInvolvedEntityName(originalMessage);
+			entityName = this.deathParser.isEntityName(this.deathParser.getInvolvedEntityName(originalMessage));
 			deathTag = String.format(
 					"%s_%s",
 					deathName,
-					(this.deathParser.isEntityName(entityName) ? entityName : "Player")
+					(entityName != null ? entityName : "Player")
 			);
 		}
 		else
@@ -49,7 +50,7 @@ public class PlayerDeath implements IPlayerDeathEvent
 		{
 			RunsafePlayer player = (RunsafePlayer) runsafePlayerDeathEvent.getEntity();
 
-			if (entityName != null && !this.deathParser.isEntityName(entityName)) // true
+			if (entityName != null) // true
 			{
 				RunsafePlayer killer = RunsafeServer.Instance.getPlayer(entityName);
 

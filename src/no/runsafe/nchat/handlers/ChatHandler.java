@@ -14,11 +14,10 @@ import java.util.*;
 
 public class ChatHandler implements IConfigurationChanged
 {
-    public ChatHandler(IConfiguration configuration, Globals globals, IOutput console)
+    public ChatHandler(IConfiguration configuration, Globals globals)
     {
         this.configuration = configuration;
         this.globals = globals;
-		this.console = console;
     }
 
     public String convertColors(String theString)
@@ -47,6 +46,11 @@ public class ChatHandler implements IConfigurationChanged
     {
 		return (String) this.chatGroupPrefixes.get(player.getGroups().get(0).toLowerCase());
     }
+
+	public String getTabListPrefix(RunsafePlayer player)
+	{
+		return (String) this.tabListPrefixes.get(player.getGroups().get(0).toLowerCase());
+	}
 
     public String getWorldPrefix(String worldName)
     {
@@ -144,9 +148,11 @@ public class ChatHandler implements IConfigurationChanged
 		this.enableNicknames = configuration.getConfigValueAsBoolean("nChat.enableNicknames");
 		this.enablePlayerTags = configuration.getConfigValueAsBoolean("nChat.enablePlayerTags");
 		this.enableOpTag = configuration.getConfigValueAsBoolean("nChat.enableOpTag");
-		this.opTagFormat = this.configuration.getConfigValueAsString("chatFormatting.opTagFormat");
+		this.opTagFormat = configuration.getConfigValueAsString("chatFormatting.opTagFormat");
+		this.tabListPrefixes = configuration.getSection("tabListGroupPrefix");
 	}
 
+	private ConfigurationSection tabListPrefixes;
     private Globals globals;
     private boolean enableWorldPrefixes;
     private boolean enableChatGroupPrefixes;
@@ -163,5 +169,4 @@ public class ChatHandler implements IConfigurationChanged
     private String playerChatMessage;
 	private String playerSystemMessage;
 	private String playerNameFormat;
-	private IOutput console;
 }

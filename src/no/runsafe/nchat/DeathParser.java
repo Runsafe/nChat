@@ -3,7 +3,6 @@ package no.runsafe.nchat;
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
 
 public class DeathParser implements IConfigurationChanged
 {
@@ -18,13 +17,18 @@ public class DeathParser implements IConfigurationChanged
 
 	public String getInvolvedEntityName(String deathMessage)
 	{
-		String[] split = deathMessage.split("\\s");
-		return split[split.length-1];
+		return deathMessage.substring(deathMessage.indexOf(" was slain by ") + 14, deathMessage.length());
 	}
 
-	public boolean isEntityName(String entityName)
+	public String isEntityName(String entityName)
 	{
-		return (EntityType.fromName(entityName) != null);
+		// TODO: Replace this with valueOf try/catch
+		for (EntityDeath entity : EntityDeath.values())
+		{
+			if (entity.getDeathName().equals(entityName))
+				return entity.name();
+		}
+		return null;
 	}
 
 	public String getCustomDeathMessage(String deathTag)

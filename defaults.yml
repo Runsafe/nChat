@@ -18,6 +18,13 @@ chatGroupPrefixes:
   builder: '&a[B]'
   guest: '&f[G]'
   troll: '&7[TROLL]'
+tabListGroupPrefix:
+  admin: '&4'
+  moderator: '&e'
+  superuser: '&5'
+  builder: '&a'
+  guest: '&f'
+  troll: '&7'
 worldPrefixes:
   world: '&2[S]'
   Creative: '&a[C]'

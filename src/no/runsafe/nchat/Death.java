@@ -14,6 +14,7 @@ public enum Death
 	ARROW(" was shot by ", true),
 	STARVATION(" starved to death", false),
 	MAGIC(" was killed by magic", false);
+	// TODO: Void death
 
 	private final String defaultMessage;
 	private final boolean entityInvolved;

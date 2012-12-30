@@ -6,6 +6,7 @@ import no.runsafe.framework.event.player.IPlayerJoinEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerJoinEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 {
@@ -19,6 +20,9 @@ public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 	{
 		RunsafePlayer player = runsafePlayerJoinEvent.getPlayer();
 		runsafePlayerJoinEvent.setJoinMessage(this.chatHandler.formatPlayerSystemMessage(this.joinServerMessage, player));
+
+		// Set their name in the tab list
+		player.setPlayerListName(this.chatHandler.convertColors(this.chatHandler.getTabListPrefix(player)) + player.getName());
 	}
 
 	@Override
