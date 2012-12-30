@@ -6,12 +6,14 @@ import no.runsafe.framework.event.player.IPlayerQuitEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerQuitEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
+import no.runsafe.nchat.handlers.WhisperHandler;
 
 public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 {
-	public LeaveEvent(ChatHandler chatHandler)
+	public LeaveEvent(ChatHandler chatHandler, WhisperHandler whisperHandler)
 	{
 		this.chatHandler = chatHandler;
+		this.whisperHandler = whisperHandler;
 	}
 
 	@Override
@@ -19,6 +21,8 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 	{
 		RunsafePlayer player = runsafePlayerQuitEvent.getPlayer();
 		runsafePlayerQuitEvent.setQuitMessage(this.chatHandler.formatPlayerSystemMessage(this.leaveServerMessage, player));
+
+		this.whisperHandler.deleteLastWhisperedBy(player);
 	}
 
 	@Override
@@ -28,5 +32,6 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 	}
 
 	private ChatHandler chatHandler;
+	private WhisperHandler whisperHandler;
 	private String leaveServerMessage;
 }

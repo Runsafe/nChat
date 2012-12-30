@@ -10,10 +10,11 @@ import java.util.HashMap;
 
 public class WhisperHandler implements IConfigurationChanged
 {
-	public WhisperHandler(IOutput console)
+	public WhisperHandler(IOutput console, ChatHandler chatHandler)
 	{
 		this.console = console;
 		this.lastWhisperList = new HashMap<String, String>();
+		this.chatHandler = chatHandler;
 	}
 
 	public void sendWhisper(RunsafePlayer fromPlayer, RunsafePlayer toPlayer, String message)
@@ -24,6 +25,8 @@ public class WhisperHandler implements IConfigurationChanged
 		toPlayer.sendMessage(
 			this.whisperFromFormat.replace("#source", fromPlayer.getPrettyName().replace("#message", message))
 		);
+
+		this.setLastWhisperedBy(toPlayer, fromPlayer);
 
 		console.write(String.format("%s -> %s: %s", fromPlayer.getName(), toPlayer.getName(), message));
 	}
@@ -60,12 +63,17 @@ public class WhisperHandler implements IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
-		this.whisperToFormat = iConfiguration.getConfigValueAsString("chatMessage.whisperTo");
-		this.whisperFromFormat = iConfiguration.getConfigValueAsString("chatMessage.whisperFrom");
+		this.whisperToFormat = this.chatHandler.convertColors(
+			iConfiguration.getConfigValueAsString("chatMessage.whisperTo")
+		);
+		this.whisperFromFormat = this.chatHandler.convertColors(
+			iConfiguration.getConfigValueAsString("chatMessage.whisperFrom")
+		);
 	}
 
 	private String whisperToFormat;
 	private String whisperFromFormat;
 	private IOutput console;
 	private HashMap<String, String> lastWhisperList;
+	private ChatHandler chatHandler;
 }
