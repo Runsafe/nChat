@@ -117,6 +117,7 @@ public class ChatHandler implements IConfigurationChanged
 	private String formatMessage(String message, RunsafePlayer player, String formatMessage)
 	{
 		String playerName = this.formatPlayerName(player);
+		message = message.replace("%", "%%");
 
 		if (!player.hasPermission("nChat.allowColorCodes") && !this.configuration.getConfigValueAsBoolean("nChat.enableColorCodes"))
 			message = this.stripColors(message);
