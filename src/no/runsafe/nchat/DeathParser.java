@@ -22,7 +22,6 @@ public class DeathParser implements IConfigurationChanged
 
 	public String isEntityName(String entityName)
 	{
-		// TODO: Replace this with valueOf try/catch
 		for (EntityDeath entity : EntityDeath.values())
 		{
 			if (entity.getDeathName().equals(entityName))

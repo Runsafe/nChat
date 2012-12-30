@@ -131,7 +131,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		String playerName = this.formatPlayerName(player, player.getName());
 		message = message.replace("%", "%%");
 
-		if (!player.hasPermission("nChat.allowColorCodes") && !this.configuration.getConfigValueAsBoolean("nChat.enableColorCodes"))
+		if (!player.hasPermission("runsafe.nchat.colors") && !this.enableColorCodes)
 			message = this.stripColors(message);
 
 		formatMessage = formatMessage.replace(Constants.FORMAT_MESSAGE, message);
@@ -156,6 +156,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		this.enableNicknames = configuration.getConfigValueAsBoolean("nChat.enableNicknames");
 		this.enablePlayerTags = configuration.getConfigValueAsBoolean("nChat.enablePlayerTags");
 		this.enableOpTag = configuration.getConfigValueAsBoolean("nChat.enableOpTag");
+		this.enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
 		this.opTagFormat = configuration.getConfigValueAsString("chatFormatting.opTagFormat");
 		this.tabListPrefixes = configuration.getSection("tabListGroupPrefix");
 	}
@@ -167,6 +168,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
     private boolean enableNicknames;
     private boolean enablePlayerTags;
     private boolean enableOpTag;
+	private boolean enableColorCodes;
     private IConfiguration configuration;
     private ConfigurationSection chatGroupPrefixes;
     private ConfigurationSection worldPrefixes;
