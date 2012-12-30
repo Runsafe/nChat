@@ -33,7 +33,7 @@ public class ReplyCommand extends RunsafeCommand
 				this.whisperHandler.sendWhisper(executor, whisperer, message);
 			}
 			else
-				executor.sendMessage(Constants.WHISPER_TARGET_OFFLINE);
+				executor.sendMessage(String.format(Constants.WHISPER_TARGET_OFFLINE, whisperer.getPrettyName()));
 		}
 		else
 		{
