@@ -11,10 +11,9 @@ import org.bukkit.ChatColor;
 
 public class UnMuteCommand extends RunsafeCommand
 {
-	public UnMuteCommand(IConfiguration configuration, IOutput console, MuteHandler muteHandler)
+	public UnMuteCommand(IOutput console, MuteHandler muteHandler)
 	{
 		super("unmute");
-		this.configuration = configuration;
 		this.console = console;
 		this.muteHandler = muteHandler;
 	}
@@ -32,7 +31,7 @@ public class UnMuteCommand extends RunsafeCommand
 				{
 					if (player.hasPermission("nChat.commands.muteServer"))
 					{
-						this.configuration.setConfigValue("spamControl.muteChat", false);
+						this.muteHandler.unMuteServer();
 						player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_UNMUTED);
 						console.write(String.format("%s un-muted server chat.", player.getName()));
 					}
@@ -84,7 +83,6 @@ public class UnMuteCommand extends RunsafeCommand
 		return false;
 	}
 
-	private IConfiguration configuration;
 	private IOutput console;
 	private MuteHandler muteHandler;
 }

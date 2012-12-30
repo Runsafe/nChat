@@ -1,21 +1,18 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.command.RunsafeCommand;
-import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
-import org.bukkit.ChatColor;
 
 public class MuteCommand extends RunsafeCommand
 {
 
-    public MuteCommand(IConfiguration configuration, IOutput console, MuteHandler muteHandler)
+    public MuteCommand(IOutput console, MuteHandler muteHandler)
     {
         super("mute");
-        this.configuration = configuration;
 		this.console = console;
 		this.muteHandler = muteHandler;
     }
@@ -34,7 +31,7 @@ public class MuteCommand extends RunsafeCommand
                 {
                     if (player.hasPermission("nChat.commands.muteServer"))
                     {
-						this.configuration.setConfigValue("spamControl.muteChat", true);
+						this.muteHandler.muteServer();
 						player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED);
 						console.write(String.format("%s muted server chat.", player.getName()));
                     }
@@ -86,7 +83,6 @@ public class MuteCommand extends RunsafeCommand
         return false;
     }
 
-    private IConfiguration configuration;
 	private IOutput console;
 	private MuteHandler muteHandler;
 }

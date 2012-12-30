@@ -23,9 +23,8 @@ public class EventManager implements IPlayerChatEvent, IConfigurationChanged
     public void OnPlayerChatEvent(RunsafePlayerChatEvent event)
     {
         RunsafePlayer thePlayer = event.getPlayer();
-		boolean isMuted = (this.chatMuted || this.muteHandler.isPlayerMuted(thePlayer));
 
-        if (!isMuted || thePlayer.hasPermission("nChat.muteExempt"))
+        if (!this.muteHandler.isPlayerMuted(thePlayer) || thePlayer.hasPermission("nChat.muteExempt"))
         {
             String chatMessage = this.chatHandler.formatChatMessage(event.getMessage(), thePlayer);
 

@@ -1,11 +1,13 @@
 package no.runsafe.nchat.handlers;
 
+import no.runsafe.framework.configuration.IConfiguration;
+import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.database.MuteDatabase;
 
 import java.util.List;
 
-public class MuteHandler
+public class MuteHandler implements IConfigurationChanged
 {
 	public MuteHandler(MuteDatabase muteDatabase)
 	{
@@ -25,7 +27,7 @@ public class MuteHandler
 
 	public boolean isPlayerMuted(String playerName)
 	{
-		return this.mutedPlayers.contains(playerName);
+		return (this.serverMute || this.mutedPlayers.contains(playerName));
 	}
 
 	public void mutePlayer(RunsafePlayer player)
@@ -50,6 +52,23 @@ public class MuteHandler
 		this.muteDatabase.unMutePlayer(playerName);
 	}
 
+	public void muteServer()
+	{
+		this.serverMute = true;
+	}
+
+	public void unMuteServer()
+	{
+		this.serverMute = false;
+	}
+
+	@Override
+	public void OnConfigurationChanged(IConfiguration iConfiguration)
+	{
+		this.serverMute = iConfiguration.getConfigValueAsBoolean("spamControl.muteChat");
+	}
+
 	private List<String> mutedPlayers;
 	private MuteDatabase muteDatabase;
+	private boolean serverMute;
 }
