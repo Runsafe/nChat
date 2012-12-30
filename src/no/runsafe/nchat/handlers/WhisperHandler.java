@@ -23,7 +23,7 @@ public class WhisperHandler implements IConfigurationChanged
 			this.whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
 		);
 		toPlayer.sendMessage(
-			this.whisperFromFormat.replace("#source", fromPlayer.getPrettyName().replace("#message", message))
+			this.whisperFromFormat.replace("#source", fromPlayer.getPrettyName()).replace("#message", message)
 		);
 
 		this.setLastWhisperedBy(toPlayer, fromPlayer);
