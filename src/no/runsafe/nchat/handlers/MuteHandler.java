@@ -22,10 +22,10 @@ public class MuteHandler implements IConfigurationChanged
 
 	public boolean isPlayerMuted(RunsafePlayer player)
 	{
-		return this.isPlayerMuted(player.getName());
+		return (this.isPlayerMuted(player.getName()) && !player.hasPermission("runsafe.nchat.mute.exempt"));
 	}
 
-	public boolean isPlayerMuted(String playerName)
+	private boolean isPlayerMuted(String playerName)
 	{
 		return (this.serverMute || this.mutedPlayers.contains(playerName));
 	}

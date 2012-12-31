@@ -22,7 +22,7 @@ public class Constants
 	public static String CHANNEL_NOT_EXIST = "The specified channel does not exist.";
 	public static String CHANNEL_NO_PERMISSION = "You do not have permission to speak in this channel.";
 
-	public static String CHAT_MUTED = "You cannot broadcast messages right now.";
+	public static String CHAT_MUTED = ChatColor.RED + "You cannot broadcast messages right now.";
 
 	public static String COMMAND_CHAT_MUTED = "Global chat has now been muted.";
 	public static String COMMAND_CHAT_UNMUTED = "Global chat has now been unmuted";
