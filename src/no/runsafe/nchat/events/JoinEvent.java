@@ -21,7 +21,6 @@ public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 		RunsafePlayer player = runsafePlayerJoinEvent.getPlayer();
 		runsafePlayerJoinEvent.setJoinMessage(this.chatHandler.formatPlayerSystemMessage(this.joinServerMessage, player));
 
-		// TODO: Handle player group not having prefix properly
 		String playerName = player.getName();
 		String displayName = (playerName.length() > 14) ? playerName.substring(0, 14) : playerName;
 		player.setPlayerListName(this.chatHandler.convertColors(this.chatHandler.getTabListPrefix(player)) + displayName);

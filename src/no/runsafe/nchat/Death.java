@@ -15,8 +15,6 @@ public enum Death
 	STARVATION(" starved to death", false),
 	KILLED(" was killed by ", true),
 	VOID(" fell out of the world", false);
-	// TODO: Magic death detection is wrong?
-	// TODO: Void death
 
 	private final String defaultMessage;
 	private final boolean entityInvolved;
