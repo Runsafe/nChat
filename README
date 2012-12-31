@@ -21,4 +21,5 @@ Death Messages:
     - fire : Burnt to death or fried by lightning
     - arrow_EntityName : Shot by EntityName IE Skeleton or Player
     - starvation : Ran out of hunger
-    - magic : Potions or a wizard did it
+    - killed : Killed by use of potions or unknown player induced death
+    - void : Fell into the void

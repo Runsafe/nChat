@@ -13,7 +13,8 @@ public enum Death
 	FIRE(" went up in flames", false),
 	ARROW(" was shot by ", true),
 	STARVATION(" starved to death", false),
-	MAGIC(" was killed by magic", false);
+	KILLED(" was killed by ", true),
+	VOID(" fell out of the world", false);
 	// TODO: Magic death detection is wrong?
 	// TODO: Void death
 
