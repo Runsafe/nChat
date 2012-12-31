@@ -56,10 +56,8 @@ public class SpamHandler implements IConfigurationChanged
 
 				playerSpamInfo.setLastMessage(message);
 
-				if (playerSpamInfo.currentFloodCount() == spamFilterFloodAmount)
-					this.kickPlayer(player, this.spamFilterKickReason);
-				else if (playerSpamInfo.currentRepeatCount() == spamFilterRepeatAmount)
-					this.kickPlayer(player, this.spamFilterKickReason);
+				if (playerSpamInfo.currentFloodCount() == spamFilterFloodAmount || playerSpamInfo.currentRepeatCount() == spamFilterRepeatAmount)
+					this.kickPlayer(player);
 			}
 			else
 			{
@@ -70,20 +68,21 @@ public class SpamHandler implements IConfigurationChanged
 		}
 	}
 
-	private void kickPlayer(RunsafePlayer player, String reason)
+	private void kickPlayer(RunsafePlayer player)
 	{
 		String playerName = player.getName();
 
 		if (this.getStrikes(playerName) == this.spamFilterKicksBeforeBan)
 		{
 			this.console.write("Banning " + playerName + " for spam.");
-			// TODO: Ban player here (user control?)
+			player.setBanned(true);
+			player.kick(this.spamFilterBanReason);
 		}
 		else
 		{
 			this.console.write("Kicking " + playerName + " for spam.");
 			this.addStrike(playerName);
-			player.kick(reason);
+			player.kick(this.spamFilterKickReason);
 		}
 	}
 
