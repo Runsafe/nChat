@@ -6,14 +6,16 @@ import no.runsafe.framework.event.player.IPlayerKickEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerKickEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
+import no.runsafe.nchat.handlers.SpamHandler;
 import no.runsafe.nchat.handlers.WhisperHandler;
 
 public class KickEvent implements IPlayerKickEvent, IConfigurationChanged
 {
-	public KickEvent(ChatHandler chatHandler, WhisperHandler whisperHandler)
+	public KickEvent(ChatHandler chatHandler, WhisperHandler whisperHandler, SpamHandler spamHandler)
 	{
 		this.chatHandler = chatHandler;
 		this.whisperHandler = whisperHandler;
+		this.spamHandler = spamHandler;
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class KickEvent implements IPlayerKickEvent, IConfigurationChanged
 					kickedPlayer
 				)
 		);
-
+		this.spamHandler.flushPlayer(kickedPlayer);
 		this.whisperHandler.deleteLastWhisperedBy(kickedPlayer);
 	}
 
@@ -41,4 +43,5 @@ public class KickEvent implements IPlayerKickEvent, IConfigurationChanged
 	private boolean suppressKickMessages;
 	private ChatHandler chatHandler;
 	private WhisperHandler whisperHandler;
+	private SpamHandler spamHandler;
 }
