@@ -6,13 +6,43 @@ public class PlayerSpamInfo
 {
 	public PlayerSpamInfo()
 	{
-		this.messageHistory = new HashMap<Long, String>();
 		this.hasFloodTimerRunning = false;
+		this.hasRepeatTimerRunning = false;
+		this.duplicateMessages = 0;
+		this.floodingMessages = 0;
+	}
+
+	public void setLastMessage(String message)
+	{
+		if (message.equalsIgnoreCase(this.lastMessage))
+			this.duplicateMessages = this.duplicateMessages + 1;
+		else
+			this.duplicateMessages = 0;
+
+		this.floodingMessages = this.floodingMessages + 1;
+		this.lastMessage = message;
+	}
+
+	public void resetFloodCount()
+	{
+		this.floodingMessages = 0;
+		this.hasFloodTimerRunning = false;
+	}
+
+	public void resetPlayerRepeating()
+	{
+		this.duplicateMessages = 0;
+		this.hasRepeatTimerRunning = false;
 	}
 
 	public int currentFloodCount()
 	{
-		return this.messageHistory.size();
+		return this.floodingMessages;
+	}
+
+	public int currentRepeatCount()
+	{
+		return this.duplicateMessages;
 	}
 
 	public boolean isFloodTimerRunning()
@@ -20,9 +50,9 @@ public class PlayerSpamInfo
 		return this.hasFloodTimerRunning;
 	}
 
-	public void addMessageToHistory(String message)
+	public boolean isRepeatTimerRunning()
 	{
-		this.messageHistory.put(System.currentTimeMillis() / 1000L, message);
+		return this.hasRepeatTimerRunning;
 	}
 
 	public void startFloodTimer()
@@ -30,12 +60,15 @@ public class PlayerSpamInfo
 		this.hasFloodTimerRunning = true;
 	}
 
-	public void flushHistory()
+	public void startRepeatTimer()
 	{
-		this.messageHistory.clear();
-		this.hasFloodTimerRunning = false;
+		this.hasRepeatTimerRunning = true;
 	}
 
-	private HashMap<Long, String> messageHistory;
+	private String lastMessage;
+	private int duplicateMessages;
+	private int floodingMessages;
+
 	private boolean hasFloodTimerRunning;
+	private boolean hasRepeatTimerRunning;
 }

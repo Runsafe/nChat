@@ -16,51 +16,113 @@ public class SpamHandler implements IConfigurationChanged
 		this.spamInfo = new HashMap<String, PlayerSpamInfo>();
 		this.console = console;
 		this.scheduler = scheduler;
+		this.playerStrikes = new HashMap<String, Integer>();
 	}
 
 	public void checkForSpam(RunsafePlayer player, String message)
 	{
-		final String playerName = player.getName();
-		if (this.spamInfo.containsKey(playerName))
+		if (this.enableSpamControl)
 		{
-			PlayerSpamInfo playerSpamInfo = this.spamInfo.get(playerName);
-
-			if (!playerSpamInfo.isFloodTimerRunning())
+			final String playerName = player.getName();
+			if (this.spamInfo.containsKey(playerName))
 			{
-				this.scheduler.startAsyncTask(new Runnable()
+				PlayerSpamInfo playerSpamInfo = this.spamInfo.get(playerName);
+
+				if (!playerSpamInfo.isFloodTimerRunning())
 				{
-					@Override
-					public void run()
+					this.scheduler.startAsyncTask(new Runnable()
 					{
-						clearPlayerSpamHistory(playerName);
-					}
-				}, this.spamFilterFloodTimer);
-				playerSpamInfo.startFloodTimer();
-			}
-			playerSpamInfo.addMessageToHistory(message);
+						@Override
+						public void run()
+						{
+							resetPlayerFlooding(playerName);
+						}
+					}, this.spamFilterFloodTimer);
+					playerSpamInfo.startFloodTimer();
+				}
 
-			if (playerSpamInfo.currentFloodCount() == spamFilterFloodAmount)
-			{
-				this.console.write("Kicking " + playerName + " for flooding chat with spam.");
-				player.kick(this.spamFilterKickReason);
+				if (!playerSpamInfo.isRepeatTimerRunning())
+				{
+					this.scheduler.startAsyncTask(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							resetPlayerRepeating(playerName);
+						}
+					}, this.spamFilterRepeatTimer);
+					playerSpamInfo.startRepeatTimer();
+				}
+
+				playerSpamInfo.setLastMessage(message);
+
+				if (playerSpamInfo.currentFloodCount() == spamFilterFloodAmount)
+					this.kickPlayer(player, this.spamFilterKickReason);
+				else if (playerSpamInfo.currentRepeatCount() == spamFilterRepeatAmount)
+					this.kickPlayer(player, this.spamFilterKickReason);
 			}
-		}
-		else
-		{
-			PlayerSpamInfo spamInfo = new PlayerSpamInfo();
-			spamInfo.addMessageToHistory(message);
-			this.spamInfo.put(player.getName(), spamInfo);
+			else
+			{
+				PlayerSpamInfo spamInfo = new PlayerSpamInfo();
+				spamInfo.setLastMessage(message);
+				this.spamInfo.put(player.getName(), spamInfo);
+			}
 		}
 	}
 
-	private void clearPlayerSpamHistory(String playerName)
+	private void kickPlayer(RunsafePlayer player, String reason)
+	{
+		String playerName = player.getName();
+
+		if (this.getStrikes(playerName) == this.spamFilterKicksBeforeBan)
+		{
+			this.console.write("Banning " + playerName + " for spam.");
+			// TODO: Ban player here (user control?)
+		}
+		else
+		{
+			this.console.write("Kicking " + playerName + " for spam.");
+			this.addStrike(playerName);
+			player.kick(reason);
+		}
+	}
+
+	private void addStrike(String playerName)
+	{
+		int strikes = (this.playerStrikes.containsKey(playerName)) ? this.playerStrikes.get(playerName) + 1 : 0;
+		this.playerStrikes.put(playerName, strikes);
+	}
+
+	private int getStrikes(String playerName)
+	{
+		return (this.playerStrikes.containsKey(playerName)) ? this.playerStrikes.get(playerName) : 0;
+	}
+
+	private void resetPlayerFlooding(String playerName)
 	{
 		if (this.spamInfo.containsKey(playerName))
 		{
 			PlayerSpamInfo spamInfo = this.spamInfo.get(playerName);
-			spamInfo.flushHistory();
+			spamInfo.resetFloodCount();
 			this.spamInfo.put(playerName, spamInfo);
 		}
+	}
+
+	private void resetPlayerRepeating(String playerName)
+	{
+		if (this.spamInfo.containsKey(playerName))
+		{
+			PlayerSpamInfo spamInfo = this.spamInfo.get(playerName);
+			spamInfo.resetPlayerRepeating();
+			this.spamInfo.put(playerName, spamInfo);
+		}
+	}
+
+	public void flushPlayer(RunsafePlayer player)
+	{
+		String playerName = player.getName();
+		if (this.spamInfo.containsKey(playerName))
+			this.spamInfo.remove(playerName);
 	}
 
 	@Override
@@ -71,14 +133,21 @@ public class SpamHandler implements IConfigurationChanged
 		this.spamFilterKickReason = iConfiguration.getConfigValueAsString("spamControl.spamFilterKickReason");
 		this.spamFilterRepeatAmount = iConfiguration.getConfigValueAsInt("spamControl.spamFilterRepeatAmount");
 		this.spamFilterRepeatTimer = iConfiguration.getConfigValueAsInt("spamControl.spamFilterRepeatTimer");
+		this.spamFilterBanReason = iConfiguration.getConfigValueAsString("spamControl.spamFilterBanReason");
+		this.spamFilterKicksBeforeBan = iConfiguration.getConfigValueAsInt("spamControl.spamFilterKicksBeforeBan");
+		this.enableSpamControl = iConfiguration.getConfigValueAsBoolean("nChat.enableSpamControl");
 	}
 
 	private HashMap<String, PlayerSpamInfo> spamInfo;
+	private HashMap<String, Integer> playerStrikes;
 	private int spamFilterFloodTimer;
 	private int spamFilterFloodAmount;
 	private int spamFilterRepeatTimer;
 	private int spamFilterRepeatAmount;
+	private int spamFilterKicksBeforeBan;
 	private String spamFilterKickReason;
+	private boolean enableSpamControl;
+	private String spamFilterBanReason;
 	private IScheduler scheduler;
 	private IOutput console;
 }

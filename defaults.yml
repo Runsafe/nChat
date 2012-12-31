@@ -8,14 +8,17 @@ nChat:
   enableOpTag: true
   enableColorCodes: true
   enableChatChannels: true
+  enableSpamControl: true
 spamControl:
   muteChat: false
   suppressKickMessages: false
-  spamFilterFloodTimer: 5
-  spamFilterFloodAmount: 5
-  spamFilterRepeatTimer: 10
+  spamFilterFloodTimer: 4
+  spamFilterFloodAmount: 3
+  spamFilterRepeatTimer: 20
   spamFilterRepeatAmount: 4
   spamFilterKickReason: Spamming
+  spamFilterKicksBeforeBan: 3
+  spamFilterBanReason: Spamming
 chatGroupPrefixes:
   admin: '&4[A]'
   moderator: '&e[M]'

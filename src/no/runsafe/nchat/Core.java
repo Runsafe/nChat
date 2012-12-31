@@ -15,8 +15,8 @@ public class Core extends RunsafeConfigurablePlugin
 	@Override
 	protected void PluginSetup()
 	{
-		// TODO: Implement anti-spam feature
 		// TODO: Implement an AFK system
+		// TODO: Re-implement channel functionality
 
 		// Core
 		this.addComponent(Globals.class);

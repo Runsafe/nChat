@@ -16,7 +16,6 @@ public class Constants
 
 	public static ChatColor DEFAULT_MESSAGE_COLOR = ChatColor.AQUA;
 
-	// TODO: Remove this shit.
 	public static String CHAT_CHANNEL_NODE = "nChat.channel.%s";
 
 	public static String CHANNEL_NOT_EXIST = "The specified channel does not exist.";
