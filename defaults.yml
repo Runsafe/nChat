@@ -9,6 +9,9 @@ nChat:
   enableColorCodes: true
   enableChatChannels: true
   enableSpamControl: true
+  enableAFKSystem: true
+afkSystem:
+  autoTrigger: true
 spamControl:
   muteChat: false
   suppressKickMessages: false

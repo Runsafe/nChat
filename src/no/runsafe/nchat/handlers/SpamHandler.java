@@ -3,6 +3,7 @@ package no.runsafe.nchat.handlers;
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.framework.timer.IScheduler;
 import no.runsafe.nchat.PlayerSpamInfo;
@@ -75,14 +76,13 @@ public class SpamHandler implements IConfigurationChanged
 		if (this.getStrikes(playerName) == this.spamFilterKicksBeforeBan)
 		{
 			this.console.write("Banning " + playerName + " for spam.");
-			player.setBanned(true);
-			player.kick(this.spamFilterBanReason);
+			RunsafeServer.Instance.banPlayer(null, player, this.spamFilterBanReason);
 		}
 		else
 		{
 			this.console.write("Kicking " + playerName + " for spam.");
 			this.addStrike(playerName);
-			player.kick(this.spamFilterKickReason);
+			RunsafeServer.Instance.kickPlayer(null, player, this.spamFilterKickReason);
 		}
 	}
 
