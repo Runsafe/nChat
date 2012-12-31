@@ -6,10 +6,7 @@ import no.runsafe.framework.configuration.IConfigurationFile;
 import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.events.*;
-import no.runsafe.nchat.handlers.ChatChannelHandler;
-import no.runsafe.nchat.handlers.ChatHandler;
-import no.runsafe.nchat.handlers.MuteHandler;
-import no.runsafe.nchat.handlers.WhisperHandler;
+import no.runsafe.nchat.handlers.*;
 
 import java.io.InputStream;
 
@@ -33,6 +30,7 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(ChatHandler.class);
 		this.addComponent(MuteHandler.class);
 		this.addComponent(WhisperHandler.class);
+		this.addComponent(SpamHandler.class);
 
 		// Commands
 		//this.addComponent(ChannelCommand.class);
