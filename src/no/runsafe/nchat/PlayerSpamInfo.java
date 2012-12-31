@@ -1,8 +1,5 @@
 package no.runsafe.nchat;
 
-import no.runsafe.framework.server.player.RunsafePlayer;
-import no.runsafe.framework.timer.IScheduler;
-
 import java.util.HashMap;
 
 public class PlayerSpamInfo
@@ -10,6 +7,7 @@ public class PlayerSpamInfo
 	public PlayerSpamInfo()
 	{
 		this.messageHistory = new HashMap<Long, String>();
+		this.hasFloodTimerRunning = false;
 	}
 
 	public int currentFloodCount()
@@ -17,7 +15,7 @@ public class PlayerSpamInfo
 		return this.messageHistory.size();
 	}
 
-	public boolean hasFloodTimerRunning()
+	public boolean isFloodTimerRunning()
 	{
 		return this.hasFloodTimerRunning;
 	}
@@ -25,9 +23,11 @@ public class PlayerSpamInfo
 	public void addMessageToHistory(String message)
 	{
 		this.messageHistory.put(System.currentTimeMillis() / 1000L, message);
+	}
 
-		if (!this.hasFloodTimerRunning)
-			this.hasFloodTimerRunning = true;
+	public void startFloodTimer()
+	{
+		this.hasFloodTimerRunning = true;
 	}
 
 	public void flushHistory()
@@ -36,7 +36,6 @@ public class PlayerSpamInfo
 		this.hasFloodTimerRunning = false;
 	}
 
-	private RunsafePlayer player;
 	private HashMap<Long, String> messageHistory;
-	private boolean hasFloodTimerRunning = false;
+	private boolean hasFloodTimerRunning;
 }

@@ -11,8 +11,10 @@ nChat:
 spamControl:
   muteChat: false
   suppressKickMessages: false
-  spamFilterFloodTimer: 3
+  spamFilterFloodTimer: 5
   spamFilterFloodAmount: 5
+  spamFilterRepeatTimer: 10
+  spamFilterRepeatAmount: 4
   spamFilterKickReason: Spamming
 chatGroupPrefixes:
   admin: '&4[A]'
