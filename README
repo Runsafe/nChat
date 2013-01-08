@@ -1,29 +1,29 @@
 Permissions:
 
-    - runsafe.nchat.puppet : Allows you to send chat from a player.
-    - runsafe.nchat.emote : Allows the user to broadcast emotes.
-    - runsafe.nchat.mute : Allows the user to mute a player.
-    - runsafe.nchat.mute.server : Allows the user to mute the entire server.
-    - runsafe.nchat.mute.exempt : Makes the user exempt from being muted.
-    - runsafe.nchat.colors : Allows the player to use colored text (override global)
-    - runsafe.nchat.whisper : Allows the player to whisper/reply to another player.
-    - runsafe.nchat.afk : Allows the player to flag themselves as AFK.
+	- runsafe.nchat.puppet : Allows you to send chat from a player.
+	- runsafe.nchat.emote : Allows the user to broadcast emotes.
+	- runsafe.nchat.mute : Allows the user to mute a player.
+	- runsafe.nchat.mute.server : Allows the user to mute the entire server.
+	- runsafe.nchat.mute.exempt : Makes the user exempt from being muted.
+	- runsafe.nchat.colors : Allows the player to use colored text (override global)
+	- runsafe.nchat.whisper : Allows the player to whisper/reply to another player.
+	- runsafe.nchat.afk : Allows the player to flag themselves as AFK.
 
 Death Messages:
 
-    - slain_EntityName : EntityName = Skeleton, VillagerGolem, Player etc.
-    - fall : Death from falling
-    - suffocation : Death from snu snu
-    - drowned : Someone forgot they wern't a fish
-    - explosion : TNT, creeper bang, ghast fireball etc
-    - lava : Swam in some lava without protection
-    - unknown : Server death, command, anvil etc
-    - cactus : Got freaky with a cactus
-    - fire : Burnt to death or fried by lightning
-    - arrow_EntityName : Shot by EntityName IE Skeleton or Player
-    - starvation : Ran out of hunger
-    - killed : Killed by use of potions or unknown player induced death
-    - void : Fell into the void
+	- slain_EntityName : EntityName = Skeleton, VillagerGolem, Player etc.
+	- fall : Death from falling
+	- suffocation : Death from snu snu
+	- drowned : Someone forgot they wern't a fish
+	- explosion : TNT, creeper bang, ghast fireball etc
+	- lava : Swam in some lava without protection
+	- unknown : Server death, command, anvil etc
+	- cactus : Got freaky with a cactus
+	- fire : Burnt to death or fried by lightning
+	- arrow_EntityName : Shot by EntityName IE Skeleton or Player
+	- starvation : Ran out of hunger
+	- killed : Killed by use of potions or unknown player induced death
+	- void : Fell into the void
 
 Commands:
 
