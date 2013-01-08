@@ -59,6 +59,11 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		return prefix + displayName;
 	}
 
+	public void refreshPlayerTabListName(RunsafePlayer player)
+	{
+		player.setPlayerListName(this.convertColors(this.getTabListPrefixedName(player)));
+	}
+
     public String getWorldPrefix(String worldName)
     {
         String worldPrefix = (String) this.worldPrefixes.get(worldName);

@@ -20,7 +20,7 @@ public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 	{
 		RunsafePlayer player = runsafePlayerJoinEvent.getPlayer();
 		runsafePlayerJoinEvent.setJoinMessage(this.chatHandler.formatPlayerSystemMessage(this.joinServerMessage, player));
-		player.setPlayerListName(this.chatHandler.convertColors(this.chatHandler.getTabListPrefixedName(player)));
+		this.chatHandler.refreshPlayerTabListName(player);
 	}
 
 	@Override

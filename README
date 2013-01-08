@@ -8,13 +8,14 @@ Permissions:
 	- runsafe.nchat.colors : Allows the player to use colored text (override global)
 	- runsafe.nchat.whisper : Allows the player to whisper/reply to another player.
 	- runsafe.nchat.afk : Allows the player to flag themselves as AFK.
+	- runsafe.nchat.playerlistrefresh : Allows you to refresh a players tab list name.
 
 Death Messages:
 
 	- slain_EntityName : EntityName = Skeleton, VillagerGolem, Player etc.
 	- fall : Death from falling
 	- suffocation : Death from snu snu
-	- drowned : Someone forgot they wern't a fish
+	- drowned : Someone forgot they were not a fish
 	- explosion : TNT, creeper bang, ghast fireball etc
 	- lava : Swam in some lava without protection
 	- unknown : Server death, command, anvil etc
@@ -33,3 +34,4 @@ Commands:
 	- me <text> : Broadcasts an emote.
 	- whisper <player> <message> : Sends a whisper to a select player.
 	- reply <message> : Replies to the last person to whisper you.
+	- tabrefresh <player> : Refresh a players tab list name.

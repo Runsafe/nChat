@@ -24,3 +24,7 @@ commands:
     description: Allows you to reply to a whisper easily
     usage: /reply <message>
     aliases: [r]
+  tabrefresh:
+    description: Allows you to refresh a players tab list name
+    usage: /tabrefresh <player>
+    aliases: [tr]
