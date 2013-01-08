@@ -37,6 +37,7 @@ tabListGroupPrefix:
   guest: '&f'
   troll: '&7'
   afk: '&8'
+  vanish: '&9'
 worldPrefixes:
   world: '&2[S]'
   Creative: '&a[C]'

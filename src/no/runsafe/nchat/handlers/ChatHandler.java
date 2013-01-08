@@ -50,7 +50,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 
 	public String getTabListPrefixedName(RunsafePlayer player)
 	{
-		String firstGroup = player.getGroups().get(0).toLowerCase();
+		String firstGroup = (player.isVanished() ? "vanish" : player.getGroups().get(0).toLowerCase());
 		String playerName = player.getName();
 		String prefix = (this.tabListPrefixes.contains(firstGroup)) ? (String) this.tabListPrefixes.get(firstGroup) : "";
 		int nameLength = 16 - prefix.length();

@@ -48,5 +48,6 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(LeaveEvent.class);
 		this.addComponent(KickEvent.class);
 		this.addComponent(ChatEvent.class);
+		this.addComponent(VanishEvent.class);
 	}
 }
