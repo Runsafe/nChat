@@ -48,13 +48,15 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		return (String) this.chatGroupPrefixes.get(player.getGroups().get(0).toLowerCase());
     }
 
-	public String getTabListPrefix(RunsafePlayer player)
+	public String getTabListPrefixedName(RunsafePlayer player)
 	{
 		String firstGroup = player.getGroups().get(0).toLowerCase();
-		if (this.tabListPrefixes.contains(firstGroup))
-			return (String) this.tabListPrefixes.get(firstGroup);
+		String playerName = player.getName();
+		String prefix = (this.tabListPrefixes.contains(firstGroup)) ? (String) this.tabListPrefixes.get(firstGroup) : "";
+		int nameLength = 16 - prefix.length();
+		String displayName = (playerName.length() > nameLength) ? playerName.substring(0, nameLength) : playerName;
 
-		return "";
+		return prefix + displayName;
 	}
 
     public String getWorldPrefix(String worldName)

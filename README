@@ -7,6 +7,7 @@ Permissions:
     - runsafe.nchat.mute.exempt : Makes the user exempt from being muted.
     - runsafe.nchat.colors : Allows the player to use colored text (override global)
     - runsafe.nchat.whisper : Allows the player to whisper/reply to another player.
+    - runsafe.nchat.afk : Allows the player to flag themselves as AFK.
 
 Death Messages:
 
@@ -23,3 +24,12 @@ Death Messages:
     - starvation : Ran out of hunger
     - killed : Killed by use of potions or unknown player induced death
     - void : Fell into the void
+
+Commands:
+
+	- mute <player> : Mutes a specific player.
+	- unmute <player> : Unmutes a specific player.
+	- puppet <player> <message> : Broadcasts a message as another player.
+	- me <text> : Broadcasts an emote.
+	- whisper <player> <message> : Sends a whisper to a select player.
+	- reply <message> : Replies to the last person to whisper you.

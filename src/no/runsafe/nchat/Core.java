@@ -17,6 +17,7 @@ public class Core extends RunsafeConfigurablePlugin
 	{
 		// TODO: Implement an AFK system
 		// TODO: Re-implement channel functionality
+		// TODO: Players changing ranks do not update on tab list
 
 		// Core
 		this.addComponent(Globals.class);
