@@ -2,10 +2,16 @@ package no.runsafe.nchat;
 
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
+import no.runsafe.framework.output.IOutput;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class DeathParser implements IConfigurationChanged
 {
+	public DeathParser(IOutput console)
+	{
+		this.console = console;
+	}
+
 	public Death getDeathType(String deathMessage)
 	{
 		for (Death death : Death.values())
@@ -15,9 +21,12 @@ public class DeathParser implements IConfigurationChanged
 		return Death.UNKNOWN;
 	}
 
-	public String getInvolvedEntityName(String deathMessage)
+	public String getInvolvedEntityName(String deathMessage, Death death)
 	{
-		return deathMessage.substring(deathMessage.indexOf(" was slain by ") + 14, deathMessage.length());
+		return deathMessage.substring(
+				deathMessage.indexOf(death.getDefaultMessage()) + death.getDefaultMessage().length(),
+				deathMessage.length()
+		);
 	}
 
 	public String isEntityName(String entityName)
@@ -42,4 +51,5 @@ public class DeathParser implements IConfigurationChanged
 	}
 
 	private ConfigurationSection deathMessages;
+	private IOutput console;
 }

@@ -8,7 +8,7 @@ nChat:
   enableOpTag: true
   enableColorCodes: true
   enableChatChannels: true
-  enableSpamControl: true
+  enableSpamControl: false
   enableAFKSystem: true
 afkSystem:
   autoTrigger: true
@@ -62,7 +62,7 @@ chatFormatting:
   opTagFormat: '&f@'
 deathMessages:
   fall: 'fell to their death'
-  slain_Player: 'was slain by #player'
+  slain_Player: 'was slain by #killer'
   slain_Skeleton: 'was owned by a skeleton'
 playerNicknames:
   ExampleMan: 'Hagrid the Elder'

@@ -14,7 +14,7 @@ public class VanishEvent implements IPlayerCustomEvent
 	@Override
 	public void OnPlayerCustomEvent(RunsafePlayer runsafePlayer, String s, Object o)
 	{
-		if (s.equalsIgnoreCase("vanish"))
+		if (s.equalsIgnoreCase("vanished"))
 			this.chatHandler.refreshPlayerTabListName(runsafePlayer);
 	}
 

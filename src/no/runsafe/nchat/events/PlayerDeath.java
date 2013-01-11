@@ -12,11 +12,10 @@ import no.runsafe.nchat.handlers.ChatHandler;
 
 public class PlayerDeath implements IPlayerDeathEvent
 {
-	public PlayerDeath(ChatHandler chatHandler, DeathParser deathParser, IOutput console)
+	public PlayerDeath(ChatHandler chatHandler, DeathParser deathParser)
 	{
 		this.chatHandler = chatHandler;
 		this.deathParser = deathParser;
-		this.console = console;
 	}
 
 	@Override
@@ -28,11 +27,12 @@ public class PlayerDeath implements IPlayerDeathEvent
 
 		String deathTag;
 		String entityName = null;
+		String killerName = this.deathParser.getInvolvedEntityName(originalMessage, deathType);
 
 
 		if (deathType.hasEntityInvolved())
 		{
-			entityName = this.deathParser.isEntityName(this.deathParser.getInvolvedEntityName(originalMessage));
+			entityName = this.deathParser.isEntityName(killerName);
 			deathTag = String.format(
 					"%s_%s",
 					deathName,
@@ -50,14 +50,14 @@ public class PlayerDeath implements IPlayerDeathEvent
 		{
 			RunsafePlayer player = (RunsafePlayer) runsafePlayerDeathEvent.getEntity();
 
-			if (entityName != null) // true
+			if (entityName == null) // true
 			{
-				RunsafePlayer killer = RunsafeServer.Instance.getPlayer(entityName);
+				RunsafePlayer killer = RunsafeServer.Instance.getPlayer(killerName);
 
 				if (killer != null)
 				{
-					entityName = this.chatHandler.formatPlayerName(killer, killer.getName());
-					customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, entityName);
+					killerName = this.chatHandler.formatPlayerName(killer, killer.getName());
+					customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, killerName);
 				}
 			}
 
@@ -67,5 +67,4 @@ public class PlayerDeath implements IPlayerDeathEvent
 
 	private ChatHandler chatHandler;
 	private DeathParser deathParser;
-	private IOutput console;
 }

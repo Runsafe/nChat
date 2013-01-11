@@ -45,7 +45,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 
     public String getGroupPrefix(RunsafePlayer player)
     {
-		return (String) this.chatGroupPrefixes.get(player.getGroups().get(0).toLowerCase());
+		return (!player.getGroups().isEmpty() ? player.getGroups().get(0).toLowerCase() : "");
     }
 
 	public String getTabListPrefixedName(RunsafePlayer player)
@@ -105,7 +105,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	public String formatPlayerName(RunsafePlayer player, String editedName)
 	{
 		String formatName = this.playerNameFormat;
-		String worldName = (player.isOnline() && !player.isVanished()) ? player.getWorld().getName() : "console";
+		String worldName = (player.isOnline() && !player.isVanished() && player.getWorld() != null) ? player.getWorld().getName() : "console";
 
 		HashMap<String, String> replacements = new HashMap<String, String>();
 
