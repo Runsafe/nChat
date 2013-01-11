@@ -45,7 +45,13 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 
     public String getGroupPrefix(RunsafePlayer player)
     {
-		return (!player.getGroups().isEmpty() ? player.getGroups().get(0).toLowerCase() : "");
+		if (!player.getGroups().isEmpty())
+		{
+			String groupName = player.getGroups().get(0).toLowerCase();
+			if (this.chatGroupPrefixes.contains(groupName))
+				return (String) this.chatGroupPrefixes.get(groupName);
+		}
+		return "";
     }
 
 	public String getTabListPrefixedName(RunsafePlayer player)
