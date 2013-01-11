@@ -18,7 +18,7 @@
 		<mkdir dir="${jar.dir}"/>
 		<jar destfile="${jar.dir}/framework.jar" basedir="${classes.dir}">
 			<manifest>
-				<attribute name="Class-Path" value="runsafe/framework.jar" />
+				<attribute name="Class-Path" value="${env.WORKSPACE}../../jobs/Runsafe Framework/workspace/build/jar/framework.jar" />
 			</manifest>
 			<fileset dir="${src.dir}" includes="plugin.yml"/>
 			<fileset dir="${src.dir}" includes="default.yml"/>
