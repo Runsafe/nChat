@@ -1,0 +1,72 @@
+# default config.yml
+
+nChat:
+  enableChatGroupPrefixes: true
+  enableWorldPrefixes: true
+  enableNicknames: true
+  enablePlayerTags: true
+  enableOpTag: true
+  enableColorCodes: true
+  enableChatChannels: true
+  enableSpamControl: false
+  enableAFKSystem: true
+afkSystem:
+  autoTrigger: true
+spamControl:
+  muteChat: false
+  suppressKickMessages: false
+  spamFilterFloodTimer: 4
+  spamFilterFloodAmount: 3
+  spamFilterRepeatTimer: 20
+  spamFilterRepeatAmount: 4
+  spamFilterKickReason: Spamming
+  spamFilterKicksBeforeBan: 3
+  spamFilterBanReason: Spamming
+chatGroupPrefixes:
+  admin: '&4[A]'
+  moderator: '&e[M]'
+  superuser: '&5[SU]'
+  builder: '&a[B]'
+  guest: '&f[G]'
+  troll: '&7[TROLL]'
+tabListGroupPrefix:
+  admin: '&4'
+  moderator: '&e'
+  superuser: '&5'
+  builder: '&a'
+  guest: '&f'
+  troll: '&7'
+  afk: '&8'
+  vanish: '&9'
+worldPrefixes:
+  world: '&2[S]'
+  Creative: '&a[C]'
+  world_nether: '&4[N]'
+  world_the_end: '&9[E]'
+  console: '&3[?]'
+channels:
+  staff:
+    name: 'Staff'
+chatMessage:
+  joinServer: 'has joined the server.'
+  leaveServer: 'has left the server.'
+  kicked: 'has been kicked from the server for #reason.'
+  whisperTo: '&6You &7-> #target&f: #message'
+  whisperFrom: '#source &7-> &6You&f: #message'
+chatFormatting:
+  playerName: '#op#world#group#tags #player'
+  playerChatMessage: '#player: &f#message'
+  playerSystemMessage: '#player &e#message'
+  channelTagFormat: '&e[%s]'
+  playerTagFormat: '&7[%s]'
+  opTagFormat: '&f@'
+deathMessages:
+  fall: 'fell to their death'
+  slain_Player: 'was slain by #killer'
+  slain_Skeleton: 'was owned by a skeleton'
+playerNicknames:
+  ExampleMan: 'Hagrid the Elder'
+playerTags:
+  ExampleMan:
+    - CLANTAG
+    - AWESOMETAG

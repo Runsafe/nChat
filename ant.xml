@@ -26,7 +26,7 @@
 				<attribute name="Class-Path" value="runsafe/framework.jar" />
 			</manifest>
 			<fileset dir="${src.dir}" includes="plugin.yml"/>
-			<fileset dir="${src.dir}" includes="default.yml"/>
+			<fileset dir="${src.dir}" includes="defaults.yml"/>
 		</jar>
 	</target>
 
