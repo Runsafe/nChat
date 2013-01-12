@@ -7,6 +7,7 @@ import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class WhisperHandler implements IConfigurationChanged
 {
@@ -28,7 +29,10 @@ public class WhisperHandler implements IConfigurationChanged
 
 		this.setLastWhisperedBy(toPlayer, fromPlayer);
 
-		console.write(String.format("%s -> %s: %s", fromPlayer.getName(), toPlayer.getName(), message));
+		console.outputColoredToConsole(
+			String.format("%s -> %s: %s", fromPlayer.getPrettyName(), toPlayer.getPrettyName(), message),
+			Level.INFO
+		);
 	}
 
 	private void setLastWhisperedBy(RunsafePlayer player, RunsafePlayer whisperer)

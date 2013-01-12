@@ -14,6 +14,7 @@ public class ReplyCommand extends RunsafeCommand
 		super("reply", "message");
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
+		setConsoleLogging(false);
 	}
 
 	@Override

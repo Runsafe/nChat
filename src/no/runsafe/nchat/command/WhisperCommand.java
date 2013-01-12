@@ -15,6 +15,7 @@ public class WhisperCommand extends RunsafeCommand
 		super("whisper", "player", "message");
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
+		setConsoleLogging(false);
 	}
 
 	@Override
