@@ -1,6 +1,6 @@
 name: nChat
 main: no.runsafe.nchat.Core
-version: 1.0
+version: 1.0.@BUILD@
 author: Kruithne
 description: Allows advanced chat features
 commands:
