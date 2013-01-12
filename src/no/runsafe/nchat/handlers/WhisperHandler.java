@@ -29,9 +29,12 @@ public class WhisperHandler implements IConfigurationChanged
 
 		this.setLastWhisperedBy(toPlayer, fromPlayer);
 
-		console.outputColoredToConsole(
-			String.format("%s -> %s: %s", fromPlayer.getPrettyName(), toPlayer.getPrettyName(), message),
-			Level.INFO
+		console.writeColoured(
+			"%s -> %s: %s",
+			Level.INFO,
+			fromPlayer.getPrettyName(),
+			toPlayer.getPrettyName(),
+			message
 		);
 	}
 
