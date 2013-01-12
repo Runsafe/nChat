@@ -11,7 +11,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
@@ -76,9 +75,8 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 
 		if (playerTags != null)
 		{
-			for (Iterator<String> i = playerTags.iterator(); i.hasNext(); )
+			for (String tag : playerTags)
 			{
-				String tag = i.next();
 				returnTags.add(String.format(this.playerTagFormat, tag));
 			}
 		}
@@ -102,7 +100,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		replacements.put(Constants.FORMAT_PLAYER_NAME, (this.enableNicknames) ? this.getPlayerNickname(player, editedName) : editedName);
 
 		formatName = this.globals.mapReplace(formatName, replacements);
-		return formatName; // this.convertColors(formatName);
+		return formatName;
 	}
 
 	@Override
