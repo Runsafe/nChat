@@ -1,13 +1,11 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.command.RunsafeCommand;
-import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
-import org.bukkit.ChatColor;
 
 public class UnMuteCommand extends RunsafeCommand
 {
@@ -53,9 +51,9 @@ public class UnMuteCommand extends RunsafeCommand
 					if (!unMutePlayer.hasPermission("nChat.muteExempt"))
 					{
 						console.write(String.format(
-								"%s un-muted %s",
-								executor.getName(),
-								unMutePlayer.getName()
+							"%s un-muted %s",
+							executor.getName(),
+							unMutePlayer.getName()
 						));
 						this.muteHandler.unMutePlayer(unMutePlayer);
 					}
@@ -111,9 +109,9 @@ public class UnMuteCommand extends RunsafeCommand
 							if (!unMutePlayer.hasPermission("nChat.muteExempt"))
 							{
 								console.write(String.format(
-										"%s un-muted %s",
-										player.getName(),
-										unMutePlayer.getName()
+									"%s un-muted %s",
+									player.getName(),
+									unMutePlayer.getName()
 								));
 								this.muteHandler.unMutePlayer(unMutePlayer);
 							}

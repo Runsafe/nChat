@@ -6,7 +6,6 @@ import no.runsafe.framework.event.player.IPlayerJoinEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerJoinEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 {

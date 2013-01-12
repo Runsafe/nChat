@@ -2,6 +2,7 @@ package no.runsafe.nchat.handlers;
 
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
+import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
@@ -15,6 +16,7 @@ public class ChatChannelHandler implements IConfigurationChanged
 		this.configuration = configuration;
 		this.chatHandler = chatHandler;
 		this.server = server;
+		this.output = output;
 	}
 
 	public boolean channelExists(String channelName)
@@ -26,8 +28,7 @@ public class ChatChannelHandler implements IConfigurationChanged
 	{
 		String permissionNode = String.format(Constants.CHAT_CHANNEL_NODE, channelName);
 		String channelTag = String.format(this.channelTagFormat, this.configuration.getConfigValueAsString("channels." + channelName + ".name"));
-		String formattedMessage = this.chatHandler.formatChatMessage(message.trim(), player).replaceAll(Constants.FORMAT_CHANNEL, this.chatHandler.convertColors(channelTag));
-
+		String formattedMessage = this.chatHandler.formatChatMessage(message.trim(), player).replaceAll(Constants.FORMAT_CHANNEL, ChatColour.ToMinecraft(channelTag));
 		this.server.broadcastMessage(formattedMessage, permissionNode);
 	}
 
@@ -49,4 +50,5 @@ public class ChatChannelHandler implements IConfigurationChanged
 	private ConfigurationSection channels;
 	private ChatHandler chatHandler;
 	private RunsafeServer server;
+	private IOutput output;
 }

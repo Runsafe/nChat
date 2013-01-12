@@ -1,8 +1,7 @@
 package no.runsafe.nchat.events;
 
-import no.runsafe.framework.configuration.IConfiguration;
-import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.event.player.IPlayerChatEvent;
+import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.server.event.player.RunsafePlayerChatEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
@@ -30,14 +29,14 @@ public class ChatEvent implements IPlayerChatEvent
 
 			if (chatMessage != null)
 			{
-				event.setFormat(chatMessage.replaceAll(Constants.FORMAT_CHANNEL, "").trim());
+				event.setFormat(ChatColour.ToMinecraft(chatMessage.replaceAll(Constants.FORMAT_CHANNEL, "").trim()));
 				this.spamHandler.checkForSpam(thePlayer, event.getMessage());
 				return;
 			}
 		}
 		else
 		{
-			thePlayer.sendMessage(Constants.CHAT_MUTED);
+			thePlayer.sendColouredMessage(Constants.CHAT_MUTED);
 		}
 		event.setCancelled(true);
 	}

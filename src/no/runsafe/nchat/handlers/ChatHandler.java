@@ -3,48 +3,26 @@ package no.runsafe.nchat.handlers;
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.hook.IPlayerNameDecorator;
-import no.runsafe.framework.output.IOutput;
-import no.runsafe.framework.server.RunsafeWorld;
+import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.Globals;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 {
-    public ChatHandler(IConfiguration configuration, Globals globals)
-    {
-        this.configuration = configuration;
-        this.globals = globals;
-    }
+	public ChatHandler(Globals globals)
+	{
+		this.globals = globals;
+	}
 
-    public String convertColors(String theString)
-    {
-        for (int i = 0; i < ChatColor.values().length; i++)
-        {
-            ChatColor theColor = ChatColor.values()[i];
-            theString = theString.replaceAll(String.format(Constants.COLOR_CHARACTER, theColor.getChar()), theColor.toString());
-        }
-
-        return theString;
-    }
-
-    public String stripColors(String theString)
-    {
-        for (int i = 0; i < ChatColor.values().length; i++)
-        {
-            ChatColor theColor = ChatColor.values()[i];
-            theString = theString.replaceAll(String.format(Constants.COLOR_CHARACTER, theColor.getChar()), "");
-        }
-
-        return theString;
-    }
-
-    public String getGroupPrefix(RunsafePlayer player)
-    {
+	public String getGroupPrefix(RunsafePlayer player)
+	{
 		if (!player.getGroups().isEmpty())
 		{
 			String groupName = player.getGroups().get(0).toLowerCase();
@@ -52,7 +30,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 				return (String) this.chatGroupPrefixes.get(groupName);
 		}
 		return "";
-    }
+	}
 
 	public String getTabListPrefixedName(RunsafePlayer player)
 	{
@@ -67,46 +45,46 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 
 	public void refreshPlayerTabListName(RunsafePlayer player)
 	{
-		player.setPlayerListName(this.convertColors(this.getTabListPrefixedName(player)));
+		player.setPlayerListName(ChatColour.ToMinecraft(this.getTabListPrefixedName(player)));
 	}
 
-    public String getWorldPrefix(String worldName)
-    {
-        String worldPrefix = (String) this.worldPrefixes.get(worldName);
+	public String getWorldPrefix(String worldName)
+	{
+		String worldPrefix = (String) this.worldPrefixes.get(worldName);
 
-        if (worldPrefix != null)
-            return worldPrefix;
+		if (worldPrefix != null)
+			return worldPrefix;
 
-        return "";
-    }
+		return "";
+	}
 
-    public String getPlayerNickname(RunsafePlayer player, String nameString)
-    {
+	public String getPlayerNickname(RunsafePlayer player, String nameString)
+	{
 		String playerName = player.getName();
-        String playerNickname = (String) this.playerNicknames.get(playerName);
+		String playerNickname = (String) this.playerNicknames.get(playerName);
 
-        if (playerNickname != null)
-            return nameString.replace(playerName, playerNickname);
+		if (playerNickname != null)
+			return nameString.replace(playerName, playerNickname);
 
-        return nameString;
-    }
+		return nameString;
+	}
 
-    public List<String> getPlayerTags(String playerName)
-    {
-        List<String> returnTags = new ArrayList<String>();
-        List<String> playerTags = this.playerTags.getStringList(playerName);
+	public List<String> getPlayerTags(String playerName)
+	{
+		List<String> returnTags = new ArrayList<String>();
+		List<String> playerTags = this.playerTags.getStringList(playerName);
 
-        if (playerTags != null)
-        {
-            for (Iterator<String> i = playerTags.iterator(); i.hasNext();)
-            {
-                String tag = i.next();
-                returnTags.add(String.format(this.playerTagFormat, tag));
-            }
-        }
+		if (playerTags != null)
+		{
+			for (Iterator<String> i = playerTags.iterator(); i.hasNext(); )
+			{
+				String tag = i.next();
+				returnTags.add(String.format(this.playerTagFormat, tag));
+			}
+		}
 
-        return returnTags;
-    }
+		return returnTags;
+	}
 
 	public String formatPlayerName(RunsafePlayer player, String editedName)
 	{
@@ -124,7 +102,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		replacements.put(Constants.FORMAT_PLAYER_NAME, (this.enableNicknames) ? this.getPlayerNickname(player, editedName) : editedName);
 
 		formatName = this.globals.mapReplace(formatName, replacements);
-		return this.convertColors(formatName);
+		return formatName; // this.convertColors(formatName);
 	}
 
 	@Override
@@ -134,13 +112,13 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	}
 
 	public String formatChatMessage(String message, RunsafePlayer player)
-    {
+	{
 		return this.formatMessage(message, player, this.playerChatMessage);
-    }
+	}
 
 	public String formatPlayerSystemMessage(String message, RunsafePlayer player)
 	{
-		return this.formatMessage(message, player, this.playerSystemMessage);
+		return ChatColour.ToMinecraft(this.formatMessage(message, player, this.playerSystemMessage));
 	}
 
 	private String formatMessage(String message, RunsafePlayer player, String formatMessage)
@@ -148,13 +126,13 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		String playerName = this.formatPlayerName(player, player.getName());
 		message = message.replace("%", "%%");
 
-		if (!player.hasPermission("runsafe.nchat.colors") && !this.enableColorCodes)
-			message = this.stripColors(message);
+		if (!this.enableColorCodes && !player.hasPermission("runsafe.nchat.colors"))
+			message = ChatColour.Strip(message);
 
 		formatMessage = formatMessage.replace(Constants.FORMAT_MESSAGE, message);
 		formatMessage = formatMessage.replace(Constants.FORMAT_PLAYER_NAME, playerName);
 
-		return this.convertColors(formatMessage);
+		return formatMessage;
 	}
 
 	@Override
@@ -179,21 +157,20 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	}
 
 	private ConfigurationSection tabListPrefixes;
-    private Globals globals;
-    private boolean enableWorldPrefixes;
-    private boolean enableChatGroupPrefixes;
-    private boolean enableNicknames;
-    private boolean enablePlayerTags;
-    private boolean enableOpTag;
+	private Globals globals;
+	private boolean enableWorldPrefixes;
+	private boolean enableChatGroupPrefixes;
+	private boolean enableNicknames;
+	private boolean enablePlayerTags;
+	private boolean enableOpTag;
 	private boolean enableColorCodes;
-    private IConfiguration configuration;
-    private ConfigurationSection chatGroupPrefixes;
-    private ConfigurationSection worldPrefixes;
-    private ConfigurationSection playerNicknames;
-    private ConfigurationSection playerTags;
-    private String playerTagFormat;
-    private String opTagFormat;
-    private String playerChatMessage;
+	private ConfigurationSection chatGroupPrefixes;
+	private ConfigurationSection worldPrefixes;
+	private ConfigurationSection playerNicknames;
+	private ConfigurationSection playerTags;
+	private String playerTagFormat;
+	private String opTagFormat;
+	private String playerChatMessage;
 	private String playerSystemMessage;
 	private String playerNameFormat;
 }
