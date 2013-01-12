@@ -4,6 +4,7 @@ import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.hook.IPlayerNameDecorator;
 import no.runsafe.framework.output.ChatColour;
+import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.Globals;
@@ -15,9 +16,10 @@ import java.util.List;
 
 public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 {
-	public ChatHandler(Globals globals)
+	public ChatHandler(Globals globals, IOutput output)
 	{
 		this.globals = globals;
+		this.console = output;
 	}
 
 	public String getGroupPrefix(RunsafePlayer player)
@@ -38,7 +40,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		String prefix = (this.tabListPrefixes.contains(firstGroup)) ? (String) this.tabListPrefixes.get(firstGroup) : "";
 		int nameLength = 16 - prefix.length();
 		String displayName = (playerName.length() > nameLength) ? playerName.substring(0, nameLength) : playerName;
-
+		console.write(String.format("Prefix name for '%s' is '%s'", playerName, prefix + displayName));
 		return prefix + displayName;
 	}
 
@@ -154,6 +156,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		this.tabListPrefixes = configuration.getSection("tabListGroupPrefix");
 	}
 
+	private IOutput console;
 	private ConfigurationSection tabListPrefixes;
 	private Globals globals;
 	private boolean enableWorldPrefixes;
