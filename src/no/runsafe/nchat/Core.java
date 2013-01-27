@@ -17,6 +17,9 @@ public class Core extends RunsafeConfigurablePlugin
 	{
 		// TODO: Implement an AFK system
 		// TODO: Re-implement channel functionality
+		// TODO: In-game whisper monitoring
+		// TODO: Fix odd death messages not being picked up
+		// TODO: Correct null pointers
 
 		// Core
 		this.addComponent(Globals.class);
