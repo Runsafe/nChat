@@ -47,7 +47,7 @@ public class MuteCommand extends PlayerCommand
 			mutePlayer.getName()
 		));
 		this.muteHandler.mutePlayer(mutePlayer);
-		return Constants.DEFAULT_MESSAGE_COLOR + "Muted " + mutePlayerName;
+		return Constants.DEFAULT_MESSAGE_COLOR + "Muted " + mutePlayer.getPrettyName();
 	}
 
 	private final IOutput console;

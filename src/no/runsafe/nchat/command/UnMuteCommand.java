@@ -51,7 +51,7 @@ public class UnMuteCommand extends PlayerCommand
 			unMutePlayer.getName()
 		));
 		this.muteHandler.unMutePlayer(unMutePlayer);
-		return Constants.DEFAULT_MESSAGE_COLOR + "Unmuted " + unMutePlayerName;
+		return Constants.DEFAULT_MESSAGE_COLOR + "Unmuted " + unMutePlayer.getPrettyName();
 	}
 
 	private final IOutput console;
