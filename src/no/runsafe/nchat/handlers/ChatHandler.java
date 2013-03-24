@@ -7,7 +7,6 @@ import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.Globals;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,15 +66,9 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	public List<String> getPlayerTags(String playerName)
 	{
 		List<String> returnTags = new ArrayList<String>();
-		List<String> playerTags = this.playerTags.getStringList(playerName);
-
-		if (playerTags != null)
-		{
-			for (String tag : playerTags)
-			{
+		if (playerTags.containsKey(playerName))
+			for (String tag : playerTags.get(playerName))
 				returnTags.add(String.format(this.playerTagFormat, tag));
-			}
-		}
 
 		return returnTags;
 	}
@@ -135,7 +128,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		this.chatGroupPrefixes = configuration.getConfigValuesAsMap("chatGroupPrefixes");
 		this.worldPrefixes = configuration.getConfigValuesAsMap("worldPrefixes");
 		this.playerNicknames = configuration.getConfigValuesAsMap("playerNicknames");
-		this.playerTags = configuration.getSection("playerTags");
+		this.playerTags = configuration.getConfigSectionsAsList("playerTags");
 		this.playerTagFormat = configuration.getConfigValueAsString("chatFormatting.playerTagFormat");
 		this.playerNameFormat = configuration.getConfigValueAsString("chatFormatting.playerName");
 		this.playerChatMessage = configuration.getConfigValueAsString("chatFormatting.playerChatMessage");
@@ -161,7 +154,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	private Map<String, String> chatGroupPrefixes;
 	private Map<String, String> worldPrefixes;
 	private Map<String, String> playerNicknames;
-	private ConfigurationSection playerTags;
+	private Map<String, List<String>> playerTags;
 	private String playerTagFormat;
 	private String opTagFormat;
 	private String playerChatMessage;
