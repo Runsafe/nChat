@@ -4,6 +4,7 @@ import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.hook.IPlayerNameDecorator;
 import no.runsafe.framework.output.ChatColour;
+import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.Globals;
@@ -15,9 +16,10 @@ import java.util.Map;
 
 public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 {
-	public ChatHandler(Globals globals)
+	public ChatHandler(Globals globals, IOutput output)
 	{
 		this.globals = globals;
+		this.console = output;
 	}
 
 	public String getGroupPrefix(RunsafePlayer player)
@@ -112,13 +114,15 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	{
 		String playerName = this.formatPlayerName(player, player.getName());
 		message = message.replace("%", "%%");
-
-		if (!this.enableColorCodes && !player.hasPermission("runsafe.nchat.colors"))
+		console.fine("Formatting message '%s' for '%s' into '%s'", message, player.getName(), formatMessage);
+		if (!(this.enableColorCodes || player.hasPermission("runsafe.nchat.colors")))
+		{
 			message = ChatColour.Strip(message);
-
+			console.fine("Stripped codes making message '%s'", message);
+		}
 		formatMessage = formatMessage.replace(Constants.FORMAT_MESSAGE, message);
 		formatMessage = formatMessage.replace(Constants.FORMAT_PLAYER_NAME, playerName);
-
+		console.fine("Returning formatted message '%s'", formatMessage);
 		return formatMessage;
 	}
 
@@ -145,6 +149,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 
 	private Map<String, String> tabListPrefixes;
 	private final Globals globals;
+	private final IOutput console;
 	private boolean enableWorldPrefixes;
 	private boolean enableChatGroupPrefixes;
 	private boolean enableNicknames;
