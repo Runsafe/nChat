@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 {
@@ -25,8 +26,8 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		if (!player.getGroups().isEmpty())
 		{
 			String groupName = player.getGroups().get(0).toLowerCase();
-			if (this.chatGroupPrefixes.contains(groupName))
-				return (String) this.chatGroupPrefixes.get(groupName);
+			if (this.chatGroupPrefixes.containsKey(groupName))
+				return this.chatGroupPrefixes.get(groupName);
 		}
 		return "";
 	}
@@ -35,7 +36,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	{
 		String firstGroup = (player.isVanished() ? "vanish" : player.getGroups().get(0).toLowerCase());
 		String playerName = player.getName();
-		String prefix = (this.tabListPrefixes.contains(firstGroup)) ? (String) this.tabListPrefixes.get(firstGroup) : "";
+		String prefix = (this.tabListPrefixes.containsKey(firstGroup)) ? this.tabListPrefixes.get(firstGroup) : "";
 		int nameLength = 16 - prefix.length();
 		String displayName = (playerName.length() > nameLength) ? playerName.substring(0, nameLength) : playerName;
 		return prefix + displayName;
@@ -48,10 +49,8 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 
 	public String getWorldPrefix(String worldName)
 	{
-		String worldPrefix = (String) this.worldPrefixes.get(worldName);
-
-		if (worldPrefix != null)
-			return worldPrefix;
+		if (worldPrefixes.containsKey(worldName))
+			return this.worldPrefixes.get(worldName);
 
 		return "";
 	}
@@ -59,10 +58,8 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	public String getPlayerNickname(RunsafePlayer player, String nameString)
 	{
 		String playerName = player.getName();
-		String playerNickname = (String) this.playerNicknames.get(playerName);
-
-		if (playerNickname != null)
-			return nameString.replace(playerName, playerNickname);
+		if (playerNicknames.containsKey(playerName))
+			return nameString.replace(playerName, playerNicknames.get(playerName));
 
 		return nameString;
 	}
@@ -135,9 +132,9 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.chatGroupPrefixes = configuration.getSection("chatGroupPrefixes");
-		this.worldPrefixes = configuration.getSection("worldPrefixes");
-		this.playerNicknames = configuration.getSection("playerNicknames");
+		this.chatGroupPrefixes = configuration.getConfigValuesAsMap("chatGroupPrefixes");
+		this.worldPrefixes = configuration.getConfigValuesAsMap("worldPrefixes");
+		this.playerNicknames = configuration.getConfigValuesAsMap("playerNicknames");
 		this.playerTags = configuration.getSection("playerTags");
 		this.playerTagFormat = configuration.getConfigValueAsString("chatFormatting.playerTagFormat");
 		this.playerNameFormat = configuration.getConfigValueAsString("chatFormatting.playerName");
@@ -150,10 +147,10 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		this.enableOpTag = configuration.getConfigValueAsBoolean("nChat.enableOpTag");
 		this.enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
 		this.opTagFormat = configuration.getConfigValueAsString("chatFormatting.opTagFormat");
-		this.tabListPrefixes = configuration.getSection("tabListGroupPrefix");
+		this.tabListPrefixes = configuration.getConfigValuesAsMap("tabListGroupPrefix");
 	}
 
-	private ConfigurationSection tabListPrefixes;
+	private Map<String, String> tabListPrefixes;
 	private final Globals globals;
 	private boolean enableWorldPrefixes;
 	private boolean enableChatGroupPrefixes;
@@ -161,9 +158,9 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	private boolean enablePlayerTags;
 	private boolean enableOpTag;
 	private boolean enableColorCodes;
-	private ConfigurationSection chatGroupPrefixes;
-	private ConfigurationSection worldPrefixes;
-	private ConfigurationSection playerNicknames;
+	private Map<String, String> chatGroupPrefixes;
+	private Map<String, String> worldPrefixes;
+	private Map<String, String> playerNicknames;
 	private ConfigurationSection playerTags;
 	private String playerTagFormat;
 	private String opTagFormat;

@@ -45,8 +45,7 @@ worldPrefixes:
   world_the_end: '&9[E]'
   console: '&3[?]'
 channels:
-  staff:
-    name: 'Staff'
+  staff: 'Staff'
 chatMessage:
   joinServer: 'has joined the server.'
   leaveServer: 'has left the server.'

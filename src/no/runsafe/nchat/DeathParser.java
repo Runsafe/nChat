@@ -2,16 +2,11 @@ package no.runsafe.nchat;
 
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
-import no.runsafe.framework.output.IOutput;
-import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.Map;
 
 public class DeathParser implements IConfigurationChanged
 {
-	public DeathParser(IOutput console)
-	{
-		this.console = console;
-	}
-
 	public Death getDeathType(String deathMessage)
 	{
 		for (Death death : Death.values())
@@ -24,8 +19,8 @@ public class DeathParser implements IConfigurationChanged
 	public String getInvolvedEntityName(String deathMessage, Death death)
 	{
 		return deathMessage.substring(
-				deathMessage.indexOf(death.getDefaultMessage()) + death.getDefaultMessage().length(),
-				deathMessage.length()
+			deathMessage.indexOf(death.getDefaultMessage()) + death.getDefaultMessage().length(),
+			deathMessage.length()
 		);
 	}
 
@@ -41,15 +36,14 @@ public class DeathParser implements IConfigurationChanged
 
 	public String getCustomDeathMessage(String deathTag)
 	{
-		return (this.deathMessages.contains(deathTag)) ? (String) this.deathMessages.get(deathTag) : null;
+		return (this.deathMessages.containsKey(deathTag)) ? this.deathMessages.get(deathTag) : null;
 	}
 
 	@Override
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
-		this.deathMessages = iConfiguration.getSection("deathMessages");
+		this.deathMessages = iConfiguration.getConfigValuesAsMap("deathMessages");
 	}
 
-	private ConfigurationSection deathMessages;
-	private final IOutput console;
+	private Map<String, String> deathMessages;
 }
