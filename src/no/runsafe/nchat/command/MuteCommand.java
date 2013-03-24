@@ -26,44 +26,28 @@ public class MuteCommand extends PlayerCommand
 
 		if (mutePlayerName.equalsIgnoreCase("server"))
 		{
-			if (player.hasPermission("runsafe.nchat.mute.server"))
-			{
-				this.muteHandler.muteServer();
-				player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED);
-				console.write(String.format("%s muted server chat.", player.getName()));
-			}
-			else
-			{
-				player.sendMessage(Constants.COMMAND_NO_PERMISSION);
-			}
-		}
-		else
-		{
-			RunsafePlayer mutePlayer = RunsafeServer.Instance.getPlayer(mutePlayerName);
+			if (!player.hasPermission("runsafe.nchat.mute.server"))
+				return Constants.COMMAND_NO_PERMISSION;
 
-			if (mutePlayer != null)
-			{
-				if (!mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
-				{
-					console.write(String.format(
-						"%s muted %s",
-						player.getName(),
-						mutePlayer.getName()
-					));
-					this.muteHandler.mutePlayer(mutePlayer);
-				}
-				else
-				{
-					player.sendMessage(Constants.COMMAND_TARGET_EXEMPT);
-				}
-			}
-			else
-			{
-				player.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
-			}
+			this.muteHandler.muteServer();
+			console.write(String.format("%s muted server chat.", player.getName()));
+			return Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED;
 		}
+		RunsafePlayer mutePlayer = RunsafeServer.Instance.getPlayer(mutePlayerName);
 
-		return null;
+		if (mutePlayer == null)
+			player.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
+
+		if (mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
+			return Constants.COMMAND_TARGET_EXEMPT;
+
+		console.write(String.format(
+			"%s muted %s",
+			player.getName(),
+			mutePlayer.getName()
+		));
+		this.muteHandler.mutePlayer(mutePlayer);
+		return Constants.DEFAULT_MESSAGE_COLOR + "Muted " + mutePlayerName;
 	}
 
 	private final IOutput console;
