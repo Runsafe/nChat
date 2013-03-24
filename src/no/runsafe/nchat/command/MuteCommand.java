@@ -1,44 +1,40 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.command.RunsafeCommand;
+import no.runsafe.framework.command.player.PlayerCommand;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
 
-public class MuteCommand extends RunsafeCommand
+import java.util.HashMap;
+
+public class MuteCommand extends PlayerCommand
 {
 
-    public MuteCommand(IOutput console, MuteHandler muteHandler)
-    {
-        super("mute", "player");
+	public MuteCommand(IOutput console, MuteHandler muteHandler)
+	{
+		super("mute", "Suppress chat messages from a player", "runsafe.nchat.mute", "player");
 		this.console = console;
 		this.muteHandler = muteHandler;
-    }
-
-	@Override
-	public String requiredPermission()
-	{
-		return "runsafe.nchat.mute";
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer executor, String[] args)
+	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
 	{
-		String mutePlayerName = args[0].trim();
+		String mutePlayerName = args.get("player");
 
 		if (mutePlayerName.equalsIgnoreCase("server"))
 		{
-			if (executor.hasPermission("runsafe.nchat.mute.server"))
+			if (player.hasPermission("runsafe.nchat.mute.server"))
 			{
 				this.muteHandler.muteServer();
-				executor.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED);
-				console.write(String.format("%s muted server chat.", executor.getName()));
+				player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED);
+				console.write(String.format("%s muted server chat.", player.getName()));
 			}
 			else
 			{
-				executor.sendMessage(Constants.COMMAND_NO_PERMISSION);
+				player.sendMessage(Constants.COMMAND_NO_PERMISSION);
 			}
 		}
 		else
@@ -50,20 +46,20 @@ public class MuteCommand extends RunsafeCommand
 				if (!mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 				{
 					console.write(String.format(
-							"%s muted %s",
-							executor.getName(),
-							mutePlayer.getName()
+						"%s muted %s",
+						player.getName(),
+						mutePlayer.getName()
 					));
 					this.muteHandler.mutePlayer(mutePlayer);
 				}
 				else
 				{
-					executor.sendMessage(Constants.COMMAND_TARGET_EXEMPT);
+					player.sendMessage(Constants.COMMAND_TARGET_EXEMPT);
 				}
 			}
 			else
 			{
-				executor.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
+				player.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
 			}
 		}
 

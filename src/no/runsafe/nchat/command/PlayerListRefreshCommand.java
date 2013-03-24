@@ -1,41 +1,37 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.command.RunsafeCommand;
+import no.runsafe.framework.command.player.PlayerCommand;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
 
-public class PlayerListRefreshCommand extends RunsafeCommand
+import java.util.HashMap;
+
+public class PlayerListRefreshCommand extends PlayerCommand
 {
 	public PlayerListRefreshCommand(ChatHandler chatHandler)
 	{
-		super("tabrefresh", "player");
+		super("tabrefresh", "Refresh a players name as displayed in the tab list", "runsafe.nchat.playerlistrefresh", "player");
 		this.chatHandler = chatHandler;
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer executor, String[] args)
+	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
 	{
-		RunsafePlayer refreshPlayer = RunsafeServer.Instance.getPlayer(args[0]);
+		RunsafePlayer refreshPlayer = RunsafeServer.Instance.getPlayer(args.get("player"));
 
 		if (refreshPlayer != null)
 		{
 			this.chatHandler.refreshPlayerTabListName(refreshPlayer);
-			executor.sendMessage(String.format(
-					"The tab list name for %s has been updated",
-					refreshPlayer.getPrettyName()
+			player.sendMessage(String.format(
+				"The tab list name for %s has been updated",
+				refreshPlayer.getPrettyName()
 			));
 		}
 		else
-			executor.sendMessage(String.format("The player %s does not exist.", args[0]));
+			player.sendMessage(String.format("The player %s does not exist.", args.get("player")));
 
 		return null;
-	}
-
-	@Override
-	public String requiredPermission()
-	{
-		return "runsafe.nchat.playerlistrefresh";
 	}
 
 	private final ChatHandler chatHandler;
