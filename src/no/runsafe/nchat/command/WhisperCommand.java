@@ -1,58 +1,48 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.command.RunsafeCommand;
+import no.runsafe.framework.command.player.PlayerCommand;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
 import no.runsafe.nchat.handlers.WhisperHandler;
-import org.apache.commons.lang.StringUtils;
 
-public class WhisperCommand extends RunsafeCommand
+import java.util.HashMap;
+
+public class WhisperCommand extends PlayerCommand
 {
 	public WhisperCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
 	{
-		super("whisper", "player", "message");
+		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", "player", "message");
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
-		setConsoleLogging(false);
+		captureTail();
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer executor, String[] args)
+	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
 	{
-		RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args[0]);
+		RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args.get("player"));
 
 		if (targetPlayer != null)
 		{
-			if (this.whisperHandler.canWhisper(executor, targetPlayer))
+			if (this.whisperHandler.canWhisper(player, targetPlayer))
 			{
-				if (!this.muteHandler.isPlayerMuted(executor))
-				{
-					String message = StringUtils.join(args, " ", 1, args.length);
-					this.whisperHandler.sendWhisper(executor, targetPlayer, message);
-				}
+				if (!this.muteHandler.isPlayerMuted(player))
+					this.whisperHandler.sendWhisper(player, targetPlayer, args.get("message"));
 				else
-				{
-					executor.sendMessage(Constants.CHAT_MUTED);
-				}
+					player.sendMessage(Constants.CHAT_MUTED);
 			}
 			else
 			{
-				executor.sendMessage(String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayer.getName()));
+				player.sendMessage(String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayer.getName()));
 			}
 		}
 		else
 		{
-			executor.sendMessage(String.format(Constants.WHISPER_NO_TARGET, args[0]));
+			player.sendMessage(String.format(Constants.WHISPER_NO_TARGET, args.get("player")));
 		}
 		return null;
-	}
-
-	@Override
-	public String requiredPermission()
-	{
-		return "runsafe.nchat.whisper";
 	}
 
 	private final WhisperHandler whisperHandler;
