@@ -55,6 +55,6 @@ public class WhisperCommand extends RunsafeCommand
 		return "runsafe.nchat.whisper";
 	}
 
-	private WhisperHandler whisperHandler;
-	private MuteHandler muteHandler;
+	private final WhisperHandler whisperHandler;
+	private final MuteHandler muteHandler;
 }

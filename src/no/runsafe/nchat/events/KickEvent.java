@@ -43,7 +43,7 @@ public class KickEvent implements IPlayerKickEvent, IConfigurationChanged
 
 	private String kickMessage;
 	private boolean suppressKickMessages;
-	private ChatHandler chatHandler;
-	private WhisperHandler whisperHandler;
-	private SpamHandler spamHandler;
+	private final ChatHandler chatHandler;
+	private final WhisperHandler whisperHandler;
+	private final SpamHandler spamHandler;
 }

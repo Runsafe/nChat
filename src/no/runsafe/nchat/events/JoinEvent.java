@@ -29,5 +29,5 @@ public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 	}
 
 	private String joinServerMessage;
-	private ChatHandler chatHandler;
+	private final ChatHandler chatHandler;
 }

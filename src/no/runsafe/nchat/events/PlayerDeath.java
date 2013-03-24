@@ -48,7 +48,7 @@ public class PlayerDeath implements IPlayerDeathEvent
 
 		if (customDeathMessage != null)
 		{
-			RunsafePlayer player = (RunsafePlayer) runsafePlayerDeathEvent.getEntity();
+			RunsafePlayer player = runsafePlayerDeathEvent.getEntity();
 
 			if (entityName == null) // true
 			{
@@ -65,6 +65,6 @@ public class PlayerDeath implements IPlayerDeathEvent
 		}
 	}
 
-	private ChatHandler chatHandler;
-	private DeathParser deathParser;
+	private final ChatHandler chatHandler;
+	private final DeathParser deathParser;
 }

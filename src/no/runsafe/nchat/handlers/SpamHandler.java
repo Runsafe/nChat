@@ -137,8 +137,8 @@ public class SpamHandler implements IConfigurationChanged
 		this.enableSpamControl = iConfiguration.getConfigValueAsBoolean("nChat.enableSpamControl");
 	}
 
-	private HashMap<String, PlayerSpamInfo> spamInfo;
-	private HashMap<String, Integer> playerStrikes;
+	private final HashMap<String, PlayerSpamInfo> spamInfo;
+	private final HashMap<String, Integer> playerStrikes;
 	private int spamFilterFloodTimer;
 	private int spamFilterFloodAmount;
 	private int spamFilterRepeatTimer;
@@ -147,6 +147,6 @@ public class SpamHandler implements IConfigurationChanged
 	private String spamFilterKickReason;
 	private boolean enableSpamControl;
 	private String spamFilterBanReason;
-	private IScheduler scheduler;
-	private IOutput console;
+	private final IScheduler scheduler;
+	private final IOutput console;
 }

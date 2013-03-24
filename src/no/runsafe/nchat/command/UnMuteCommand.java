@@ -141,6 +141,6 @@ public class UnMuteCommand extends RunsafeCommand
 		return false;
 	}
 
-	private IOutput console;
-	private MuteHandler muteHandler;
+	private final IOutput console;
+	private final MuteHandler muteHandler;
 }

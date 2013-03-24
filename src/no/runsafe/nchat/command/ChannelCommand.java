@@ -40,6 +40,6 @@ public class ChannelCommand extends RunsafeCommand
         return false;
     }
 
-    private ChatChannelHandler chatChannelHandler;
-    private Globals globals;
+    private final ChatChannelHandler chatChannelHandler;
+    private final Globals globals;
 }

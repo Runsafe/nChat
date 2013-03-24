@@ -98,6 +98,6 @@ public class MuteDatabase implements ISchemaChanges
 		}
 	}
 
-	private IOutput console;
-	private IDatabase database;
+	private final IOutput console;
+	private final IDatabase database;
 }

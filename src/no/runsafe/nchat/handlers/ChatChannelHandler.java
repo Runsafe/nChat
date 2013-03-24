@@ -46,9 +46,9 @@ public class ChatChannelHandler implements IConfigurationChanged
 	}
 
 	private String channelTagFormat;
-	private IConfiguration configuration;
+	private final IConfiguration configuration;
 	private ConfigurationSection channels;
-	private ChatHandler chatHandler;
-	private RunsafeServer server;
-	private IOutput output;
+	private final ChatHandler chatHandler;
+	private final RunsafeServer server;
+	private final IOutput output;
 }

@@ -28,5 +28,5 @@ public class EmoteCommand extends RunsafePlayerCommand
 		return "runsafe.nchat.emote";
 	}
 
-	private ChatHandler chatHandler;
+	private final ChatHandler chatHandler;
 }

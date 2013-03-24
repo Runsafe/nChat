@@ -51,5 +51,5 @@ public class DeathParser implements IConfigurationChanged
 	}
 
 	private ConfigurationSection deathMessages;
-	private IOutput console;
+	private final IOutput console;
 }

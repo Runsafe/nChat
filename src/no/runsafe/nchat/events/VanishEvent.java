@@ -18,5 +18,5 @@ public class VanishEvent implements IPlayerCustomEvent
 			this.chatHandler.refreshPlayerTabListName(runsafePlayer);
 	}
 
-	private ChatHandler chatHandler;
+	private final ChatHandler chatHandler;
 }

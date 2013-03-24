@@ -41,5 +41,5 @@ public class PuppetCommand extends RunsafeCommand
 		return null;
 	}
 
-	private ChatHandler chatHandler;
+	private final ChatHandler chatHandler;
 }

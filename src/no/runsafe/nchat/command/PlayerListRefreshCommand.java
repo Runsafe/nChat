@@ -38,5 +38,5 @@ public class PlayerListRefreshCommand extends RunsafeCommand
 		return "runsafe.nchat.playerlistrefresh";
 	}
 
-	private ChatHandler chatHandler;
+	private final ChatHandler chatHandler;
 }

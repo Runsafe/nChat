@@ -154,7 +154,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	}
 
 	private ConfigurationSection tabListPrefixes;
-	private Globals globals;
+	private final Globals globals;
 	private boolean enableWorldPrefixes;
 	private boolean enableChatGroupPrefixes;
 	private boolean enableNicknames;

@@ -53,6 +53,6 @@ public class ReplyCommand extends RunsafeCommand
 		return null;
 	}
 
-	private WhisperHandler whisperHandler;
-	private MuteHandler muteHandler;
+	private final WhisperHandler whisperHandler;
+	private final MuteHandler muteHandler;
 }

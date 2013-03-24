@@ -70,6 +70,6 @@ public class MuteCommand extends RunsafeCommand
 		return null;
 	}
 
-	private IOutput console;
-	private MuteHandler muteHandler;
+	private final IOutput console;
+	private final MuteHandler muteHandler;
 }

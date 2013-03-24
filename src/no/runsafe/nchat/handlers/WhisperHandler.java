@@ -76,7 +76,7 @@ public class WhisperHandler implements IConfigurationChanged
 
 	private String whisperToFormat;
 	private String whisperFromFormat;
-	private IOutput console;
-	private HashMap<String, String> lastWhisperList;
-	private ChatHandler chatHandler;
+	private final IOutput console;
+	private final HashMap<String, String> lastWhisperList;
+	private final ChatHandler chatHandler;
 }
