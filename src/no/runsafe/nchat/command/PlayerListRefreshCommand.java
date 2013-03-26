@@ -19,19 +19,13 @@ public class PlayerListRefreshCommand extends PlayerCommand
 	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
 	{
 		RunsafePlayer refreshPlayer = RunsafeServer.Instance.getPlayer(args.get("player"));
-
-		if (refreshPlayer != null)
-		{
-			this.chatHandler.refreshPlayerTabListName(refreshPlayer);
-			player.sendMessage(String.format(
-				"The tab list name for %s has been updated",
-				refreshPlayer.getPrettyName()
-			));
-		}
-		else
-			player.sendMessage(String.format("The player %s does not exist.", args.get("player")));
-
-		return null;
+		if (refreshPlayer == null)
+			return String.format("The player %s does not exist.", args.get("player"));
+		this.chatHandler.refreshPlayerTabListName(refreshPlayer);
+		return String.format(
+			"The tab list name for %s has been updated",
+			refreshPlayer.getPrettyName()
+		);
 	}
 
 	private final ChatHandler chatHandler;

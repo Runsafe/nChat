@@ -35,7 +35,7 @@ public class UnMuteCommand extends PlayerCommand
 				return Constants.COMMAND_NO_PERMISSION;
 		}
 		if (!player.hasPermission("nChat.commands.mutePlayer"))
-			player.sendMessage(Constants.COMMAND_NO_PERMISSION);
+			return Constants.COMMAND_NO_PERMISSION;
 
 		RunsafePlayer unMutePlayer = RunsafeServer.Instance.getPlayer(unMutePlayerName);
 

@@ -22,16 +22,13 @@ public class ChannelCommand extends PlayerCommand
 		String channelName = args.get("channel");
 		String message = args.get("message");
 
-		if (this.chatChannelHandler.channelExists(channelName))
-		{
-			if (this.chatChannelHandler.canTalkInChannel(channelName, player))
-				this.chatChannelHandler.broadcastMessage(channelName, message, player);
-			else
-				player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.CHANNEL_NO_PERMISSION);
-		}
-		else
-			player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.CHANNEL_NOT_EXIST);
+		if (!this.chatChannelHandler.channelExists(channelName))
+			return Constants.DEFAULT_MESSAGE_COLOR + Constants.CHANNEL_NOT_EXIST;
 
+		if (!this.chatChannelHandler.canTalkInChannel(channelName, player))
+			return Constants.DEFAULT_MESSAGE_COLOR + Constants.CHANNEL_NO_PERMISSION;
+
+		this.chatChannelHandler.broadcastMessage(channelName, message, player);
 		return null;
 	}
 

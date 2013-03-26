@@ -24,24 +24,16 @@ public class WhisperCommand extends PlayerCommand
 	{
 		RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args.get("player"));
 
-		if (targetPlayer != null)
-		{
-			if (this.whisperHandler.canWhisper(player, targetPlayer))
-			{
-				if (!this.muteHandler.isPlayerMuted(player))
-					this.whisperHandler.sendWhisper(player, targetPlayer, args.get("message"));
-				else
-					player.sendMessage(Constants.CHAT_MUTED);
-			}
-			else
-			{
-				player.sendMessage(String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayer.getName()));
-			}
-		}
-		else
-		{
-			player.sendMessage(String.format(Constants.WHISPER_NO_TARGET, args.get("player")));
-		}
+		if (targetPlayer == null)
+			return String.format(Constants.WHISPER_NO_TARGET, args.get("player"));
+
+		if (!this.whisperHandler.canWhisper(player, targetPlayer))
+			return String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayer.getName());
+
+		if (this.muteHandler.isPlayerMuted(player))
+			return Constants.CHAT_MUTED;
+
+		this.whisperHandler.sendWhisper(player, targetPlayer, args.get("message"));
 		return null;
 	}
 
