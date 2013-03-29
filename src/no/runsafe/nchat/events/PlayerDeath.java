@@ -12,10 +12,11 @@ import no.runsafe.nchat.handlers.ChatHandler;
 
 public class PlayerDeath implements IPlayerDeathEvent
 {
-	public PlayerDeath(ChatHandler chatHandler, DeathParser deathParser)
+	public PlayerDeath(ChatHandler chatHandler, DeathParser deathParser, IOutput console)
 	{
 		this.chatHandler = chatHandler;
 		this.deathParser = deathParser;
+		this.console = console;
 	}
 
 	@Override
@@ -23,20 +24,23 @@ public class PlayerDeath implements IPlayerDeathEvent
 	{
 		String originalMessage = runsafePlayerDeathEvent.getDeathMessage();
 		Death deathType = this.deathParser.getDeathType(originalMessage);
+		if (deathType == Death.UNKNOWN)
+		{
+			console.writeColoured("Unknown death message detected: \"%s\"", originalMessage);
+		}
 		String deathName = deathType.name().toLowerCase();
 
 		String deathTag;
 		String entityName = null;
 		String killerName = this.deathParser.getInvolvedEntityName(originalMessage, deathType);
 
-
 		if (deathType.hasEntityInvolved())
 		{
 			entityName = this.deathParser.isEntityName(killerName);
 			deathTag = String.format(
-					"%s_%s",
-					deathName,
-					(entityName != null ? entityName : "Player")
+				"%s_%s",
+				deathName,
+				(entityName != null ? entityName : "Player")
 			);
 		}
 		else
@@ -67,4 +71,5 @@ public class PlayerDeath implements IPlayerDeathEvent
 
 	private final ChatHandler chatHandler;
 	private final DeathParser deathParser;
+	private final IOutput console;
 }
