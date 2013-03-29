@@ -11,6 +11,7 @@ public enum Death
 	UNKNOWN(" died", false),
 	CACTUS(" was pricked to death", false),
 	FIRE(" went up in flames", false),
+	BURNING(" burned to death", false),
 	ARROW(" was shot by ", true),
 	STARVATION(" starved to death", false),
 	KILLED(" was killed by ", true),
