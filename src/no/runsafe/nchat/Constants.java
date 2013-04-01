@@ -7,6 +7,7 @@ public class Constants
 //	public static String COLOR_CHARACTER = "&%s";
 
 	public static final String FORMAT_PLAYER_NAME = "#player";
+	public static final String FORMAT_KILLER = "#killer";
 	public static final String FORMAT_WORLD = "#world";
 	public static final String FORMAT_GROUP = "#group";
 	public static final String FORMAT_TAG = "#tags";

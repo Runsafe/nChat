@@ -30,12 +30,13 @@ public class PlayerDeath implements IPlayerDeathEvent
 		}
 		String deathName = deathType.name().toLowerCase();
 
-		String deathTag;
+		String deathTag = deathName;
 		String entityName = null;
-		String killerName = this.deathParser.getInvolvedEntityName(originalMessage, deathType);
+		String killerName = null;
 
 		if (deathType.hasEntityInvolved())
 		{
+			killerName = this.deathParser.getInvolvedEntityName(originalMessage, deathType);
 			entityName = this.deathParser.isEntityName(killerName);
 			deathTag = String.format(
 				"%s_%s",
@@ -43,30 +44,28 @@ public class PlayerDeath implements IPlayerDeathEvent
 				(entityName != null ? entityName : "Player")
 			);
 		}
-		else
-		{
-			deathTag = deathName;
-		}
 
 		String customDeathMessage = this.deathParser.getCustomDeathMessage(deathTag);
 
-		if (customDeathMessage != null)
+		if (customDeathMessage == null)
 		{
-			RunsafePlayer player = runsafePlayerDeathEvent.getEntity();
-
-			if (entityName == null) // true
-			{
-				RunsafePlayer killer = RunsafeServer.Instance.getPlayer(killerName);
-
-				if (killer != null)
-				{
-					killerName = this.chatHandler.formatPlayerName(killer, killer.getName());
-					customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, killerName);
-				}
-			}
-
-			runsafePlayerDeathEvent.setDeathMessage(this.chatHandler.formatPlayerSystemMessage(customDeathMessage, player));
+			console.writeColoured("No custom death message '%s' defined, using original..", deathTag);
+			return;
 		}
+		RunsafePlayer player = runsafePlayerDeathEvent.getEntity();
+
+		if (deathType.hasEntityInvolved() && entityName == null)
+		{
+			RunsafePlayer killer = RunsafeServer.Instance.getPlayer(killerName);
+
+			if (killer != null)
+			{
+				killerName = this.chatHandler.formatPlayerName(killer, killer.getName());
+				customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, killerName);
+			}
+		}
+		customDeathMessage = customDeathMessage.replace(Constants.FORMAT_KILLER, killerName);
+		runsafePlayerDeathEvent.setDeathMessage(this.chatHandler.formatPlayerSystemMessage(customDeathMessage, player));
 	}
 
 	private final ChatHandler chatHandler;
