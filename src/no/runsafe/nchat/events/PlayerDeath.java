@@ -64,7 +64,8 @@ public class PlayerDeath implements IPlayerDeathEvent
 				customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, killerName);
 			}
 		}
-		customDeathMessage = customDeathMessage.replace(Constants.FORMAT_KILLER, killerName);
+		if (killerName != null)
+			customDeathMessage = customDeathMessage.replace(Constants.FORMAT_KILLER, killerName);
 		runsafePlayerDeathEvent.setDeathMessage(this.chatHandler.formatPlayerSystemMessage(customDeathMessage, player));
 	}
 
