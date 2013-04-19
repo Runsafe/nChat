@@ -69,6 +69,6 @@ public class MuteHandler implements IConfigurationChanged
 	}
 
 	private List<String> mutedPlayers;
-	private MuteDatabase muteDatabase;
+	private final MuteDatabase muteDatabase;
 	private boolean serverMute;
 }

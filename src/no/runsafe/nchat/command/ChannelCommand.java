@@ -1,45 +1,36 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.command.RunsafeCommand;
+import no.runsafe.framework.command.player.PlayerCommand;
 import no.runsafe.framework.server.player.RunsafePlayer;
-import no.runsafe.nchat.handlers.ChatChannelHandler;
 import no.runsafe.nchat.Constants;
-import no.runsafe.nchat.Globals;
+import no.runsafe.nchat.handlers.ChatChannelHandler;
 
-public class ChannelCommand extends RunsafeCommand
+import java.util.HashMap;
+
+public class ChannelCommand extends PlayerCommand
 {
-    public ChannelCommand(ChatChannelHandler chatChannelHandler, Globals globals)
-    {
-        super("channel");
-        this.chatChannelHandler = chatChannelHandler;
-        this.globals = globals;
-    }
+	public ChannelCommand(ChatChannelHandler chatChannelHandler)
+	{
+		super("channel", "Sends a message to a channel", null, "channel", "message");
+		this.chatChannelHandler = chatChannelHandler;
+		captureTail();
+	}
 
-    @Override
-    public boolean Execute(RunsafePlayer player, String[] args)
-    {
-        if (args.length > 1)
-        {
-            String channelName = args[0].trim().toLowerCase();
+	@Override
+	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
+	{
+		String channelName = args.get("channel");
+		String message = args.get("message");
 
-            String[] messages = args;
-            messages[0] = "";
+		if (!this.chatChannelHandler.channelExists(channelName))
+			return Constants.DEFAULT_MESSAGE_COLOR + Constants.CHANNEL_NOT_EXIST;
 
-            String message = this.globals.joinStringArray(messages);
+		if (!this.chatChannelHandler.canTalkInChannel(channelName, player))
+			return Constants.DEFAULT_MESSAGE_COLOR + Constants.CHANNEL_NO_PERMISSION;
 
-            if (this.chatChannelHandler.channelExists(channelName))
-                if (this.chatChannelHandler.canTalkInChannel(channelName, player))
-                    this.chatChannelHandler.broadcastMessage(channelName, message, player);
-                else
-                    player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.CHANNEL_NO_PERMISSION);
-            else
-                player.sendMessage(Constants.DEFAULT_MESSAGE_COLOR + Constants.CHANNEL_NOT_EXIST);
+		this.chatChannelHandler.broadcastMessage(channelName, message, player);
+		return null;
+	}
 
-            return true;
-        }
-        return false;
-    }
-
-    private ChatChannelHandler chatChannelHandler;
-    private Globals globals;
+	private final ChatChannelHandler chatChannelHandler;
 }

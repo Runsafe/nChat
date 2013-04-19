@@ -12,10 +12,11 @@ import no.runsafe.nchat.handlers.ChatHandler;
 
 public class PlayerDeath implements IPlayerDeathEvent
 {
-	public PlayerDeath(ChatHandler chatHandler, DeathParser deathParser)
+	public PlayerDeath(ChatHandler chatHandler, DeathParser deathParser, IOutput console)
 	{
 		this.chatHandler = chatHandler;
 		this.deathParser = deathParser;
+		this.console = console;
 	}
 
 	@Override
@@ -23,48 +24,52 @@ public class PlayerDeath implements IPlayerDeathEvent
 	{
 		String originalMessage = runsafePlayerDeathEvent.getDeathMessage();
 		Death deathType = this.deathParser.getDeathType(originalMessage);
+		if (deathType == Death.UNKNOWN)
+		{
+			console.writeColoured("Unknown death message detected: \"%s\"", originalMessage);
+		}
 		String deathName = deathType.name().toLowerCase();
 
-		String deathTag;
+		String deathTag = deathName;
 		String entityName = null;
-		String killerName = this.deathParser.getInvolvedEntityName(originalMessage, deathType);
-
+		String killerName = null;
 
 		if (deathType.hasEntityInvolved())
 		{
+			killerName = this.deathParser.getInvolvedEntityName(originalMessage, deathType);
 			entityName = this.deathParser.isEntityName(killerName);
 			deathTag = String.format(
-					"%s_%s",
-					deathName,
-					(entityName != null ? entityName : "Player")
+				"%s_%s",
+				deathName,
+				(entityName != null ? entityName : "Player")
 			);
-		}
-		else
-		{
-			deathTag = deathName;
 		}
 
 		String customDeathMessage = this.deathParser.getCustomDeathMessage(deathTag);
 
-		if (customDeathMessage != null)
+		if (customDeathMessage == null)
 		{
-			RunsafePlayer player = (RunsafePlayer) runsafePlayerDeathEvent.getEntity();
-
-			if (entityName == null) // true
-			{
-				RunsafePlayer killer = RunsafeServer.Instance.getPlayer(killerName);
-
-				if (killer != null)
-				{
-					killerName = this.chatHandler.formatPlayerName(killer, killer.getName());
-					customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, killerName);
-				}
-			}
-
-			runsafePlayerDeathEvent.setDeathMessage(this.chatHandler.formatPlayerSystemMessage(customDeathMessage, player));
+			console.writeColoured("No custom death message '%s' defined, using original..", deathTag);
+			return;
 		}
+		RunsafePlayer player = runsafePlayerDeathEvent.getEntity();
+
+		if (deathType.hasEntityInvolved() && entityName == null)
+		{
+			RunsafePlayer killer = RunsafeServer.Instance.getPlayer(killerName);
+
+			if (killer != null)
+			{
+				killerName = this.chatHandler.formatPlayerName(killer, killer.getName());
+				customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, killerName);
+			}
+		}
+		if (killerName != null)
+			customDeathMessage = customDeathMessage.replace(Constants.FORMAT_KILLER, killerName);
+		runsafePlayerDeathEvent.setDeathMessage(this.chatHandler.formatPlayerSystemMessage(customDeathMessage, player));
 	}
 
-	private ChatHandler chatHandler;
-	private DeathParser deathParser;
+	private final ChatHandler chatHandler;
+	private final DeathParser deathParser;
+	private final IOutput console;
 }

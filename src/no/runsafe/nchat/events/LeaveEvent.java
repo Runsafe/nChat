@@ -33,8 +33,8 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 		this.leaveServerMessage = iConfiguration.getConfigValueAsString("chatMessage.leaveServer");
 	}
 
-	private ChatHandler chatHandler;
-	private WhisperHandler whisperHandler;
-	private SpamHandler spamHandler;
+	private final ChatHandler chatHandler;
+	private final WhisperHandler whisperHandler;
+	private final SpamHandler spamHandler;
 	private String leaveServerMessage;
 }

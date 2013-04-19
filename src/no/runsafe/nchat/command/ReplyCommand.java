@@ -1,57 +1,41 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.command.RunsafeCommand;
+import no.runsafe.framework.command.player.PlayerCommand;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
 import no.runsafe.nchat.handlers.WhisperHandler;
-import org.apache.commons.lang.StringUtils;
 
-public class ReplyCommand extends RunsafeCommand
+import java.util.HashMap;
+
+public class ReplyCommand extends PlayerCommand
 {
 	public ReplyCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
 	{
-		super("reply", "message");
+		super("reply", "Respond to the last person to send you a private message", "runsafe.nchat.whisper", "message");
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
+		captureTail();
 	}
 
 	@Override
-	public String requiredPermission()
+	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
 	{
-		return "runsafe.nchat.whisper";
-	}
+		RunsafePlayer whisperer = this.whisperHandler.getLastWhisperedBy(player);
 
-	@Override
-	public String OnExecute(RunsafePlayer executor, String[] args)
-	{
-		RunsafePlayer whisperer = this.whisperHandler.getLastWhisperedBy(executor);
+		if (whisperer == null)
+			return Constants.WHISPER_NO_REPLY_TARGET;
 
-		if (whisperer != null)
-		{
-			if (this.whisperHandler.canWhisper(executor, whisperer))
-			{
-				if (!this.muteHandler.isPlayerMuted(executor))
-				{
-					String message = StringUtils.join(args, " ", 0, args.length);
-					this.whisperHandler.sendWhisper(executor, whisperer, message);
-				}
-				else
-				{
-					executor.sendMessage(Constants.CHAT_MUTED);
-				}
-			}
-			else
-				executor.sendMessage(String.format(Constants.WHISPER_TARGET_OFFLINE, whisperer.getName()));
-		}
-		else
-		{
-			executor.sendMessage(Constants.WHISPER_NO_REPLY_TARGET);
-		}
+		if (!this.whisperHandler.canWhisper(player, whisperer))
+			return String.format(Constants.WHISPER_TARGET_OFFLINE, whisperer.getName());
 
+		if (this.muteHandler.isPlayerMuted(player))
+			return Constants.CHAT_MUTED;
+
+		this.whisperHandler.sendWhisper(player, whisperer, args.get("message"));
 		return null;
 	}
 
-	private WhisperHandler whisperHandler;
-	private MuteHandler muteHandler;
+	private final WhisperHandler whisperHandler;
+	private final MuteHandler muteHandler;
 }

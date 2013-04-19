@@ -23,10 +23,12 @@ public class KickEvent implements IPlayerKickEvent, IConfigurationChanged
 	{
 		RunsafePlayer kickedPlayer = runsafePlayerKickEvent.getPlayer();
 		runsafePlayerKickEvent.setLeaveMessage(
-			(this.suppressKickMessages) ? null : this.chatHandler.formatPlayerSystemMessage(
-					this.kickMessage.replace("#reason", runsafePlayerKickEvent.getReason()),
-					kickedPlayer
-				)
+			(this.suppressKickMessages)
+				? null
+				: this.chatHandler.formatPlayerSystemMessage(
+						this.kickMessage.replace("#reason", runsafePlayerKickEvent.getReason()),
+						kickedPlayer
+					)
 		);
 		this.spamHandler.flushPlayer(kickedPlayer);
 		this.whisperHandler.deleteLastWhisperedBy(kickedPlayer);
@@ -41,7 +43,7 @@ public class KickEvent implements IPlayerKickEvent, IConfigurationChanged
 
 	private String kickMessage;
 	private boolean suppressKickMessages;
-	private ChatHandler chatHandler;
-	private WhisperHandler whisperHandler;
-	private SpamHandler spamHandler;
+	private final ChatHandler chatHandler;
+	private final WhisperHandler whisperHandler;
+	private final SpamHandler spamHandler;
 }

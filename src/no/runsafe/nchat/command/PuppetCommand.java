@@ -1,45 +1,32 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.command.RunsafeCommand;
+import no.runsafe.framework.command.ExecutableCommand;
+import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
+import no.runsafe.framework.server.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
-import no.runsafe.nchat.handlers.ChatHandler;
-import org.apache.commons.lang.StringUtils;
 
-public class PuppetCommand extends RunsafeCommand
+import java.util.HashMap;
+
+public class PuppetCommand extends ExecutableCommand
 {
-	public PuppetCommand(ChatHandler chatHandler)
+	public PuppetCommand()
 	{
-		super("puppet", "player", "message");
-		this.chatHandler = chatHandler;
+		super("puppet", "Make it look like someone said something", "runsafe.nchat.puppet", "player", "message");
+		captureTail();
 	}
 
 	@Override
-	public String requiredPermission()
+	public String OnExecute(ICommandExecutor executor, HashMap<String, String> args)
 	{
-		return "runsafe.nchat.puppet";
-	}
+		RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args.get("player"));
+		if (targetPlayer == null)
+			return Constants.COMMAND_TARGET_NO_EXISTS;
 
-	@Override
-	public String OnExecute(RunsafePlayer executor, String[] args)
-	{
-		if (args.length > 1)
-		{
-			RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args[0]);
-
-			if (targetPlayer != null)
-			{
-				String message = StringUtils.join(args, " ", 1, args.length);
-				RunsafeServer.Instance.broadcastMessage(this.chatHandler.formatChatMessage(message, targetPlayer));
-			}
-			else
-			{
-				executor.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
-			}
-		}
+		RunsafePlayerFakeChatEvent chat = new RunsafePlayerFakeChatEvent(targetPlayer, args.get("message"));
+		chat.Fire();
+		RunsafeServer.Instance.broadcastMessage(String.format(chat.getFormat(), chat.getMessage()));
 		return null;
 	}
-
-	private ChatHandler chatHandler;
 }

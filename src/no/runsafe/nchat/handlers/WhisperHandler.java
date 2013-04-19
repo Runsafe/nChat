@@ -7,6 +7,7 @@ import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class WhisperHandler implements IConfigurationChanged
 {
@@ -19,16 +20,22 @@ public class WhisperHandler implements IConfigurationChanged
 
 	public void sendWhisper(RunsafePlayer fromPlayer, RunsafePlayer toPlayer, String message)
 	{
-		fromPlayer.sendMessage(
+		fromPlayer.sendColouredMessage(
 			this.whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
 		);
-		toPlayer.sendMessage(
+		toPlayer.sendColouredMessage(
 			this.whisperFromFormat.replace("#source", fromPlayer.getPrettyName()).replace("#message", message)
 		);
 
 		this.setLastWhisperedBy(toPlayer, fromPlayer);
 
-		console.write(String.format("%s -> %s: %s", fromPlayer.getName(), toPlayer.getName(), message));
+		console.writeColoured(
+			"%s -> %s: %s",
+			Level.INFO,
+			fromPlayer.getPrettyName(),
+			toPlayer.getPrettyName(),
+			message
+		);
 	}
 
 	private void setLastWhisperedBy(RunsafePlayer player, RunsafePlayer whisperer)
@@ -61,19 +68,15 @@ public class WhisperHandler implements IConfigurationChanged
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration iConfiguration)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.whisperToFormat = this.chatHandler.convertColors(
-			iConfiguration.getConfigValueAsString("chatMessage.whisperTo")
-		);
-		this.whisperFromFormat = this.chatHandler.convertColors(
-			iConfiguration.getConfigValueAsString("chatMessage.whisperFrom")
-		);
+		this.whisperToFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
+		this.whisperFromFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
 	}
 
 	private String whisperToFormat;
 	private String whisperFromFormat;
-	private IOutput console;
-	private HashMap<String, String> lastWhisperList;
-	private ChatHandler chatHandler;
+	private final IOutput console;
+	private final HashMap<String, String> lastWhisperList;
+	private final ChatHandler chatHandler;
 }

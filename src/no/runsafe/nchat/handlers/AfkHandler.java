@@ -33,5 +33,5 @@ public class AfkHandler
 	}
 
 	private List<String> afkPlayers;
-	private ChatHandler chatHandler;
+	private final ChatHandler chatHandler;
 }
