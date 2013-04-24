@@ -18,13 +18,10 @@ public class DeathParser implements IConfigurationChanged
 
 	public String getInvolvedEntityName(String deathMessage, Death death)
 	{
-		String cause = deathMessage.substring(
-			deathMessage.indexOf(death.getDefaultMessage()) + death.getDefaultMessage().length(),
-			deathMessage.length()
+		return deathMessage.substring(
+				deathMessage.indexOf(death.getDefaultMessage()) + death.getDefaultMessage().length(),
+				deathMessage.length()
 		).trim();
-		if (cause.contains(" "))
-			return cause.substring(0, cause.indexOf(" "));
-		return cause;
 	}
 
 	public String isEntityName(String entityName)
