@@ -60,9 +60,7 @@ chatFormatting:
   playerTagFormat: '&7[%s]'
   opTagFormat: '&f@'
 deathMessages:
-  fall: 'fell to their death'
-  slain_Player: 'was slain by #killer'
-  slain_Skeleton: 'was owned by a skeleton'
+  fall: '%1$s fell to their death'
 playerNicknames:
   ExampleMan: 'Hagrid the Elder'
 playerTags:

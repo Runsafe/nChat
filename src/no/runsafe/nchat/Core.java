@@ -20,6 +20,8 @@ public class Core extends RunsafeConfigurablePlugin
 		// TODO: In-game whisper monitoring
 		// TODO: Fix odd death messages not being picked up
 		// TODO: Correct null pointers
+		// TODO: Fix all the shit that is wrong you fucking idiot programmer.
+		// TODO: Fix colour codes being usable in whisper.
 
 		// Core
 		this.addComponent(Globals.class);

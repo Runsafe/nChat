@@ -3,8 +3,10 @@ package no.runsafe.nchat.handlers;
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.hook.IPlayerNameDecorator;
+import no.runsafe.framework.hook.IPlayerSystemBroadcast;
 import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.Globals;
@@ -14,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
+public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator, IPlayerSystemBroadcast
 {
 	public ChatHandler(Globals globals, IOutput output)
 	{
@@ -63,6 +65,17 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 			return nameString.replace(playerName, playerNicknames.get(playerName));
 
 		return nameString;
+	}
+
+	public void broadcastPlayerSystemMessage(RunsafePlayer player, String emote)
+	{
+		RunsafeServer.Instance.broadcastMessage(this.formatPlayerSystemMessage(emote, player));
+	}
+
+	@Override
+	public void sendPlayerSystemBroadcast(RunsafePlayer player, String message)
+	{
+		this.broadcastPlayerSystemMessage(player, message);
 	}
 
 	public List<String> getPlayerTags(String playerName)
