@@ -44,7 +44,7 @@ public class PlayerDeath implements IPlayerDeathEvent
 				(entityName != null ? entityName : "Player")
 			);
 		}
-
+		runsafePlayerDeathEvent.setDeathMessage("");
 		String customDeathMessage = this.deathParser.getCustomDeathMessage(deathTag);
 
 		if (customDeathMessage == null)
@@ -59,11 +59,11 @@ public class PlayerDeath implements IPlayerDeathEvent
 			RunsafePlayer killer = RunsafeServer.Instance.getPlayer(killerName);
 
 			if (killer != null)
-				runsafePlayerDeathEvent.setDeathMessage(String.format(customDeathMessage, player.getPrettyName(), killer.getPrettyName()));
+				RunsafeServer.Instance.broadcastMessage(String.format(customDeathMessage, player.getPrettyName(), killer.getPrettyName()));
 		}
 		else
 		{
-			runsafePlayerDeathEvent.setDeathMessage(String.format(customDeathMessage, player.getPrettyName()));
+			RunsafeServer.Instance.broadcastMessage(String.format(customDeathMessage, player.getPrettyName()));
 		}
 
 
