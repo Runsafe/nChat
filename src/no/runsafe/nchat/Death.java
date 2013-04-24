@@ -4,7 +4,7 @@ public enum Death
 {
 	ANVIL(" was squashed by a falling anvil", false),
 	CACTUS(" was pricked to death", false),
-	CACTUS_FLEE(" walked into a cactus while trying to escape ", true),
+	CACTUS_FLEE(" walked into a cactus whilst trying to escape ", true),
 	ARROW(" was shot by arrow", false),
 	DROWNED(" drowned", false),
 	EXPLOSION(" blew up", false),
