@@ -59,14 +59,14 @@ public class PlayerDeath implements IPlayerDeathEvent
 			RunsafePlayer killer = RunsafeServer.Instance.getPlayer(killerName);
 
 			if (killer != null)
-			{
-				killerName = this.chatHandler.formatPlayerName(killer, killer.getName());
-				customDeathMessage = customDeathMessage.replace(Constants.FORMAT_PLAYER_NAME, killerName);
-			}
+				runsafePlayerDeathEvent.setDeathMessage(String.format(customDeathMessage, player.getPrettyName(), killer.getPrettyName()));
 		}
-		if (killerName != null)
-			customDeathMessage = customDeathMessage.replace(Constants.FORMAT_KILLER, killerName);
-		runsafePlayerDeathEvent.setDeathMessage(this.chatHandler.formatPlayerSystemMessage(customDeathMessage, player));
+		else
+		{
+			runsafePlayerDeathEvent.setDeathMessage(String.format(customDeathMessage, player.getPrettyName()));
+		}
+
+
 	}
 
 	private final ChatHandler chatHandler;
