@@ -19,7 +19,7 @@ public class EmoteCommand extends PlayerCommand
 	@Override
 	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
 	{
-		this.chatHandler.broadcastPlayerSystemMessage(player, args.get("action"));
+		this.chatHandler.formatPlayerSystemMessage(args.get("action"), player);
 		return null;
 	}
 
