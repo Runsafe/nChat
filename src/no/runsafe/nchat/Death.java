@@ -22,7 +22,7 @@ public enum Death
 	FIRE(" went up in flames", false),
 	BURNING(" burned to death", false),
 	BURNING_WHILE(" was burnt to a crisp while fighting ", true),
-	FIRE_WHILE(" walked into a fire whilst fighting ", true),
+	FIRE_WHILE(" walked into fire whilst fighting ", true),
 	SLAIN(" was slain by ", true),
 	SHOT(" was shot by ", true),
 	FIREBALL(" was fireballed by ", true),

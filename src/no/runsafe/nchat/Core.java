@@ -22,6 +22,7 @@ public class Core extends RunsafeConfigurablePlugin
 		// TODO: Correct null pointers
 		// TODO: Fix all the shit that is wrong you fucking idiot programmer.
 		// TODO: Fix colour codes being usable in whisper.
+		// TODO: Implement whispering from the console.
 
 		// Core
 		this.addComponent(Globals.class);
