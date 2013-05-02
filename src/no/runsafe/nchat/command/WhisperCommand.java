@@ -1,6 +1,8 @@
 package no.runsafe.nchat.command;
 
+import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.command.player.PlayerCommand;
+import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;

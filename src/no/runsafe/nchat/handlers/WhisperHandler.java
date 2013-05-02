@@ -2,6 +2,7 @@ package no.runsafe.nchat.handlers;
 
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
+import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
@@ -20,6 +21,9 @@ public class WhisperHandler implements IConfigurationChanged
 
 	public void sendWhisper(RunsafePlayer fromPlayer, RunsafePlayer toPlayer, String message)
 	{
+		if (!(this.enableColorCodes || fromPlayer.hasPermission("runsafe.nchat.colors")))
+			message = ChatColour.Strip(message);
+
 		fromPlayer.sendColouredMessage(
 			this.whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
 		);
@@ -72,8 +76,10 @@ public class WhisperHandler implements IConfigurationChanged
 	{
 		this.whisperToFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
 		this.whisperFromFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
+		this.enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
 	}
 
+	private boolean enableColorCodes;
 	private String whisperToFormat;
 	private String whisperFromFormat;
 	private final IOutput console;
