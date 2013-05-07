@@ -162,7 +162,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		this.enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
 		this.opTagFormat = configuration.getConfigValueAsString("chatFormatting.opTagFormat");
 		this.tabListPrefixes = configuration.getConfigValuesAsMap("tabListGroupPrefix");
-		this.enableRegionPrefixes = configuration.getConfigValueAsBoolean("enableRegionPrefixes");
+		this.enableRegionPrefixes = configuration.getConfigValueAsBoolean("nChat.enableRegionPrefixes");
 	}
 
 	private Map<String, String> tabListPrefixes;
