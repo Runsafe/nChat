@@ -5,6 +5,7 @@ import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.events.*;
 import no.runsafe.nchat.handlers.*;
+import no.runsafe.worldguardbridge.WorldGuardInterface;
 
 public class Core extends RunsafeConfigurablePlugin
 {
@@ -14,6 +15,8 @@ public class Core extends RunsafeConfigurablePlugin
 		// TODO: Re-implement channel functionality
 		// TODO: In-game whisper monitoring. Do we want this?
 		// TODO: Implement whispering from the console.
+
+		addComponent(Instances.get("RunsafeWorldGuardBridge").getComponent(WorldGuardInterface.class));
 
 		// Core
 		this.addComponent(Globals.class);
