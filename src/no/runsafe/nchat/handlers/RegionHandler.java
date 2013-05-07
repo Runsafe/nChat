@@ -22,6 +22,7 @@ public class RegionHandler implements IConfigurationChanged
 		for (String region : regions)
 		{
 			String regionName = worldName + "-" + region;
+			player.sendColouredMessage(regionName);
 			if (this.regionTags.containsKey(regionName))
 				return this.regionTags.get(regionName);
 		}
