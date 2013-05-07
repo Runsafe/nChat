@@ -10,6 +10,7 @@ nChat:
   enableChatChannels: true
   enableSpamControl: false
   enableAFKSystem: true
+  enableRegionPrefixes: true
 afkSystem:
   autoTrigger: true
 spamControl:
@@ -44,6 +45,8 @@ worldPrefixes:
   world_nether: '&4[N]'
   world_the_end: '&9[E]'
   console: '&3[?]'
+regionPrefixes:
+  gameroom.pvp_arena: '&c[PvP]'
 channels:
   staff: 'Staff'
 chatMessage:

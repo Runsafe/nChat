@@ -5,7 +5,6 @@ import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.hook.IPlayerNameDecorator;
 import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.output.IOutput;
-import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.Globals;
@@ -17,10 +16,11 @@ import java.util.Map;
 
 public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 {
-	public ChatHandler(Globals globals, IOutput output)
+	public ChatHandler(Globals globals, IOutput output, RegionHandler regionHandler)
 	{
 		this.globals = globals;
 		this.console = output;
+		this.regionHandler = regionHandler;
 	}
 
 	public String getGroupPrefix(RunsafePlayer player)
@@ -86,7 +86,23 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		if (formatName == null) return null;
 
 		replacements.put(Constants.FORMAT_OP, (this.enableOpTag && player.isOP()) ? this.opTagFormat : "");
-		replacements.put(Constants.FORMAT_WORLD, (this.enableWorldPrefixes) ? this.getWorldPrefix(worldName) : worldName);
+
+		String worldReplace = worldName;
+		if (this.enableWorldPrefixes)
+		{
+			if (this.enableRegionPrefixes)
+			{
+				String regionTag = this.regionHandler.getRegionTag(player);
+				if (regionTag != null)
+					worldReplace = regionTag;
+			}
+			else
+			{
+				worldReplace = this.getWorldPrefix(worldName);
+			}
+		}
+
+		replacements.put(Constants.FORMAT_WORLD, worldReplace);
 		replacements.put(Constants.FORMAT_GROUP, (this.enableChatGroupPrefixes) ? this.getGroupPrefix(player) : "");
 		replacements.put(Constants.FORMAT_TAG, (this.enablePlayerTags) ? this.globals.joinList(this.getPlayerTags(player.getName())) : "");
 		replacements.put(Constants.FORMAT_PLAYER_NAME, (this.enableNicknames) ? this.getPlayerNickname(player, editedName) : editedName);
@@ -146,6 +162,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		this.enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
 		this.opTagFormat = configuration.getConfigValueAsString("chatFormatting.opTagFormat");
 		this.tabListPrefixes = configuration.getConfigValuesAsMap("tabListGroupPrefix");
+		this.enableRegionPrefixes = configuration.getConfigValueAsBoolean("enableRegionPrefixes");
 	}
 
 	private Map<String, String> tabListPrefixes;
@@ -157,6 +174,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	private boolean enablePlayerTags;
 	private boolean enableOpTag;
 	private boolean enableColorCodes;
+	private boolean enableRegionPrefixes;
 	private Map<String, String> chatGroupPrefixes;
 	private Map<String, String> worldPrefixes;
 	private Map<String, String> playerNicknames;
@@ -166,4 +184,5 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 	private String playerChatMessage;
 	private String playerSystemMessage;
 	private String playerNameFormat;
+	private RegionHandler regionHandler;
 }

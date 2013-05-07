@@ -1,27 +1,18 @@
 package no.runsafe.nchat;
 
 import no.runsafe.framework.RunsafeConfigurablePlugin;
-import no.runsafe.framework.RunsafePlugin;
-import no.runsafe.framework.configuration.IConfigurationFile;
 import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.events.*;
 import no.runsafe.nchat.handlers.*;
-
-import java.io.InputStream;
 
 public class Core extends RunsafeConfigurablePlugin
 {
 	@Override
 	protected void PluginSetup()
 	{
-		// TODO: Implement an AFK system
 		// TODO: Re-implement channel functionality
-		// TODO: In-game whisper monitoring
-		// TODO: Fix odd death messages not being picked up
-		// TODO: Correct null pointers
-		// TODO: Fix all the shit that is wrong you fucking idiot programmer.
-		// TODO: Fix colour codes being usable in whisper.
+		// TODO: In-game whisper monitoring. Do we want this?
 		// TODO: Implement whispering from the console.
 
 		// Core
@@ -37,6 +28,7 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(MuteHandler.class);
 		this.addComponent(WhisperHandler.class);
 		this.addComponent(SpamHandler.class);
+		this.addComponent(RegionHandler.class);
 
 		// Commands
 		//this.addComponent(ChannelCommand.class);
