@@ -46,7 +46,7 @@ worldPrefixes:
   world_the_end: '&9[E]'
   console: '&3[?]'
 regionPrefixes:
-  gameroom.pvp_arena: '&c[PvP]'
+  gameroom-pvp_arena: '&c[PvP]'
 channels:
   staff: 'Staff'
 chatMessage:

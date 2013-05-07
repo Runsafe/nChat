@@ -21,7 +21,7 @@ public class RegionHandler implements IConfigurationChanged
 		List<String> regions = this.worldGuard.getRegionsAtLocation(player.getLocation());
 		for (String region : regions)
 		{
-			String regionName = worldName + "." + region;
+			String regionName = worldName + "-" + region;
 			if (this.regionTags.containsKey(regionName))
 				return this.regionTags.get(regionName);
 		}
