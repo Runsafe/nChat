@@ -19,12 +19,15 @@ public class RegionHandler implements IConfigurationChanged
 	{
 		String worldName = player.getWorld().getName();
 		List<String> regions = this.worldGuard.getRegionsAtLocation(player.getLocation());
-		for (String region : regions)
+
+		if (regions != null)
 		{
-			String regionName = worldName + "-" + region;
-			player.sendColouredMessage(regionName);
-			if (this.regionTags.containsKey(regionName))
-				return this.regionTags.get(regionName);
+			for (String region : regions)
+			{
+				String regionName = worldName + "-" + region;
+				if (this.regionTags.containsKey(regionName))
+					return this.regionTags.get(regionName);
+			}
 		}
 		return null;
 	}

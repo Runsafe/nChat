@@ -95,6 +95,8 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 				String regionTag = this.regionHandler.getRegionTag(player);
 				if (regionTag != null)
 					worldReplace = regionTag;
+				else
+					worldReplace = this.getWorldPrefix(worldName);
 			}
 			else
 			{
