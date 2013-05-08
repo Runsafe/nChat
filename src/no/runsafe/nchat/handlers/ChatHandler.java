@@ -5,6 +5,7 @@ import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.hook.IPlayerNameDecorator;
 import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.server.player.RunsafeFakePlayer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.Globals;
@@ -90,7 +91,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		String worldReplace = worldName;
 		if (this.enableWorldPrefixes)
 		{
-			if (this.enableRegionPrefixes)
+			if (this.enableRegionPrefixes && !(player instanceof RunsafeFakePlayer))
 			{
 				String regionTag = this.regionHandler.getRegionTag(player);
 				if (regionTag != null)
