@@ -21,7 +21,7 @@ public enum Death
 	FALL_DOOM(" was doomed to fall", false),
 	FIRE(" went up in flames", false),
 	BURNING(" burned to death", false),
-	BURNING_WHILE(" was burnt to a crisp while fighting ", true),
+	BURNING_WHILE(" was burnt to a crisp whilst fighting ", true),
 	FIRE_WHILE(" walked into fire whilst fighting ", true),
 	SLAIN(" was slain by ", true),
 	SHOT(" was shot by ", true),
