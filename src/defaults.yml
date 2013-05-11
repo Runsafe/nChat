@@ -11,6 +11,8 @@ nChat:
   enableSpamControl: false
   enableAFKSystem: true
   enableRegionPrefixes: true
+hideDeaths:
+  - pvparena
 afkSystem:
   autoTrigger: true
 spamControl:
