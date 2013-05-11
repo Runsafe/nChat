@@ -24,11 +24,11 @@ public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 	@Override
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent runsafePlayerDeathEvent)
 	{
+		String originalMessage = runsafePlayerDeathEvent.getDeathMessage();
 		runsafePlayerDeathEvent.setDeathMessage("");
 
 		if (!this.hideDeathWorlds.contains(runsafePlayerDeathEvent.getEntity().getWorld().getName()))
 		{
-			String originalMessage = runsafePlayerDeathEvent.getDeathMessage();
 			Death deathType = this.deathParser.getDeathType(originalMessage);
 			if (deathType == Death.UNKNOWN)
 			{
