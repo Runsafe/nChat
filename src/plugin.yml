@@ -20,7 +20,7 @@ commands:
   whisper:
     description: Allows you to whisper a player
     usage: /whisper <player> <message>
-    aliases: [w, message, m, tell, t]
+    aliases: [w, message, m, tell, t, msg]
   reply:
     description: Allows you to reply to a whisper easily
     usage: /reply <message>
