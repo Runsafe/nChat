@@ -15,9 +15,9 @@ import java.util.Map;
 
 public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 {
-	public PlayerDeath(IOutput console)
+	public PlayerDeath(IOutput output)
 	{
-		this.console = console;
+		this.output = output;
 	}
 
 	@Override
@@ -32,9 +32,9 @@ public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 			String deathType = cause.getCause().name().toLowerCase();
 
 			if (this.deathMessages.containsKey(deathType))
-				this.console.broadcastColoured(String.format(this.deathMessages.get(deathType), player.getPrettyName()));
+				this.output.broadcastColoured(String.format(this.deathMessages.get(deathType), player.getPrettyName()));
 			else
-				this.console.warning(String.format("%s experienced an unregistered death: %s", player.getName(), deathType));
+				this.output.warning(String.format("%s experienced an unregistered death: %s", player.getName(), deathType));
 		}
 	}
 
@@ -45,7 +45,7 @@ public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 		this.deathMessages = iConfiguration.getConfigValuesAsMap("deathMessages");
 	}
 
-	private final IOutput console;
+	private final IOutput output;
 	private List<String> hideDeathWorlds = new ArrayList<String>();
 	private Map<String, String> deathMessages = new HashMap<String, String>();
 }
