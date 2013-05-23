@@ -31,8 +31,7 @@ public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 		RunsafeEntity entity = event.getEntity();
 		if (!this.hideDeathWorlds.contains(entity.getWorld().getName()))
 		{
-			RunsafeServer.Instance.broadcastMessage("Event Name: " + event.getEventName());
-			RunsafeServer.Instance.broadcastMessage("Cause of dmg: " + event.getEntity().getLastDamageCause().getEventName());
+			RunsafeServer.Instance.broadcastMessage("Cause of dmg: " + event.getEntity().getLastDamageCause().getCause().name());
 			RunsafeServer.Instance.broadcastMessage("Killer: " + event.getEntity().getLastDamageCause().getEntity().getEntityType().getName());
 		}
 	}
