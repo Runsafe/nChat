@@ -24,17 +24,16 @@ public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 	@Override
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
-		//String originalMessage = event.getDeathMessage();
 		event.setDeathMessage("");
-
 		RunsafePlayer player = event.getEntity();
+
 		if (!this.hideDeathWorlds.contains(player.getWorld().getName()))
 		{
 			RunsafeEntityDamageEvent cause = player.getLastDamageCause();
 			String deathType = cause.getCause().name().toLowerCase();
 
 			if (this.deathMessages.containsKey(deathType))
-				RunsafeServer.Instance.broadcastMessage(String.format(this.deathMessages.get(deathType), player.getPrettyName()));
+				this.console.broadcastColoured(String.format(this.deathMessages.get(deathType), player.getPrettyName()));
 			else
 				this.console.warning(String.format("%s experienced an unregistered death: %s", player.getName(), deathType));
 		}
