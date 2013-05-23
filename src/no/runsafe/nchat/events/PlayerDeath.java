@@ -5,34 +5,38 @@ import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.event.player.IPlayerDeathEvent;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeServer;
-import no.runsafe.framework.server.entity.RunsafeEntity;
+import no.runsafe.framework.server.event.entity.RunsafeEntityDamageEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerDeathEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
-import no.runsafe.nchat.Death;
-import no.runsafe.nchat.DeathParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 {
-	public PlayerDeath(DeathParser deathParser, IOutput console)
+	public PlayerDeath(IOutput console)
 	{
-		this.deathParser = deathParser;
 		this.console = console;
 	}
 
 	@Override
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
-		String originalMessage = event.getDeathMessage();
+		//String originalMessage = event.getDeathMessage();
 		event.setDeathMessage("");
 
-		RunsafeEntity entity = event.getEntity();
-		if (!this.hideDeathWorlds.contains(entity.getWorld().getName()))
+		RunsafePlayer player = event.getEntity();
+		if (!this.hideDeathWorlds.contains(player.getWorld().getName()))
 		{
-			RunsafeServer.Instance.broadcastMessage("Cause of dmg: " + event.getEntity().getLastDamageCause().getCause().name());
-			RunsafeServer.Instance.broadcastMessage("Killer: " + event.getEntity().getLastDamageCause().getEntity().getEntityType().getEntityType().getName());
+			RunsafeEntityDamageEvent cause = player.getLastDamageCause();
+			String deathType = cause.getCause().name().toLowerCase();
+
+			if (this.deathMessages.containsKey(deathType))
+				RunsafeServer.Instance.broadcastMessage(String.format(this.deathMessages.get(deathType), player.getPrettyName()));
+			else
+				this.console.broadcastColoured(String.format("%s experienced an unregistered death: %s", player.getName(), deathType));
 		}
 	}
 
@@ -40,9 +44,10 @@ public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
 		this.hideDeathWorlds = iConfiguration.getConfigValueAsList("hideDeaths");
+		this.deathMessages = iConfiguration.getConfigValuesAsMap("deathMessages");
 	}
 
-	private final DeathParser deathParser;
 	private final IOutput console;
 	private List<String> hideDeathWorlds = new ArrayList<String>();
+	private Map<String, String> deathMessages = new HashMap<String, String>();
 }
