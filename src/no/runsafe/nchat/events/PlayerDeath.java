@@ -5,6 +5,7 @@ import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.event.player.IPlayerDeathEvent;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeServer;
+import no.runsafe.framework.server.entity.RunsafeEntity;
 import no.runsafe.framework.server.event.player.RunsafePlayerDeathEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Death;
@@ -22,54 +23,17 @@ public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 	}
 
 	@Override
-	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent runsafePlayerDeathEvent)
+	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
-		String originalMessage = runsafePlayerDeathEvent.getDeathMessage();
-		runsafePlayerDeathEvent.setDeathMessage("");
+		String originalMessage = event.getDeathMessage();
+		event.setDeathMessage("");
 
-		if (!this.hideDeathWorlds.contains(runsafePlayerDeathEvent.getEntity().getWorld().getName()))
+		RunsafeEntity entity = event.getEntity();
+		if (!this.hideDeathWorlds.contains(entity.getWorld().getName()))
 		{
-			Death deathType = this.deathParser.getDeathType(originalMessage);
-			if (deathType == Death.UNKNOWN)
-			{
-				console.writeColoured("Unknown death message detected: \"%s\"", originalMessage);
-			}
-			String deathName = deathType.name().toLowerCase();
-
-			String deathTag = deathName;
-			String entityName = null;
-			String killerName = null;
-
-			if (deathType.hasEntityInvolved())
-			{
-				killerName = this.deathParser.getInvolvedEntityName(originalMessage, deathType);
-				entityName = this.deathParser.isEntityName(killerName);
-				deathTag = String.format(
-					"%s_%s",
-					deathName,
-					(entityName != null ? entityName : "Player")
-				);
-			}
-			String customDeathMessage = this.deathParser.getCustomDeathMessage(deathTag);
-
-			if (customDeathMessage == null)
-			{
-				console.writeColoured("No custom death message '%s' defined, using original..", deathTag);
-				return;
-			}
-			RunsafePlayer player = runsafePlayerDeathEvent.getEntity();
-
-			if (deathType.hasEntityInvolved() && entityName == null)
-			{
-				RunsafePlayer killer = RunsafeServer.Instance.getPlayer(killerName);
-
-				if (killer != null)
-					RunsafeServer.Instance.broadcastMessage(String.format(customDeathMessage, player.getPrettyName(), killer.getPrettyName()));
-			}
-			else
-			{
-				RunsafeServer.Instance.broadcastMessage(String.format(customDeathMessage, player.getPrettyName()));
-			}
+			RunsafeServer.Instance.broadcastMessage("Event Name: " + event.getEventName());
+			RunsafeServer.Instance.broadcastMessage("Cause of dmg: " + event.getEntity().getLastDamageCause().getEventName());
+			RunsafeServer.Instance.broadcastMessage("Killer: " + event.getEntity().getLastDamageCause().getEntity().getEntityType().getName());
 		}
 	}
 

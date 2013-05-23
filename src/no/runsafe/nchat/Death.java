@@ -2,58 +2,54 @@ package no.runsafe.nchat;
 
 public enum Death
 {
-	ANVIL(" was squashed by a falling anvil", false),
-	CACTUS(" was pricked to death", false),
-	CACTUS_FLEE(" walked into a cactus whilst trying to escape ", true),
-	ARROW(" was shot by arrow", false),
-	DROWNED(" drowned", false),
-	EXPLOSION(" blew up", false),
-	EXPLOSION_BY(" was blown up by ", true),
-	FALL(" hit the ground too hard", false),
-	FALL_LADDER(" fell off a ladder", false),
-	FALL_VINE(" fell off some vines", false),
-	FALL_WATER(" fell out of the water", false),
-	FALL_HIGH(" fell from a high place", false),
-	FALL_FIRE(" fell into a patch of fire", false),
-	FALL_CACTI(" fell into a patch of cacti", false),
-	FALL_GHAST(" was blown from a high place", false),
-	FALL_DOOMED(" was doomed to fall by ", true),
-	FALL_DOOM(" was doomed to fall", false),
-	FIRE(" went up in flames", false),
-	BURNING(" burned to death", false),
-	BURNING_WHILE(" was burnt to a crisp whilst fighting ", true),
-	FIRE_WHILE(" walked into fire whilst fighting ", true),
-	SLAIN(" was slain by ", true),
-	SHOT(" was shot by ", true),
-	FIREBALL(" was fireballed by ", true),
-	KILLED(" was killed by ", true),
-	WEAPON1(" got finished off by ", true),
-	WEAPON2(" got slain by ", true),
-	LAVA(" tried to swim in lava", false),
-	LAVA_FLEE(" tried to swim in lava while trying to escape ", true),
-	UNKNOWN(" died", false),
-	MAGIC(" was killed by magic", false),
-	STARVATION(" starved to death", false),
-	SUFFOCATION(" suffocated in a wall", false),
-	THORNS(" was killed while trying to hurt ", true),
-	PUMMELED(" was pummeled by ", true),
-	VOID(" fell out of the world", false),
-	VOID_HIGH(" fell out of the world", false),
-	VOID_KNOCK(" was knocked into the void by ", true),
-	WITHER(" withered away", false);
+	ANVIL("%s was squashed by a falling anvil"),
+	CACTUS("%s was pricked to death"),
+	CACTUS_FLEE("%s walked into a cactus whilst trying to escape %s"),
+	ARROW("%s was shot by arrow"),
+	DROWNED("%s drowned"),
+	DROWNED_FLEE("%s drowned while trying to escape %s"),
+	EXPLOSION("%s blew up"),
+	EXPLOSION_BY("%s was blown up by %s"),
+	FALL("%s hit the ground too hard"),
+	FALL_LADDER("%s fell off a ladder"),
+	FALL_VINE("%s fell off some vines"),
+	FALL_WATER("%s fell out of the water"),
+	FALL_HIGH("%s fell from a high place"),
+	FALL_FIRE("%s fell into a patch of fire"),
+	FALL_CACTI("%s fell into a patch of cacti"),
+	FALL_GHAST("%s was blown from a high place"),
+	FALL_DOOMED("%s was doomed to fall by %s"),
+	FALL_DOOM("%s was doomed to fall"),
+	FALL_VINE_PUSH("%s was shot off some vines by %s"),
+	FALL_LADDER_PUSH("%s was shot off a ladder by %s"),
+	FIRE("%s went up in flames"),
+	BURNING("%s burned to death"),
+	BURNING_WHILE("%s was burnt to a crisp whilst fighting %s"),
+	FIRE_WHILE("%s walked into fire whilst fighting %s"),
+	SLAIN("%s was slain by %s"),
+	SHOT("%s was shot by %s"),
+	FIREBALL("%s was fireballed by %s"),
+	KILLED("%s was killed by %s"),
+	WEAPON1("%s got finished off by %s using %s"),
+	WEAPON2("%s got slain by %s using %s"),
+	LAVA("%s tried to swim in lava"),
+	LAVA_FLEE("%s tried to swim in lava while trying to escape %s"),
+	UNKNOWN("%s died"),
+	MAGIC("%s was killed by magic"),
+	STARVATION("%s starved to death"),
+	SUFFOCATION("%s suffocated in a wall"),
+	THORNS("%s was killed while trying to hurt %s"),
+	PUMMELED("%s was pummeled by %s"),
+	VOID("%s fell out of the world"),
+	VOID_HIGH("%s fell from a high place and fell out of the world"),
+	VOID_KNOCK("%s was knocked into the void by %s"),
+	WITHER("%s withered away");
 
 	private final String defaultMessage;
-	private final boolean entityInvolved;
 
-	Death(String defaultMessage, boolean entityInvolved)
+	Death(String defaultMessage)
 	{
 		this.defaultMessage = defaultMessage;
-		this.entityInvolved = entityInvolved;
-	}
-
-	public boolean hasEntityInvolved()
-	{
-		return this.entityInvolved;
 	}
 
 	public String getDefaultMessage()

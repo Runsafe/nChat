@@ -2,12 +2,13 @@ package no.runsafe.nchat;
 
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
+import no.runsafe.framework.server.entity.RunsafeEntity;
 
 import java.util.Map;
 
 public class DeathParser implements IConfigurationChanged
 {
-	public Death getDeathType(String deathMessage)
+	public Death getDeathType(String deathMessage, String killerName)
 	{
 		for (Death death : Death.values())
 			if (deathMessage.contains(death.getDefaultMessage()))
