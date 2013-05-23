@@ -36,7 +36,7 @@ public class PlayerDeath implements IPlayerDeathEvent, IConfigurationChanged
 			if (this.deathMessages.containsKey(deathType))
 				RunsafeServer.Instance.broadcastMessage(String.format(this.deathMessages.get(deathType), player.getPrettyName()));
 			else
-				this.console.broadcastColoured(String.format("%s experienced an unregistered death: %s", player.getName(), deathType));
+				this.console.warning(String.format("%s experienced an unregistered death: %s", player.getName(), deathType));
 		}
 	}
 
