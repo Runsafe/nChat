@@ -4,6 +4,7 @@ import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.output.ChatColour;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 
@@ -12,31 +13,34 @@ import java.util.logging.Level;
 
 public class WhisperHandler implements IConfigurationChanged
 {
-	public WhisperHandler(IOutput console, ChatHandler chatHandler)
+	public WhisperHandler(IOutput console)
 	{
 		this.console = console;
 		this.lastWhisperList = new HashMap<String, String>();
-		this.chatHandler = chatHandler;
 	}
 
-	public void sendWhisper(RunsafePlayer fromPlayer, RunsafePlayer toPlayer, String message)
+	public void sendWhisper(ICommandExecutor sender, RunsafePlayer toPlayer, String message)
 	{
-		if (!(this.enableColorCodes || fromPlayer.hasPermission("runsafe.nchat.colors")))
+		if (!(this.enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
 			message = ChatColour.Strip(message);
 
-		fromPlayer.sendColouredMessage(
+		sender.sendColouredMessage(
 			this.whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
 		);
+
+		String senderName = (sender instanceof RunsafePlayer ? ((RunsafePlayer) sender).getPrettyName() : this.consoleWhisperName);
+
 		toPlayer.sendColouredMessage(
-			this.whisperFromFormat.replace("#source", fromPlayer.getPrettyName()).replace("#message", message)
+			this.whisperFromFormat.replace("#source", senderName).replace("#message", message)
 		);
 
-		this.setLastWhisperedBy(toPlayer, fromPlayer);
+		if (sender instanceof RunsafePlayer)
+			this.setLastWhisperedBy(toPlayer, (RunsafePlayer) sender);
 
 		console.writeColoured(
 			"%s -> %s: %s",
 			Level.INFO,
-			fromPlayer.getPrettyName(),
+			senderName,
 			toPlayer.getPrettyName(),
 			message
 		);
@@ -77,6 +81,7 @@ public class WhisperHandler implements IConfigurationChanged
 		this.whisperToFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
 		this.whisperFromFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
 		this.enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
+		this.consoleWhisperName = configuration.getConfigValueAsString("console.whisper");
 	}
 
 	private boolean enableColorCodes;
@@ -84,5 +89,5 @@ public class WhisperHandler implements IConfigurationChanged
 	private String whisperFromFormat;
 	private final IOutput console;
 	private final HashMap<String, String> lastWhisperList;
-	private final ChatHandler chatHandler;
+	private String consoleWhisperName;
 }

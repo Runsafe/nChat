@@ -15,6 +15,8 @@ hideDeaths:
   - pvparena
 afkSystem:
   autoTrigger: true
+console:
+  whisper: '&3Server'
 spamControl:
   muteChat: false
   suppressKickMessages: false

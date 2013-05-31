@@ -1,9 +1,9 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.command.ExecutableCommand;
-import no.runsafe.framework.command.player.PlayerCommand;
 import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
+import no.runsafe.framework.server.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
@@ -11,7 +11,7 @@ import no.runsafe.nchat.handlers.WhisperHandler;
 
 import java.util.HashMap;
 
-public class WhisperCommand extends PlayerCommand
+public class WhisperCommand extends ExecutableCommand
 {
 	public WhisperCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
 	{
@@ -22,20 +22,28 @@ public class WhisperCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
+	public String OnExecute(ICommandExecutor executor, HashMap<String, String> parameters)
 	{
-		RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args.get("player"));
+		String targetPlayerName = parameters.get("player");
+		RunsafePlayer target = RunsafeServer.Instance.getPlayer(targetPlayerName);
 
-		if (targetPlayer == null)
-			return String.format(Constants.WHISPER_NO_TARGET, args.get("player"));
+		if (target == null)
+			return String.format(Constants.WHISPER_NO_TARGET, targetPlayerName);
 
-		if (!this.whisperHandler.canWhisper(player, targetPlayer))
-			return String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayer.getName());
+		if (target instanceof RunsafeAmbiguousPlayer)
+			return target.toString();
 
-		if (this.muteHandler.isPlayerMuted(player))
-			return Constants.CHAT_MUTED;
+		if (executor instanceof RunsafePlayer)
+		{
+			RunsafePlayer playerExecutor = (RunsafePlayer) executor;
+			if (!this.whisperHandler.canWhisper(playerExecutor, target))
+				return String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayerName);
 
-		this.whisperHandler.sendWhisper(player, targetPlayer, args.get("message"));
+			if (this.muteHandler.isPlayerMuted(playerExecutor))
+				return Constants.CHAT_MUTED;
+		}
+
+		this.whisperHandler.sendWhisper(executor, target, parameters.get("message"));
 		return null;
 	}
 
