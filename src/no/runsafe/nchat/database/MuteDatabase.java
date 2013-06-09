@@ -1,10 +1,12 @@
 package no.runsafe.nchat.database;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import no.runsafe.framework.database.IDatabase;
 import no.runsafe.framework.database.ISchemaChanges;
 import no.runsafe.framework.output.IOutput;
 
-import java.sql.PreparedStatement;
+import javax.annotation.Nullable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class MuteDatabase implements ISchemaChanges
 			"CREATE TABLE `nchat_muted` (" +
 				"`player` VARCHAR(255) NULL," +
 				"PRIMARY KEY (`player`)" +
-			")"
+				")"
 		);
 		queries.put(1, sql);
 		return queries;
@@ -43,59 +45,29 @@ public class MuteDatabase implements ISchemaChanges
 	public List<String> getMuteList()
 	{
 		console.fine("Populating mute list from database");
-		PreparedStatement fetch = database.prepare(
-				"SELECT player FROM nchat_muted"
+		return Lists.transform(
+			database.QueryColumn("SELECT player FROM nchat_muted"),
+			new Function<Object, String>()
+			{
+				@Override
+				public String apply(@Nullable Object o)
+				{
+					return (String) o;
+				}
+			}
 		);
-
-		try
-		{
-			ResultSet data = fetch.executeQuery();
-			ArrayList<String> result = new ArrayList<String>();
-			while (data.next())
-				result.add(data.getString("player"));
-			return result;
-		}
-		catch (SQLException e)
-		{
-			console.write(e.getMessage());
-			return null;
-		}
 	}
 
 	public void mutePlayer(String playerName)
 	{
 		console.fine("Updating mute database with " + playerName);
-		PreparedStatement update = database.prepare(
-			"INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)"
-		);
-
-		try
-		{
-			update.setString(1, playerName);
-			update.executeUpdate();
-		}
-		catch (SQLException e)
-		{
-			console.write(e.getMessage());
-		}
+		database.Update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", playerName);
 	}
 
 	public void unMutePlayer(String playerName)
 	{
 		console.fine("Updating mute database with removal of " + playerName);
-		PreparedStatement update = database.prepare(
-			"DELETE FROM nchat_muted WHERE player = ?"
-		);
-
-		try
-		{
-			update.setString(1, playerName);
-			update.executeUpdate();
-		}
-		catch (SQLException e)
-		{
-			console.write(e.getMessage());
-		}
+		database.Execute("DELETE FROM nchat_muted WHERE player = ?", playerName);
 	}
 
 	private final IOutput console;
