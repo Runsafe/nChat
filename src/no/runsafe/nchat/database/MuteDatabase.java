@@ -4,11 +4,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import no.runsafe.framework.database.IDatabase;
 import no.runsafe.framework.database.ISchemaChanges;
+import no.runsafe.framework.database.Value;
 import no.runsafe.framework.output.IOutput;
 
 import javax.annotation.Nullable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,12 +46,12 @@ public class MuteDatabase implements ISchemaChanges
 		console.fine("Populating mute list from database");
 		return Lists.transform(
 			database.QueryColumn("SELECT player FROM nchat_muted"),
-			new Function<Object, String>()
+			new Function<Value, String>()
 			{
 				@Override
-				public String apply(@Nullable Object o)
+				public String apply(@Nullable Value o)
 				{
-					return (String) o;
+					return o.String();
 				}
 			}
 		);
