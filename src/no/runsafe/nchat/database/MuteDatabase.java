@@ -2,9 +2,9 @@ package no.runsafe.nchat.database;
 
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.database.IDatabase;
+import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaChanges;
-import no.runsafe.framework.internal.database.Row;
-import no.runsafe.framework.internal.database.Set;
+import no.runsafe.framework.api.database.ISet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,9 +43,9 @@ public class MuteDatabase implements ISchemaChanges
 	{
 		console.fine("Populating mute list from database");
 		List<String> mutedPlayers = new ArrayList<String>();
-		Set data = this.database.Query("SELECT player from nchat_muted");
+		ISet data = this.database.Query("SELECT player from nchat_muted");
 
-		for (Row row : data)
+		for (IRow row : data)
 			mutedPlayers.add(row.String("player"));
 
 		return mutedPlayers;
