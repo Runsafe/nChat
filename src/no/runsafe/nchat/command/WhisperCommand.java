@@ -1,7 +1,7 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.ICommandExecutor;
-import no.runsafe.framework.internal.command.ExecutableCommand;
+import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
