@@ -1,12 +1,12 @@
 package no.runsafe.nchat.events;
 
-import no.runsafe.framework.configuration.IConfiguration;
-import no.runsafe.framework.event.IConfigurationChanged;
-import no.runsafe.framework.event.player.IPlayerDeathEvent;
-import no.runsafe.framework.output.IOutput;
-import no.runsafe.framework.server.event.entity.RunsafeEntityDamageEvent;
-import no.runsafe.framework.server.event.player.RunsafePlayerDeathEvent;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.event.player.IPlayerDeathEvent;
+import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.minecraft.event.entity.RunsafeEntityDamageEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

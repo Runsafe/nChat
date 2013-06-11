@@ -1,6 +1,6 @@
 package no.runsafe.nchat;
 
-import no.runsafe.framework.output.ChatColour;
+import no.runsafe.framework.text.ChatColour;
 
 public class Constants
 {

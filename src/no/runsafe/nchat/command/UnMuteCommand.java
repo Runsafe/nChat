@@ -1,9 +1,9 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.command.player.PlayerCommand;
-import no.runsafe.framework.output.IOutput;
-import no.runsafe.framework.server.RunsafeServer;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.command.player.PlayerCommand;
+import no.runsafe.framework.minecraft.RunsafeServer;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
 

@@ -1,9 +1,9 @@
 package no.runsafe.nchat.events;
 
-import no.runsafe.framework.event.player.IPlayerChatEvent;
-import no.runsafe.framework.output.ChatColour;
-import no.runsafe.framework.server.event.player.RunsafePlayerChatEvent;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.event.player.IPlayerChatEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.text.ChatColour;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.ChatHandler;
 import no.runsafe.nchat.handlers.MuteHandler;

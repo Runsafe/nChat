@@ -1,7 +1,7 @@
 package no.runsafe.nchat.events;
 
-import no.runsafe.framework.event.player.IPlayerCustomEvent;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
 
 public class VanishEvent implements IPlayerCustomEvent

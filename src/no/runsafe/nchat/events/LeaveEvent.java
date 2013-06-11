@@ -1,10 +1,10 @@
 package no.runsafe.nchat.events;
 
-import no.runsafe.framework.configuration.IConfiguration;
-import no.runsafe.framework.event.IConfigurationChanged;
-import no.runsafe.framework.event.player.IPlayerQuitEvent;
-import no.runsafe.framework.server.event.player.RunsafePlayerQuitEvent;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.event.player.IPlayerQuitEvent;
+import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerQuitEvent;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
 import no.runsafe.nchat.handlers.SpamHandler;
 import no.runsafe.nchat.handlers.WhisperHandler;

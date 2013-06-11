@@ -1,7 +1,5 @@
 package no.runsafe.nchat;
 
-import java.util.HashMap;
-
 public class PlayerSpamInfo
 {
 	public PlayerSpamInfo()

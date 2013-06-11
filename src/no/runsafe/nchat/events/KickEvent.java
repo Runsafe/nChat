@@ -1,8 +1,8 @@
 package no.runsafe.nchat.events;
 
-import no.runsafe.framework.event.player.IPlayerKickEvent;
-import no.runsafe.framework.server.event.player.RunsafePlayerKickEvent;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.event.player.IPlayerKickEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerKickEvent;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.SpamHandler;
 import no.runsafe.nchat.handlers.WhisperHandler;
 
