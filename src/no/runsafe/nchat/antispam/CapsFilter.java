@@ -11,7 +11,7 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 {
 	public CapsFilter()
 	{
-		this.caps = Pattern.compile("[A-Z]{1}");
+		this.caps = Pattern.compile("[A-Z]");
 	}
 
 	@Override
