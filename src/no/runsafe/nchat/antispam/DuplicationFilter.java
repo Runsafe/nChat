@@ -59,8 +59,8 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 	@Override
 	public void OnConfigurationChanged(IConfiguration config)
 	{
-		this.isEnabled = config.getConfigValueAsBoolean("enableDuplicationFilter");
-		this.cooldown = config.getConfigValueAsInt("duplicationFilterCooldown");
+		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableDuplicationFilter");
+		this.cooldown = config.getConfigValueAsInt("antiSpam.duplicationFilterCooldown");
 	}
 
 	private boolean isEnabled;
