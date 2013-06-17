@@ -8,7 +8,6 @@ nChat:
   enableOpTag: true
   enableColorCodes: true
   enableChatChannels: true
-  enableSpamControl: false
   enableAFKSystem: true
   enableRegionPrefixes: true
 hideDeaths:
@@ -17,16 +16,6 @@ afkSystem:
   autoTrigger: true
 console:
   whisper: '&3Server'
-spamControl:
-  muteChat: false
-  suppressKickMessages: false
-  spamFilterFloodTimer: 4
-  spamFilterFloodAmount: 3
-  spamFilterRepeatTimer: 20
-  spamFilterRepeatAmount: 4
-  spamFilterKickReason: Spamming
-  spamFilterKicksBeforeBan: 3
-  spamFilterBanReason: Spamming
 chatGroupPrefixes:
   admin: '&4[A]'
   moderator: '&e[M]'

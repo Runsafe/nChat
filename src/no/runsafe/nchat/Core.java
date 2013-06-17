@@ -14,7 +14,6 @@ public class Core extends RunsafeConfigurablePlugin
 	{
 		// TODO: Re-implement channel functionality
 		// TODO: In-game whisper monitoring. Do we want this?
-		// TODO: Implement whispering from the console.
 
 		addComponent(Instances.get("RunsafeWorldGuardBridge").getComponent(WorldGuardInterface.class));
 
@@ -29,7 +28,6 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(ChatHandler.class);
 		this.addComponent(MuteHandler.class);
 		this.addComponent(WhisperHandler.class);
-		this.addComponent(SpamHandler.class);
 		this.addComponent(RegionHandler.class);
 
 		// Commands

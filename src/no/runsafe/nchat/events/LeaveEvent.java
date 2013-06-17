@@ -6,16 +6,14 @@ import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerQuitEvent;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
-import no.runsafe.nchat.handlers.SpamHandler;
 import no.runsafe.nchat.handlers.WhisperHandler;
 
 public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 {
-	public LeaveEvent(ChatHandler chatHandler, WhisperHandler whisperHandler, SpamHandler spamHandler)
+	public LeaveEvent(ChatHandler chatHandler, WhisperHandler whisperHandler)
 	{
 		this.chatHandler = chatHandler;
 		this.whisperHandler = whisperHandler;
-		this.spamHandler = spamHandler;
 	}
 
 	@Override
@@ -23,7 +21,6 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 	{
 		RunsafePlayer player = runsafePlayerQuitEvent.getPlayer();
 		runsafePlayerQuitEvent.setQuitMessage(this.chatHandler.formatPlayerSystemMessage(this.leaveServerMessage, player));
-		this.spamHandler.flushPlayer(player);
 		this.whisperHandler.deleteLastWhisperedBy(player);
 	}
 
@@ -35,6 +32,5 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 
 	private final ChatHandler chatHandler;
 	private final WhisperHandler whisperHandler;
-	private final SpamHandler spamHandler;
 	private String leaveServerMessage;
 }
