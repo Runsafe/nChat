@@ -50,9 +50,9 @@ public class FloodFilter implements ISpamFilter, IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration config)
 	{
-		this.isEnabled = config.getConfigValueAsBoolean("enableFloodFilter");
-		this.threshold = config.getConfigValueAsInt("floodFilterThreshold");
-		this.period = config.getConfigValueAsInt("floodFilterPeriod");
+		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableFloodFilter");
+		this.threshold = config.getConfigValueAsInt("antiSpam.floodFilterThreshold");
+		this.period = config.getConfigValueAsInt("antiSpam.floodFilterPeriod");
 	}
 
 	private boolean isEnabled;

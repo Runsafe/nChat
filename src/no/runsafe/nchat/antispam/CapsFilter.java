@@ -35,8 +35,8 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration config)
 	{
-		this.isEnabled = config.getConfigValueAsBoolean("enableCapsFilter");
-		this.percent = config.getConfigValueAsInt("capsFilterPercent");
+		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableCapsFilter");
+		this.percent = config.getConfigValueAsInt("antiSpam.capsFilterPercent");
 	}
 
 	private boolean isEnabled;

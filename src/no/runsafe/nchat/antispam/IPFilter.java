@@ -27,7 +27,7 @@ public class IPFilter implements ISpamFilter, IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration config)
 	{
-		this.isEnabled = config.getConfigValueAsBoolean("enableIPFilter");
+		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableIPFilter");
 	}
 
 	private Pattern IPv4Address;
