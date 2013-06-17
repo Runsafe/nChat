@@ -16,9 +16,9 @@ public class IPFilter implements ISpamFilter, IConfigurationChanged
 	@Override
 	public String processString(RunsafePlayer player, String message)
 	{
-		if (this.isEnabled && this.IPv4Address.matcher(message.replaceAll("\\s*", "")).matches())
+		if (this.isEnabled && this.IPv4Address.matcher(message.replaceAll("\\s*", "")).find())
 		{
-			player.sendColouredMessage("&cIt appears you were trying to advertise, I am afraid we do not allow that.");
+			player.sendColouredMessage("&cResorting to advertising your server on other servers is pathetic.");
 			return null;
 		}
 		return message;

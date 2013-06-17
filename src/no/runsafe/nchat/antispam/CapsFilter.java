@@ -20,14 +20,11 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 		if (this.isEnabled)
 		{
 			Matcher matcher = this.caps.matcher(message);
-			if (matcher.matches())
-			{
-				int count = 0;
-				while (matcher.find()) count++;
+			int count = 0;
+			while (matcher.find()) count++;
 
-				if ((count * 100) / message.length() >= this.percent)
-					return message.toLowerCase();
-			}
+			if ((count * 100) / message.length() >= this.percent)
+				return message.toLowerCase();
 		}
 		return message;
 	}
