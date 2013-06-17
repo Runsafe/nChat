@@ -13,6 +13,12 @@ nChat:
 antiSpam:
   enableDuplicationFilter: true
   duplicationFilterCooldown: 5
+  enableIPFilter: true
+  enableFloodFilter: true
+  floodFilterThreshold: 3
+  floodFilterPeriod: 5
+  enableCapsFilter: true
+  capsFilterPercent: 90
 hideDeaths:
   - pvparena
 afkSystem:
