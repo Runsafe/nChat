@@ -1,6 +1,8 @@
 package no.runsafe.nchat;
 
 import no.runsafe.framework.RunsafeConfigurablePlugin;
+import no.runsafe.nchat.antispam.DuplicationFilter;
+import no.runsafe.nchat.antispam.SpamHandler;
 import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.events.*;
@@ -22,6 +24,10 @@ public class Core extends RunsafeConfigurablePlugin
 
 		// Database
 		this.addComponent(MuteDatabase.class);
+
+		// Anti-spam
+		this.addComponent(DuplicationFilter.class);
+		this.addComponent(SpamHandler.class);
 
 		// Handlers
 		this.addComponent(ChatChannelHandler.class);

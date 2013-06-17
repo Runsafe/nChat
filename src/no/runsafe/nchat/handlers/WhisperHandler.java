@@ -7,43 +7,51 @@ import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.framework.text.ChatColour;
+import no.runsafe.nchat.antispam.SpamHandler;
 
 import java.util.HashMap;
 import java.util.logging.Level;
 
 public class WhisperHandler implements IConfigurationChanged
 {
-	public WhisperHandler(IOutput console)
+	public WhisperHandler(IOutput console, SpamHandler spamHandler)
 	{
 		this.console = console;
+		this.spamHandler = spamHandler;
 		this.lastWhisperList = new HashMap<String, String>();
 	}
 
 	public void sendWhisper(ICommandExecutor sender, RunsafePlayer toPlayer, String message)
 	{
-		if (!(this.enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
-			message = ChatColour.Strip(message);
-
-		sender.sendColouredMessage(
-			this.whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
-		);
-
-		String senderName = (sender instanceof RunsafePlayer ? ((RunsafePlayer) sender).getPrettyName() : this.consoleWhisperName);
-
-		toPlayer.sendColouredMessage(
-			this.whisperFromFormat.replace("#source", senderName).replace("#message", message)
-		);
-
 		if (sender instanceof RunsafePlayer)
-			this.setLastWhisperedBy(toPlayer, (RunsafePlayer) sender);
+			message = this.spamHandler.getFilteredMessage((RunsafePlayer) sender, message);
 
-		console.writeColoured(
-			"%s -> %s: %s",
-			Level.INFO,
-			senderName,
-			toPlayer.getPrettyName(),
-			message
-		);
+		if (message != null)
+		{
+			if (!(this.enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
+				message = ChatColour.Strip(message);
+
+			sender.sendColouredMessage(
+				this.whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
+			);
+
+			String senderName = (sender instanceof RunsafePlayer ? ((RunsafePlayer) sender).getPrettyName() : this.consoleWhisperName);
+
+			toPlayer.sendColouredMessage(
+				this.whisperFromFormat.replace("#source", senderName).replace("#message", message)
+			);
+
+			if (sender instanceof RunsafePlayer)
+				this.setLastWhisperedBy(toPlayer, (RunsafePlayer) sender);
+
+			console.writeColoured(
+				"%s -> %s: %s",
+				Level.INFO,
+				senderName,
+				toPlayer.getPrettyName(),
+				message
+			);
+		}
 	}
 
 	private void setLastWhisperedBy(RunsafePlayer player, RunsafePlayer whisperer)
@@ -90,4 +98,5 @@ public class WhisperHandler implements IConfigurationChanged
 	private final IOutput console;
 	private final HashMap<String, String> lastWhisperList;
 	private String consoleWhisperName;
+	private SpamHandler spamHandler;
 }

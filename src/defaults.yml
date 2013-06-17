@@ -10,6 +10,9 @@ nChat:
   enableChatChannels: true
   enableAFKSystem: true
   enableRegionPrefixes: true
+antiSpam:
+  enableDuplicationFilter: true
+  duplicationFilterCooldown: 5
 hideDeaths:
   - pvparena
 afkSystem:
