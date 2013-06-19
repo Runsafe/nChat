@@ -2,8 +2,10 @@ package no.runsafe.nchat.handlers;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IPlayerNameDecorator;
+import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.framework.text.ChatColour;
@@ -15,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
+public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator, IPlayerCustomEvent
 {
 	public ChatHandler(Globals globals, IOutput output, RegionHandler regionHandler)
 	{
@@ -43,6 +45,13 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator
 		int nameLength = 16 - prefix.length();
 		String displayName = (playerName.length() > nameLength) ? playerName.substring(0, nameLength) : playerName;
 		return prefix + displayName;
+	}
+
+	@Override
+	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
+	{
+		if (event.getEvent().equals("user.group.change"))
+			this.refreshPlayerTabListName(event.getPlayer());
 	}
 
 	public void refreshPlayerTabListName(RunsafePlayer player)
