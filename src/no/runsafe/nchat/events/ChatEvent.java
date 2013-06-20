@@ -26,6 +26,7 @@ public class ChatEvent implements IPlayerChatEvent
 		if (this.muteHandler.isPlayerMuted(player))
 		{
 			player.sendColouredMessage(Constants.CHAT_MUTED);
+			event.setCancelled(true);
 			return;
 		}
 
