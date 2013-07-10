@@ -1,16 +1,13 @@
 package no.runsafe.nchat.database;
 
 import no.runsafe.framework.api.IOutput;
-import no.runsafe.framework.api.database.IDatabase;
-import no.runsafe.framework.api.database.IRow;
-import no.runsafe.framework.api.database.ISchemaChanges;
-import no.runsafe.framework.api.database.ISet;
+import no.runsafe.framework.api.database.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MuteDatabase implements ISchemaChanges
+public class MuteDatabase extends Repository
 {
 	public MuteDatabase(IOutput console, IDatabase database)
 	{
