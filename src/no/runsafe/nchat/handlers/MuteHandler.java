@@ -12,7 +12,6 @@ public class MuteHandler implements IConfigurationChanged
 	public MuteHandler(MuteDatabase muteDatabase)
 	{
 		this.muteDatabase = muteDatabase;
-		this.loadMuteList();
 	}
 
 	public void loadMuteList()
@@ -66,6 +65,7 @@ public class MuteHandler implements IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
 		this.serverMute = iConfiguration.getConfigValueAsBoolean("spamControl.muteChat");
+        this.loadMuteList();
 	}
 
 	private List<String> mutedPlayers;
