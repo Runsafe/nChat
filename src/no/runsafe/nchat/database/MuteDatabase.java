@@ -42,8 +42,9 @@ public class MuteDatabase extends Repository
 		List<String> mutedPlayers = new ArrayList<String>();
 		ISet data = this.database.Query("SELECT player from nchat_muted");
 
-		for (IRow row : data)
-			mutedPlayers.add(row.String("player"));
+        if (data != null)
+		    for (IRow row : data)
+			    mutedPlayers.add(row.String("player"));
 
 		return mutedPlayers;
 	}
