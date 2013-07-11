@@ -41,7 +41,7 @@ public class MuteDatabase extends Repository
 	{
 		console.fine("Populating mute list from database");
 		List<String> mutedPlayers = new ArrayList<String>();
-		ISet data = this.database.Query("SELECT player from nchat_muted");
+		ISet data = this.database.Query("SELECT player FROM nchat_muted");
 
 		if (data != null && data != Set.Empty)
 			for (IRow row : data)
