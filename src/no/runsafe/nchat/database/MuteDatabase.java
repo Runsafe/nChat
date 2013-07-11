@@ -2,6 +2,7 @@ package no.runsafe.nchat.database;
 
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.database.*;
+import no.runsafe.framework.internal.database.Set;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +43,7 @@ public class MuteDatabase extends Repository
 		List<String> mutedPlayers = new ArrayList<String>();
 		ISet data = this.database.Query("SELECT player from nchat_muted");
 
-        if (data != null)
+        if (data != Set.Empty)
 		    for (IRow row : data)
 			    mutedPlayers.add(row.String("player"));
 
