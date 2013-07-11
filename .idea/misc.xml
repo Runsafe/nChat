@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+    <entry_points version="2.0">
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Enderman" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Wolf" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath PigZombie" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath VillagerGolem" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath EnderDragon" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Wither" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Giant" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Blaze" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath CaveSpider" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Creeper" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Ghast" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath LavaSlime" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Silverfish" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Skeleton" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Slime" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Spider" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Witch" />
+      <entry_point TYPE="field" FQNAME="no.runsafe.nchat.EntityDeath Zombie" />
+      <entry_point TYPE="method" FQNAME="no.runsafe.nchat.EntityDeath java.lang.String getDeathName()" />
+    </entry_points>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

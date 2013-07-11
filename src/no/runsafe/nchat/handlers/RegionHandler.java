@@ -39,5 +39,5 @@ public class RegionHandler implements IConfigurationChanged
 	}
 
 	private Map<String, String> regionTags;
-	private WorldGuardInterface worldGuard;
+	private final WorldGuardInterface worldGuard;
 }

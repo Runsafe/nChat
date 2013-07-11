@@ -58,6 +58,6 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 
 	private boolean isEnabled;
 	private int cooldown;
-	private ConcurrentHashMap<String, List<String>> cooldowns = new ConcurrentHashMap<String, List<String>>();
-	private IScheduler scheduler;
+	private final ConcurrentHashMap<String, List<String>> cooldowns = new ConcurrentHashMap<String, List<String>>();
+	private final IScheduler scheduler;
 }

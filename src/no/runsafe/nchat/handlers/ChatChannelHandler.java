@@ -17,9 +17,9 @@ public class ChatChannelHandler implements IConfigurationChanged
 		this.server = server;
 	}
 
-	public boolean channelExists(String channelName)
+	public boolean isChannelInvalid(String channelName)
 	{
-		return this.channels.containsKey(channelName);
+		return !this.channels.containsKey(channelName);
 	}
 
 	public void broadcastMessage(String channelName, String message, RunsafePlayer player)
@@ -30,10 +30,10 @@ public class ChatChannelHandler implements IConfigurationChanged
 		this.server.broadcastMessage(formattedMessage, permissionNode);
 	}
 
-	public boolean canTalkInChannel(String channelName, RunsafePlayer player)
+	public boolean blockChannelMessage(String channelName, RunsafePlayer player)
 	{
 		String permissionNode = String.format(Constants.CHAT_CHANNEL_NODE, channelName);
-		return player.hasPermission(permissionNode);
+		return !player.hasPermission(permissionNode);
 	}
 
 	@Override

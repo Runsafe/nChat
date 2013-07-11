@@ -22,5 +22,5 @@ public class SpamHandler
 		return message;
 	}
 
-	List<ISpamFilter> filters = new ArrayList<ISpamFilter>();
+	private final List<ISpamFilter> filters = new ArrayList<ISpamFilter>();
 }

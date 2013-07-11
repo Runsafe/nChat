@@ -30,6 +30,6 @@ public class IPFilter implements ISpamFilter, IConfigurationChanged
 		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableIPFilter");
 	}
 
-	private Pattern IPv4Address;
+	private final Pattern IPv4Address;
 	private boolean isEnabled;
 }

@@ -42,7 +42,7 @@ public class PlayerDeathMeta
 		return this.entity instanceof RunsafePlayer;
 	}
 
-	private RunsafeEntityDamageEvent.RunsafeDamageCause type;
-	private RunsafePlayer player;
+	private final RunsafeEntityDamageEvent.RunsafeDamageCause type;
+	private final RunsafePlayer player;
 	private RunsafeEntity entity;
 }

@@ -36,7 +36,7 @@ public class MuteCommand extends PlayerCommand
 		RunsafePlayer mutePlayer = RunsafeServer.Instance.getPlayer(mutePlayerName);
 
 		if (mutePlayer == null)
-			player.sendMessage(Constants.COMMAND_TARGET_NO_EXISTS);
+			return Constants.COMMAND_TARGET_NO_EXISTS;
 
 		if (mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return Constants.COMMAND_TARGET_EXEMPT;

@@ -78,9 +78,9 @@ public class WhisperHandler implements IConfigurationChanged
 		return null;
 	}
 
-	public boolean canWhisper(RunsafePlayer player, RunsafePlayer target)
+	public boolean blockWhisper(RunsafePlayer player, RunsafePlayer target)
 	{
-		return (target.isOnline() && player.canSee(target));
+		return !target.isOnline() || player.shouldNotSee(target);
 	}
 
 	@Override
@@ -98,5 +98,5 @@ public class WhisperHandler implements IConfigurationChanged
 	private final IOutput console;
 	private final HashMap<String, String> lastWhisperList;
 	private String consoleWhisperName;
-	private SpamHandler spamHandler;
+	private final SpamHandler spamHandler;
 }

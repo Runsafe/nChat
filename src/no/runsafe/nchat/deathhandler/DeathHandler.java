@@ -24,7 +24,7 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
 		RunsafePlayer player = event.getEntity();
-		if (!this.hideDeathsForWorld(player.getWorld()))
+		if (this.broadcastDeathsInWorld(player.getWorld()))
 		{
 			RunsafeEntityDamageEvent damageEvent = player.getLastDamageCause();
 			PlayerDeathMeta meta = new PlayerDeathMeta(player, damageEvent.getCause());
@@ -38,9 +38,9 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 		}
 	}
 
-	private boolean hideDeathsForWorld(RunsafeWorld world)
+	private boolean broadcastDeathsInWorld(RunsafeWorld world)
 	{
-		return this.hideDeathWorlds.contains(world.getName());
+		return !this.hideDeathWorlds.contains(world.getName());
 	}
 
 	private void handleDeath(PlayerDeathMeta meta)

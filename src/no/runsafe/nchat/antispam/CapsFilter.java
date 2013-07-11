@@ -38,5 +38,5 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 
 	private boolean isEnabled;
 	private int percent;
-	private Pattern caps;
+	private final Pattern caps;
 }

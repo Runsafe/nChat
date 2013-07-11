@@ -36,7 +36,7 @@ public class WhisperCommand extends ExecutableCommand
 		if (executor instanceof RunsafePlayer)
 		{
 			RunsafePlayer playerExecutor = (RunsafePlayer) executor;
-			if (!this.whisperHandler.canWhisper(playerExecutor, target))
+			if (this.whisperHandler.blockWhisper(playerExecutor, target))
 				return String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayerName);
 
 			if (this.muteHandler.isPlayerMuted(playerExecutor))

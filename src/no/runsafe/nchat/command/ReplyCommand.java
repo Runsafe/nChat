@@ -26,7 +26,7 @@ public class ReplyCommand extends PlayerCommand
 		if (whisperer == null)
 			return Constants.WHISPER_NO_REPLY_TARGET;
 
-		if (!this.whisperHandler.canWhisper(player, whisperer))
+		if (this.whisperHandler.blockWhisper(player, whisperer))
 			return String.format(Constants.WHISPER_TARGET_OFFLINE, whisperer.getName());
 
 		if (this.muteHandler.isPlayerMuted(player))

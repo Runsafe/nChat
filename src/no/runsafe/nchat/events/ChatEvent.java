@@ -44,7 +44,7 @@ public class ChatEvent implements IPlayerChatEvent
 		event.setCancelled(true);
 	}
 
-	private ChatHandler chatHandler;
-	private MuteHandler muteHandler;
-	private SpamHandler spamHandler;
+	private final ChatHandler chatHandler;
+	private final MuteHandler muteHandler;
+	private final SpamHandler spamHandler;
 }

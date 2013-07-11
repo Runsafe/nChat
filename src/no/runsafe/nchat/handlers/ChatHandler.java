@@ -196,5 +196,5 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator,
 	private String playerChatMessage;
 	private String playerSystemMessage;
 	private String playerNameFormat;
-	private RegionHandler regionHandler;
+	private final RegionHandler regionHandler;
 }
