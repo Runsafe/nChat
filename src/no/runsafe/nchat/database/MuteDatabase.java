@@ -1,8 +1,8 @@
 package no.runsafe.nchat.database;
 
 import no.runsafe.framework.api.IOutput;
-import no.runsafe.framework.api.database.*;
-import no.runsafe.framework.internal.database.Set;
+import no.runsafe.framework.api.database.IDatabase;
+import no.runsafe.framework.api.database.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,14 +39,7 @@ public class MuteDatabase extends Repository
 
 	public List<String> getMuteList()
 	{
-		console.fine("Populating mute list from database");
-		List<String> mutedPlayers = new ArrayList<String>();
-		ISet data = this.database.Query("SELECT player FROM nchat_muted");
-
-		for (IRow row : data)
-			mutedPlayers.add(row.String("player"));
-
-		return mutedPlayers;
+		return this.database.QueryStrings("SELECT player FROM nchat_muted");
 	}
 
 	public void mutePlayer(String playerName)
