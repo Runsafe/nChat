@@ -96,6 +96,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator,
 		if (formatName == null) return null;
 
 		replacements.put(Constants.FORMAT_OP, (this.enableOpTag && player.isOP()) ? this.opTagFormat : "");
+		replacements.put(Constants.FORMAT_BAN, player.isNotBanned() ? "" : this.banTagFormat);
 
 		String worldReplace = worldName;
 		if (this.enableWorldPrefixes)
@@ -173,6 +174,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator,
 		this.enableOpTag = configuration.getConfigValueAsBoolean("nChat.enableOpTag");
 		this.enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
 		this.opTagFormat = configuration.getConfigValueAsString("chatFormatting.opTagFormat");
+		this.banTagFormat = configuration.getConfigValueAsString("chatFormatting.banTagFormat");
 		this.tabListPrefixes = configuration.getConfigValuesAsMap("tabListGroupPrefix");
 		this.enableRegionPrefixes = configuration.getConfigValueAsBoolean("nChat.enableRegionPrefixes");
 	}
@@ -193,6 +195,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator,
 	private Map<String, List<String>> playerTags;
 	private String playerTagFormat;
 	private String opTagFormat;
+	private String banTagFormat;
 	private String playerChatMessage;
 	private String playerSystemMessage;
 	private String playerNameFormat;

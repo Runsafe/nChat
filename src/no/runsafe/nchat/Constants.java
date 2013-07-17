@@ -13,6 +13,7 @@ public class Constants
 	public static final String FORMAT_TAG = "#tags";
 	public static final String FORMAT_MESSAGE = "#message";
 	public static final String FORMAT_OP = "#op";
+	public static final String FORMAT_BAN = "#ban";
 	public static final String FORMAT_CHANNEL = "#channel";
 
 	public static final ChatColour DEFAULT_MESSAGE_COLOR = ChatColour.AQUA;
