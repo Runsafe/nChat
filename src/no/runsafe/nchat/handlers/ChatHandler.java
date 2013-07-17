@@ -125,9 +125,9 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator,
 	}
 
 	@Override
-	public String DecorateName(RunsafePlayer runsafePlayer, String s)
+	public String DecorateName(RunsafePlayer runsafePlayer, String name)
 	{
-		return this.formatPlayerName(runsafePlayer, s);
+		return this.formatPlayerName(runsafePlayer, name);
 	}
 
 	public String formatChatMessage(String message, RunsafePlayer player)
