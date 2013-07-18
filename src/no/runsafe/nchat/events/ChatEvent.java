@@ -26,7 +26,7 @@ public class ChatEvent implements IPlayerChatEvent
 		if (this.muteHandler.isPlayerMuted(player))
 		{
 			player.sendColouredMessage(Constants.CHAT_MUTED);
-			event.setCancelled(true);
+			event.cancel();
 			return;
 		}
 
@@ -41,7 +41,7 @@ public class ChatEvent implements IPlayerChatEvent
 				return;
 			}
 		}
-		event.setCancelled(true);
+		event.cancel();
 	}
 
 	private final ChatHandler chatHandler;
