@@ -1,9 +1,10 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.ExecutableCommand;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
+import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 
@@ -24,9 +25,10 @@ public class PuppetCommand extends ExecutableCommand
 		if (targetPlayer == null)
 			return Constants.COMMAND_TARGET_NO_EXISTS;
 
-		RunsafePlayerFakeChatEvent chat = new RunsafePlayerFakeChatEvent(targetPlayer, args.get("message"));
-		chat.Fire();
-		RunsafeServer.Instance.broadcastMessage(String.format(chat.getFormat(), chat.getMessage()));
+		if (targetPlayer instanceof RunsafeAmbiguousPlayer)
+			return targetPlayer.toString();
+
+		RunsafePlayerFakeChatEvent.Broadcast(targetPlayer, args.get("message"));
 		return null;
 	}
 }
