@@ -5,7 +5,7 @@ import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.ChatChannelHandler;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class ChannelCommand extends PlayerCommand
 {
@@ -17,7 +17,7 @@ public class ChannelCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
+	public String OnExecute(RunsafePlayer player, Map<String, String> args)
 	{
 		String channelName = args.get("channel");
 		String message = args.get("message");

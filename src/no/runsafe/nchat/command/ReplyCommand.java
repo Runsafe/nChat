@@ -6,7 +6,7 @@ import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
 import no.runsafe.nchat.handlers.WhisperHandler;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class ReplyCommand extends PlayerCommand
 {
@@ -19,7 +19,7 @@ public class ReplyCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
+	public String OnExecute(RunsafePlayer player, Map<String, String> args)
 	{
 		RunsafePlayer whisperer = this.whisperHandler.getLastWhisperedBy(player);
 

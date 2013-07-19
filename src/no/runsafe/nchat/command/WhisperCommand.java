@@ -1,7 +1,7 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.ExecutableCommand;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -9,7 +9,7 @@ import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
 import no.runsafe.nchat.handlers.WhisperHandler;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class WhisperCommand extends ExecutableCommand
 {
@@ -22,7 +22,7 @@ public class WhisperCommand extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, HashMap<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
 		String targetPlayerName = parameters.get("player");
 		RunsafePlayer target = RunsafeServer.Instance.getPlayer(targetPlayerName);

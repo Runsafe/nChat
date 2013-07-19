@@ -7,7 +7,7 @@ import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
 import no.runsafe.nchat.handlers.MuteHandler;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class MuteCommand extends PlayerCommand
 {
@@ -20,7 +20,7 @@ public class MuteCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
+	public String OnExecute(RunsafePlayer player, Map<String, String> args)
 	{
 		String mutePlayerName = args.get("player");
 

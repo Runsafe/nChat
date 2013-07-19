@@ -5,7 +5,7 @@ import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class EmoteCommand extends PlayerCommand
 {
@@ -17,7 +17,7 @@ public class EmoteCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer player, HashMap<String, String> args)
+	public String OnExecute(RunsafePlayer player, Map<String, String> args)
 	{
 		RunsafeServer.Instance.broadcastMessage(this.chatHandler.formatPlayerSystemMessage(args.get("action"), player));
 		return null;
