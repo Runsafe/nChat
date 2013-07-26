@@ -5,6 +5,7 @@ import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.database.MuteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MuteHandler implements IConfigurationChanged
@@ -16,7 +17,8 @@ public class MuteHandler implements IConfigurationChanged
 
 	public void loadMuteList()
 	{
-		this.mutedPlayers = this.muteDatabase.getMuteList();
+		mutedPlayers.clear();
+		mutedPlayers.addAll(this.muteDatabase.getMuteList());
 	}
 
 	public boolean isPlayerMuted(RunsafePlayer player)
@@ -65,10 +67,10 @@ public class MuteHandler implements IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
 		this.serverMute = iConfiguration.getConfigValueAsBoolean("spamControl.muteChat");
-        this.loadMuteList();
+		this.loadMuteList();
 	}
 
-	private List<String> mutedPlayers;
+	private final List<String> mutedPlayers = new ArrayList<String>();
 	private final MuteDatabase muteDatabase;
 	private boolean serverMute;
 }
