@@ -25,11 +25,11 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	public String processString(RunsafePlayer player, String message)
 	{
 		// Parse the message to lowercase to prevent bypassing that way.
-		message = message.toLowerCase();
+		String lowerMessage = message.toLowerCase();
 
 		// Check each node, if we find it in the string, cancel the message.
 		for (String blacklisted : this.blacklist)
-			if (message.contains(blacklisted))
+			if (lowerMessage.contains(blacklisted))
 				return null;
 
 		return message;
