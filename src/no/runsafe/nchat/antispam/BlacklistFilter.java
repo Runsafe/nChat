@@ -77,6 +77,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 				// Add every line we find to the blacklist array, converting it to lowercase.
 				this.blacklist.add(line.toLowerCase());
 			}
+			this.output.info(String.format("Loaded %s blacklist filters from file.", this.blacklist.size()));
 		}
 		catch (Exception exception)
 		{
