@@ -1,6 +1,7 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -13,7 +14,10 @@ public class UnMuteCommand extends PlayerCommand
 {
 	public UnMuteCommand(IOutput console, MuteHandler muteHandler)
 	{
-		super("unmute", "Unmutes a previously muted player", "runsafe.nchat.mute", "player");
+		super(
+			"unmute", "Unmutes a previously muted player", "runsafe.nchat.mute",
+			new PlayerArgument()
+		);
 		this.console = console;
 		this.muteHandler = muteHandler;
 	}

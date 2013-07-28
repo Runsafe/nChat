@@ -1,5 +1,6 @@
 package no.runsafe.nchat.command;
 
+import no.runsafe.framework.api.command.argument.RequiredArgument;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -12,7 +13,10 @@ public class ChannelCommand extends PlayerCommand
 {
 	public ChannelCommand(ChatChannelHandler chatChannelHandler)
 	{
-		super("channel", "Sends a message to a channel", null, "channel", new TrailingArgument("message"));
+		super(
+			"channel", "Sends a message to a channel", null,
+			new RequiredArgument("channel"), new TrailingArgument("message")
+		);
 		this.chatChannelHandler = chatChannelHandler;
 	}
 

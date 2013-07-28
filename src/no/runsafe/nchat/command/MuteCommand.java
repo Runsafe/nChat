@@ -1,6 +1,7 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -14,7 +15,10 @@ public class MuteCommand extends PlayerCommand
 
 	public MuteCommand(IOutput console, MuteHandler muteHandler)
 	{
-		super("mute", "Suppress chat messages from a player", "runsafe.nchat.mute", "player");
+		super(
+			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
+			new PlayerArgument()
+		);
 		this.console = console;
 		this.muteHandler = muteHandler;
 	}
