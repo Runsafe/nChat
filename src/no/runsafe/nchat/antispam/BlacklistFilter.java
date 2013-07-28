@@ -48,7 +48,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 			{
 				if (!folder.mkdirs() || !file.createNewFile())
 				{
-					this.output.warning("Unable to create blacklist file at: " + this.filePath);
+					this.output.warning("Unable to create blacklist file at: " + filePath);
 					return;
 				}
 			}
