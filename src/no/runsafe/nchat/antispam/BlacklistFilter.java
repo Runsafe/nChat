@@ -29,8 +29,13 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 
 		// Check each node, if we find it in the string, cancel the message.
 		for (String blacklisted : this.blacklist)
+		{
 			if (lowerMessage.contains(blacklisted))
+			{
+				player.sendColouredMessage("Your last message was blacklisted and not sent, sorry.");
 				return null;
+			}
+		}
 
 		return message;
 	}
