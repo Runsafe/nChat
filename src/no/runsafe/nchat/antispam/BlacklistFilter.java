@@ -6,7 +6,10 @@ import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.Core;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +18,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	public BlacklistFilter(Core nChat, IOutput output)
 	{
 		this.output = output;
-		this.filePath = String.format("plugins/%s/blacklist.txt", nChat.getName());
+		this.filePath = new File(nChat.getDataFolder(), "blacklist.txt");
 	}
 
 	@Override
@@ -36,15 +39,14 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
 		this.blacklist.clear(); // Clear the current blacklist.
-		File file = new File(this.filePath);
 
 		// Check if the file exists.
-		if (!file.exists())
+		if (!filePath.exists())
 		{
 			// The file does not exist, lets try creating it.
 			try
 			{
-				if (!file.getParentFile().mkdirs() || !file.createNewFile())
+				if (!filePath.getParentFile().mkdirs() || !filePath.createNewFile())
 				{
 					this.output.warning("Unable to create blacklist file at: " + filePath);
 					return;
@@ -61,11 +63,15 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 		try
 		{
 			BufferedReader reader = new BufferedReader(new FileReader(filePath));
-			String line = reader.readLine();
-
-			// Add every line we find to the blacklist array, converting it to lowercase.
-			while (line != null)
+			String line;
+			while (true)
+			{
+				line = reader.readLine();
+				if (line == null)
+					break;
+				// Add every line we find to the blacklist array, converting it to lowercase.
 				this.blacklist.add(line.toLowerCase());
+			}
 		}
 		catch (Exception exception)
 		{
@@ -76,6 +82,6 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	}
 
 	private List<String> blacklist = new ArrayList<String>();
-	private String filePath;
+	private File filePath;
 	private IOutput output;
 }
