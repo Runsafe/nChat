@@ -36,9 +36,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
 		this.blacklist.clear(); // Clear the current blacklist.
-		String filePath = this.filePath + "blacklist.txt";
-		File folder = new File(this.filePath);
-		File file = new File(filePath);
+		File file = new File(this.filePath);
 
 		// Check if the file exists.
 		if (!file.exists())
@@ -46,7 +44,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 			// The file does not exist, lets try creating it.
 			try
 			{
-				if (!folder.mkdirs() || !file.createNewFile())
+				if (!file.getParentFile().mkdirs() || !file.createNewFile())
 				{
 					this.output.warning("Unable to create blacklist file at: " + filePath);
 					return;
