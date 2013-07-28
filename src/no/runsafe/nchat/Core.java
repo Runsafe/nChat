@@ -28,6 +28,7 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(DuplicationFilter.class);
 		this.addComponent(IPFilter.class);
 		this.addComponent(FloodFilter.class);
+		this.addComponent(BlacklistFilter.class);
 		this.addComponent(CapsFilter.class);
 		this.addComponent(SpamHandler.class);
 
