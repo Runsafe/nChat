@@ -46,7 +46,12 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 			// The file does not exist, lets try creating it.
 			try
 			{
-				if (!filePath.getParentFile().mkdirs() || !filePath.createNewFile())
+				if (!filePath.getParentFile().isDirectory())
+				{
+					this.output.warning("Unable to locate plugin data folder at: " + filePath.getParentFile());
+					return;
+				}
+				if (!filePath.createNewFile())
 				{
 					this.output.warning("Unable to create blacklist file at: " + filePath);
 					return;
