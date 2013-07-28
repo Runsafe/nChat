@@ -15,7 +15,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	public BlacklistFilter(Core nChat, IOutput output)
 	{
 		this.output = output;
-		this.filePath = String.format("plugins/%s/blacklist.txt", nChat.getName());
+		this.filePath = String.format("plugins/%s/", nChat.getName());
 	}
 
 	@Override
@@ -36,7 +36,9 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
 		this.blacklist.clear(); // Clear the current blacklist.
-		File file = new File(this.filePath);
+		String filePath = this.filePath + "blacklist.txt";
+		File folder = new File(this.filePath);
+		File file = new File(filePath);
 
 		// Check if the file exists.
 		if (!file.exists())
@@ -44,7 +46,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 			// The file does not exist, lets try creating it.
 			try
 			{
-				if (!file.mkdirs() || !file.createNewFile())
+				if (!folder.mkdirs() || !file.createNewFile())
 				{
 					this.output.warning("Unable to create blacklist file at: " + this.filePath);
 					return;
@@ -60,7 +62,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 
 		try
 		{
-			BufferedReader reader = new BufferedReader(new FileReader(this.filePath));
+			BufferedReader reader = new BufferedReader(new FileReader(filePath));
 			String line = reader.readLine();
 
 			// Add every line we find to the blacklist array, converting it to lowercase.
