@@ -15,7 +15,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	public BlacklistFilter(Core nChat, IOutput output)
 	{
 		this.output = output;
-		this.filePath = String.format("plugins/%s/", nChat.getName());
+		this.filePath = String.format("plugins/%s/blacklist.txt", nChat.getName());
 	}
 
 	@Override
