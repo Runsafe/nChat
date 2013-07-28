@@ -32,7 +32,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 		{
 			if (lowerMessage.contains(blacklisted))
 			{
-				player.sendColouredMessage("Your last message was blacklisted and not sent, sorry.");
+				player.sendColouredMessage("&cYour last message was blacklisted and not sent, sorry.");
 				return null;
 			}
 		}
