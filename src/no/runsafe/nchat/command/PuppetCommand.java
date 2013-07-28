@@ -2,6 +2,8 @@ package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.PlayerArgument;
+import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
@@ -14,8 +16,7 @@ public class PuppetCommand extends ExecutableCommand
 {
 	public PuppetCommand()
 	{
-		super("puppet", "Make it look like someone said something", "runsafe.nchat.puppet", "player", "message");
-		captureTail();
+		super("puppet", "Make it look like someone said something", "runsafe.nchat.puppet", new PlayerArgument(), new TrailingArgument("message"));
 	}
 
 	@Override

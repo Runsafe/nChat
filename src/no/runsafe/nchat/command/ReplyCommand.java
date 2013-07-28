@@ -1,5 +1,6 @@
 package no.runsafe.nchat.command;
 
+import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
@@ -12,10 +13,9 @@ public class ReplyCommand extends PlayerCommand
 {
 	public ReplyCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
 	{
-		super("reply", "Respond to the last person to send you a private message", "runsafe.nchat.whisper", "message");
+		super("reply", "Respond to the last person to send you a private message", "runsafe.nchat.whisper", new TrailingArgument("message"));
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
-		captureTail();
 	}
 
 	@Override

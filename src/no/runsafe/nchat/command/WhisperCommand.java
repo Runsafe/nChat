@@ -2,6 +2,8 @@ package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.PlayerArgument;
+import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -15,10 +17,9 @@ public class WhisperCommand extends ExecutableCommand
 {
 	public WhisperCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
 	{
-		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", "player", "message");
+		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new PlayerArgument(), new TrailingArgument("message"));
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
-		captureTail();
 	}
 
 	@Override
