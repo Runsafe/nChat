@@ -44,7 +44,7 @@ public class ChatHandler implements IConfigurationChanged, IPlayerNameDecorator,
 		String prefix = (this.tabListPrefixes.containsKey(firstGroup)) ? this.tabListPrefixes.get(firstGroup) : "";
 		int nameLength = 16 - prefix.length();
 		String displayName = (playerName.length() > nameLength) ? playerName.substring(0, nameLength) : playerName;
-		return prefix + displayName;
+		return this.getPlayerNickname(player, prefix + displayName);
 	}
 
 	@Override
