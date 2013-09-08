@@ -20,8 +20,7 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 	public void OnPlayerQuit(RunsafePlayerQuitEvent runsafePlayerQuitEvent)
 	{
 		RunsafePlayer player = runsafePlayerQuitEvent.getPlayer();
-		String message = player.getName().equals("sarahbakescakes") ? "ran away holding her big D." : this.leaveServerMessage;
-		runsafePlayerQuitEvent.setQuitMessage(this.chatHandler.formatPlayerSystemMessage(message, player));
+		runsafePlayerQuitEvent.setQuitMessage(this.chatHandler.formatPlayerSystemMessage(this.leaveServerMessage, player));
 		this.whisperHandler.deleteLastWhisperedBy(player);
 	}
 
