@@ -3,6 +3,7 @@ package no.runsafe.nchat.events;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerQuitEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerQuitEvent;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
@@ -17,10 +18,13 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 	}
 
 	@Override
-	public void OnPlayerQuit(RunsafePlayerQuitEvent runsafePlayerQuitEvent)
+	public void OnPlayerQuit(RunsafePlayerQuitEvent event)
 	{
-		RunsafePlayer player = runsafePlayerQuitEvent.getPlayer();
-		runsafePlayerQuitEvent.setQuitMessage(this.chatHandler.formatPlayerSystemMessage(this.leaveServerMessage, player));
+		RunsafePlayer player = event.getPlayer();
+		event.setQuitMessage(null);
+		RunsafeServer.Instance.broadcastMessage(
+			chatHandler.formatPlayerSystemMessage(this.leaveServerMessage, player)
+		);
 		this.whisperHandler.deleteLastWhisperedBy(player);
 	}
 
