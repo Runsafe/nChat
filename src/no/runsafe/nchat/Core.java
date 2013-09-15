@@ -4,6 +4,7 @@ import no.runsafe.framework.RunsafeConfigurablePlugin;
 import no.runsafe.nchat.antispam.*;
 import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.MuteDatabase;
+import no.runsafe.nchat.emotes.EmoteHandler;
 import no.runsafe.nchat.events.*;
 import no.runsafe.nchat.handlers.*;
 import no.runsafe.worldguardbridge.WorldGuardInterface;
@@ -45,9 +46,12 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(UnMuteCommand.class);
 		this.addComponent(PlayerDeath.class);
 		this.addComponent(PuppetCommand.class);
-		this.addComponent(EmoteCommand.class);
+		//this.addComponent(EmoteCommand.class);
 		this.addComponent(WhisperCommand.class);
 		this.addComponent(ReplyCommand.class);
+
+		// Emotes
+		this.addComponent(EmoteHandler.class);
 
 		// Events
 		this.addComponent(JoinEvent.class);

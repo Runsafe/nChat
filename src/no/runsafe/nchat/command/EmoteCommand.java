@@ -6,13 +6,14 @@ import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.handlers.ChatHandler;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class EmoteCommand extends PlayerCommand
 {
 	public EmoteCommand(ChatHandler chatHandler)
 	{
-		super("me", "Broadcast an emote to the server", "runsafe.nchat.emote", new TrailingArgument("action"));
+		super("me", "An emote!", "runsafe.nchat.emote", new TrailingArgument("action"));
 		this.chatHandler = chatHandler;
 	}
 
@@ -24,5 +25,10 @@ public class EmoteCommand extends PlayerCommand
 	}
 
 	private final ChatHandler chatHandler;
+	private HashMap<String, String> emotes = new HashMap<String, String>();
 
+	static
+	{
+
+	}
 }
