@@ -90,11 +90,11 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 			{
 				RunsafePlayer targetPlayer = parts.length > 1 ? RunsafeServer.Instance.getPlayer(parts[1]) : null;
 				this.broadcastEmote(emote, event.getPlayer(),  targetPlayer);
+				event.cancel();
 				break;
 			}
 		}
 
-		event.cancel();
 	}
 
 	private void broadcastEmote(Emote emote, RunsafePlayer player, RunsafePlayer target)
