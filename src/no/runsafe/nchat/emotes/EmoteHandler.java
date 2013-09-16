@@ -93,6 +93,8 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 				break;
 			}
 		}
+
+		event.cancel();
 	}
 
 	private void broadcastEmote(Emote emote, RunsafePlayer player, RunsafePlayer target)
