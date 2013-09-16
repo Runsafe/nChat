@@ -47,7 +47,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 				e.printStackTrace();
 			}
 		}
-		this.output.info("Loaded %s emotes!", emotes.size());
+		output.logInformation("Loaded %s emotes", emotes.size());
 	}
 
 	@Override
