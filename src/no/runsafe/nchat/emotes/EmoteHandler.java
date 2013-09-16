@@ -8,6 +8,7 @@ import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.nchat.Core;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,51 +19,35 @@ import java.util.List;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
-	public EmoteHandler(IOutput output)
+	public EmoteHandler(IOutput output, Core nChat)
 	{
 		this.output = output;
+		dataFile = new File(nChat.getDataFolder(), "emotes.txt");
 	}
 
 	@Override
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
 		this.emotes.clear();
-		String path = "plugins/nChat/";
-		File pathDir = new File(path);
-		if (!pathDir.exists())
-		{
-			if (!pathDir.mkdirs())
-			{
-				output.logError("Could not create directory tree for nChat emotes!");
-				return;
-			}
-		}
 
-		File file = new File(path + "emotes.txt");
-		if (!file.exists())
+		if (dataFile.exists())
 		{
 			try
 			{
-				if (!file.createNewFile())
-				{
-					output.logError("Could not create emotes file.");
-					return;
-				}
-
-				BufferedReader br = new BufferedReader(new FileReader(file));
+				BufferedReader br = new BufferedReader(new FileReader(dataFile));
 				String currentLine;
 
 				while ((currentLine = br.readLine()) != null)
 					emotes.add(new Emote(currentLine));
 				br.close();
 
-				this.output.logInformation("Loaded %s emotes!", emotes.size());
 			}
 			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
+		this.output.info("Loaded %s emotes!", emotes.size());
 	}
 
 	@Override
@@ -105,6 +90,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		}
 	}
 
+	private File dataFile;
 	private IOutput output;
 	private List<Emote> emotes = new ArrayList<Emote>();
 }
