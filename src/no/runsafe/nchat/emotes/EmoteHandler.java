@@ -30,24 +30,51 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 	{
 		this.emotes.clear();
 
-		if (dataFile.exists())
+		// Check if the file exists.
+		if (!dataFile.exists())
 		{
+			// The file does not exist, lets try creating it.
 			try
 			{
-				BufferedReader br = new BufferedReader(new FileReader(dataFile));
-				String currentLine;
-
-				while ((currentLine = br.readLine()) != null)
-					emotes.add(new Emote(currentLine));
-				br.close();
-
+				if (!dataFile.getParentFile().isDirectory())
+				{
+					this.output.warning("Unable to locate plugin data folder at: " + dataFile.getParentFile());
+					return;
+				}
+				if (!dataFile.createNewFile())
+				{
+					this.output.warning("Unable to create emote file at: " + dataFile);
+					return;
+				}
 			}
-			catch (IOException e)
+			catch (IOException exception)
 			{
-				e.printStackTrace();
+				this.output.warning("Unable to create emote file due to exception:");
+				exception.printStackTrace();
+				return;
 			}
 		}
-		output.logInformation("Loaded %s emotes", emotes.size());
+
+		try
+		{
+			BufferedReader reader = new BufferedReader(new FileReader(dataFile));
+			String line;
+			while (true)
+			{
+				line = reader.readLine();
+				if (line == null)
+					break;
+
+				emotes.add(new Emote(line));
+			}
+			output.logInformation("Loaded %s emotes from file.", emotes.size());
+		}
+		catch (Exception exception)
+		{
+			// We should not get here, but we catch it just in-case.
+			this.output.warning("Unexpected exception prevented emote loading:");
+			exception.printStackTrace();
+		}
 	}
 
 	@Override
