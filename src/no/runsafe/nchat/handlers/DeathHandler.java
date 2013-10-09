@@ -6,23 +6,28 @@ import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
 
+import java.util.List;
+import java.util.Random;
+
 public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 {
 	@Override
 	public void OnConfigurationChanged(IConfiguration config)
 	{
-		deathMessage = config.getConfigValueAsString("chatMessage.death");
+		messages = config.getConfigValueAsList("chatMessage.death");
 	}
 
 	@Override
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
-		if (deathMessage != null) // If we're null it's missing on config, just ignore.
+		if (!messages.isEmpty()) // If we're null it's missing on config, just ignore.
 		{
 			event.setDeathMessage(""); // Set the Minecraft death message to blank to silence output
-			RunsafeServer.Instance.broadcastMessage(deathMessage.replaceAll("#player", event.getEntity().getPrettyName()));
+			String message = messages.get(random.nextInt(messages.size())); // Get a random death message.
+			RunsafeServer.Instance.broadcastMessage(message.replaceAll("#player", event.getEntity().getPrettyName()));
 		}
 	}
 
-	private String deathMessage;
+	private List<String> messages;
+	private Random random = new Random();
 }
