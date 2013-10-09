@@ -3,6 +3,7 @@ package no.runsafe.nchat.handlers;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerDeathEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
 
 public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
@@ -17,7 +18,10 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
 		if (deathMessage != null) // If we're null it's missing on config, just ignore.
-			event.setDeathMessage(deathMessage.replaceAll("#player", event.getEntity().getPrettyName()));
+		{
+			event.setDeathMessage(""); // Set the Minecraft death message to blank to silence output
+			RunsafeServer.Instance.broadcastMessage(deathMessage.replaceAll("#player", event.getEntity().getPrettyName()));
+		}
 	}
 
 	private String deathMessage;
