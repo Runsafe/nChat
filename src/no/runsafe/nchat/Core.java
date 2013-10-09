@@ -49,6 +49,7 @@ public class Core extends RunsafeConfigurablePlugin
 		//this.addComponent(EmoteCommand.class);
 		this.addComponent(WhisperCommand.class);
 		this.addComponent(ReplyCommand.class);
+		this.addComponent(DeathHandler.class);
 
 		// Emotes
 		this.addComponent(EmoteHandler.class);

@@ -58,6 +58,7 @@ chatMessage:
   banned: 'has been banned from the server for #reason.'
   whisperTo: '&6You &7-> #target&f: #message'
   whisperFrom: '#source &7-> &6You&f: #message'
+  death: '#player&e is now pushing up daisies.'
 chatFormatting:
   playerName: '#op#world#group#tags #ban#player'
   playerChatMessage: '#player: &f#message'
@@ -66,8 +67,6 @@ chatFormatting:
   playerTagFormat: '&7[%s]'
   opTagFormat: '&f@'
   banTagFormat: '&m'
-deathMessages:
-  fall: '%1$s fell to their death'
 playerNicknames:
   ExampleMan: 'Hagrid the Elder'
 playerTags:
