@@ -5,7 +5,6 @@ import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.Constants;
-import no.runsafe.nchat.handlers.ChatChannelHandler;
 
 import java.util.Map;
 

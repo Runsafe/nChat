@@ -14,9 +14,6 @@ public class Core extends RunsafeConfigurablePlugin
 	@Override
 	protected void PluginSetup()
 	{
-		// TODO: Re-implement channel functionality
-		// TODO: In-game whisper monitoring. Do we want this?
-
 		addComponent(Instances.get("RunsafeWorldGuardBridge").getComponent(WorldGuardInterface.class));
 
 		// Core
@@ -34,18 +31,15 @@ public class Core extends RunsafeConfigurablePlugin
 		this.addComponent(SpamHandler.class);
 
 		// Handlers
-		this.addComponent(ChatChannelHandler.class);
 		this.addComponent(ChatHandler.class);
 		this.addComponent(MuteHandler.class);
 		this.addComponent(WhisperHandler.class);
 		this.addComponent(RegionHandler.class);
 
 		// Commands
-		//this.addComponent(ChannelCommand.class);
 		this.addComponent(MuteCommand.class);
 		this.addComponent(UnMuteCommand.class);
 		this.addComponent(PuppetCommand.class);
-		//this.addComponent(EmoteCommand.class);
 		this.addComponent(WhisperCommand.class);
 		this.addComponent(ReplyCommand.class);
 		this.addComponent(DeathHandler.class);

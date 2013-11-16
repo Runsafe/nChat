@@ -49,8 +49,6 @@ worldPrefixes:
   console: '&3[?]'
 regionPrefixes:
   gameroom-pvp_arena: '&c[PvP]'
-channels:
-  staff: 'Staff'
 chatMessage:
   joinServer: 'has joined the server.'
   leaveServer: 'has left the server.'
@@ -66,8 +64,6 @@ chatFormatting:
   playerTagFormat: '&7[%s]'
   opTagFormat: '&f@'
   banTagFormat: '&m'
-playerNicknames:
-  ExampleMan: 'Hagrid the Elder'
 playerTags:
   ExampleMan:
     - CLANTAG
