@@ -4,6 +4,8 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.player.IPlayerCommandPreprocessEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.files.PluginDataFile;
+import no.runsafe.framework.files.PluginFileManager;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
@@ -19,62 +21,19 @@ import java.util.List;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
-	public EmoteHandler(IOutput output, Core nChat)
+	public EmoteHandler(PluginFileManager fileManager)
 	{
-		this.output = output;
-		dataFile = new File(nChat.getDataFolder(), "emotes.txt");
+		emoteFile = fileManager.getFile("emotes.txt");
 	}
 
 	@Override
 	public void OnConfigurationChanged(IConfiguration iConfiguration)
 	{
-		this.emotes.clear();
+		this.emotes.clear(); // Clear existing emotes.
 
-		// Check if the file exists.
-		if (!dataFile.exists())
-		{
-			// The file does not exist, lets try creating it.
-			try
-			{
-				if (!dataFile.getParentFile().isDirectory())
-				{
-					this.output.warning("Unable to locate plugin data folder at: " + dataFile.getParentFile());
-					return;
-				}
-				if (!dataFile.createNewFile())
-				{
-					this.output.warning("Unable to create emote file at: " + dataFile);
-					return;
-				}
-			}
-			catch (IOException exception)
-			{
-				this.output.warning("Unable to create emote file due to exception:");
-				exception.printStackTrace();
-				return;
-			}
-		}
-
-		try
-		{
-			BufferedReader reader = new BufferedReader(new FileReader(dataFile));
-			String line;
-			while (true)
-			{
-				line = reader.readLine();
-				if (line == null)
-					break;
-
-				emotes.add(new Emote(line));
-			}
-			output.logInformation("Loaded %s emotes from file.", emotes.size());
-		}
-		catch (Exception exception)
-		{
-			// We should not get here, but we catch it just in-case.
-			this.output.warning("Unexpected exception prevented emote loading:");
-			exception.printStackTrace();
-		}
+		List<String> emotes = emoteFile.getLines(); // Grab all emotes from the file.
+		for (String emote : emotes)
+			this.emotes.add(new Emote(emote)); // Add the emote to the list.
 	}
 
 	@Override
@@ -119,7 +78,6 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		}
 	}
 
-	private File dataFile;
-	private IOutput output;
+	private PluginDataFile emoteFile;
 	private List<Emote> emotes = new ArrayList<Emote>();
 }
