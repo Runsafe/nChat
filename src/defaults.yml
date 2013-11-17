@@ -14,8 +14,6 @@ antiSpam:
   capsFilterPercent: 90
 hideDeaths:
   - pvparena
-afkSystem:
-  autoTrigger: true
 console:
   whisper: '&3Server'
 chatGroupPrefixes:
