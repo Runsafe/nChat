@@ -42,7 +42,7 @@ public class IgnoreDatabase extends Repository
 	public HashMap<String, List<String>> getIgnoreList()
 	{
 		HashMap<String, List<String>> ignoreList = new HashMap<String, List<String>>();
-		ISet result = database.Query("SELECT player, ignore FROM nchat_ignore");
+		ISet result = database.Query("SELECT `player`, `ignore` FROM nchat_ignore");
 		for (IRow row : result)
 		{
 			String ignoredPlayer = row.String("ignore");
