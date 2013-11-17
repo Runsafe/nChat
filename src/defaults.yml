@@ -46,7 +46,7 @@ chatMessage:
   whisperTo: '&6You &7-> #target&f: #message'
   whisperFrom: '#source &7-> &6You&f: #message'
 chatFormatting:
-  playerName: '#op#world#group#tags #ban#player'
+  playerName: '#op#world#group #ban#player'
   playerChatMessage: '#player: &f#message'
   opTagFormat: '&f@'
   banTagFormat: '&m'
