@@ -10,6 +10,7 @@ import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.chat.formatting.FormattingConfig;
 import no.runsafe.nchat.chat.formatting.RegionHandler;
 import no.runsafe.nchat.command.*;
+import no.runsafe.nchat.database.IgnoreDatabase;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.emotes.EmoteHandler;
 import no.runsafe.nchat.events.*;
@@ -28,6 +29,7 @@ public class Core extends RunsafeConfigurablePlugin
 
 		// Database
 		addComponent(MuteDatabase.class);
+		addComponent(IgnoreDatabase.class);
 
 		// Anti-spam
 		addComponent(DuplicationFilter.class);
