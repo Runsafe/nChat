@@ -25,3 +25,6 @@ commands:
     description: Allows you to reply to a whisper easily
     usage: /reply <message>
     aliases: [r]
+  ignore:
+    description: Ignores another player.
+    usage: /ignore <player>
