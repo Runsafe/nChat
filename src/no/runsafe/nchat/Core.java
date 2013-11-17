@@ -6,6 +6,7 @@ import no.runsafe.nchat.chat.ChatEngine;
 import no.runsafe.nchat.chat.DeathHandler;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
+import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.chat.formatting.FormattingConfig;
 import no.runsafe.nchat.chat.formatting.RegionHandler;
 import no.runsafe.nchat.command.*;
@@ -38,6 +39,7 @@ public class Core extends RunsafeConfigurablePlugin
 
 		// Chat engine
 		addComponent(FormattingConfig.class);
+		addComponent(ChatFormatter.class);
 		addComponent(ChatEngine.class);
 		addComponent(MuteHandler.class);
 		addComponent(WhisperHandler.class);
