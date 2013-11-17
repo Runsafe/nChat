@@ -1,5 +1,6 @@
 package no.runsafe.nchat.chat;
 
+import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.antispam.SpamHandler;
@@ -10,12 +11,13 @@ import java.util.List;
 
 public class ChatEngine
 {
-	public ChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
+	public ChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IOutput console)
 	{
 		this.chatFormatter = chatFormatter;
 		this.muteHandler = muteHandler;
 		this.spamHandler = spamHandler;
 		this.ignoreHandler = ignoreHandler;
+		this.console = console;
 	}
 
 	/**
@@ -91,6 +93,8 @@ public class ChatEngine
 		for (RunsafePlayer worldPlayer : worldPlayers)
 			if (!excludedPlayers.contains(worldPlayer.getName()))
 				worldPlayer.sendColouredMessage(message);
+
+		console.writeColoured(message);
 	}
 
 	/**
@@ -114,4 +118,5 @@ public class ChatEngine
 	private final MuteHandler muteHandler;
 	private final SpamHandler spamHandler;
 	private final IgnoreHandler ignoreHandler;
+	private final IOutput console;
 }
