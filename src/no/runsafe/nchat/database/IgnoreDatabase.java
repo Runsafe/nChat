@@ -55,11 +55,6 @@ public class IgnoreDatabase extends Repository
 		return ignoreList;
 	}
 
-	public List<String> getMuteList()
-	{
-		return this.database.QueryStrings("SELECT player FROM nchat_muted");
-	}
-
 	public void ignorePlayer(RunsafePlayer player, RunsafePlayer ignore)
 	{
 		database.Update("INSERT IGNORE INTO nchat_ignore (`player`, `ignore`) VALUES(?, ?)", player.getName(), ignore.getName());
