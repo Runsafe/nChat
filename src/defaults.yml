@@ -43,8 +43,6 @@ regionPrefixes:
 chatMessage:
   joinServer: '#player has joined the server.'
   leaveServer: '#player has left the server.'
-  kicked: 'has been kicked from the server for #reason.'
-  banned: 'has been banned from the server for #reason.'
   whisperTo: '&6You &7-> #target&f: #message'
   whisperFrom: '#source &7-> &6You&f: #message'
 chatFormatting:
