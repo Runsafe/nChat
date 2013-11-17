@@ -32,7 +32,7 @@ public class ChatEngine
 		String filteredMessage = spamHandler.getFilteredMessage(player, message);
 
 		if (filteredMessage != null)
-			broadcastMessageAsPlayer(player, message);
+			broadcastMessageAsPlayer(player, filteredMessage);
 
 		return false;
 	}
