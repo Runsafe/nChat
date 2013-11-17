@@ -10,11 +10,12 @@ import java.util.List;
 
 public class ChatEngine
 {
-	public ChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler)
+	public ChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
 	{
 		this.chatFormatter = chatFormatter;
 		this.muteHandler = muteHandler;
 		this.spamHandler = spamHandler;
+		this.ignoreHandler = ignoreHandler;
 	}
 
 	/**
@@ -39,30 +40,31 @@ public class ChatEngine
 
 	/**
 	 * Used to broadcast a system message from a player, will be subject to mute and spam checks.
-	 * Returns true if the message was broadcast successfully, otherwise false.
+	 * Will not be seen by people ignoring the player.
 	 *
 	 * @param player The player to broadcast the message.
 	 * @param message The message the player will broadcast.
-	 * @return boolean
+	 * @return boolean True if the message was broadcast, otherwise false.
 	 */
 	public boolean playerSystemBroadcast(RunsafePlayer player, String message)
 	{
 		if (!muteCheck(player))
 			return false;
 
-		broadcastMessage(message);
+		broadcastMessage(message, ignoreHandler.getPlayersIgnoring(player));
 		return true;
 	}
 
 	/**
-	 * Broadcast a message from a player, not subject to any spam or mute checks.
+	 * Broadcast a message from a player, not subject to any spam/mute checks.
+	 * Will not be seen by people ignoring the player.
 	 *
 	 * @param player The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 */
 	public void broadcastMessageAsPlayer(RunsafePlayer player, String message)
 	{
-		broadcastMessage(chatFormatter.formatChatMessage(player, message));
+		broadcastMessage(chatFormatter.formatChatMessage(player, message), ignoreHandler.getPlayersIgnoring(player));
 	}
 
 	/**
@@ -111,4 +113,5 @@ public class ChatEngine
 	private final ChatFormatter chatFormatter;
 	private final MuteHandler muteHandler;
 	private final SpamHandler spamHandler;
+	private final IgnoreHandler ignoreHandler;
 }

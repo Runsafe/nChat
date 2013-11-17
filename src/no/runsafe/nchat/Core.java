@@ -56,6 +56,7 @@ public class Core extends RunsafeConfigurablePlugin
 		addComponent(WhisperCommand.class);
 		addComponent(ReplyCommand.class);
 		addComponent(DeathHandler.class);
+		addComponent(IgnoreCommand.class);
 
 		// Events
 		addComponent(JoinEvent.class);

@@ -14,17 +14,36 @@ import java.util.logging.Level;
 
 public class WhisperHandler implements IConfigurationChanged
 {
-	public WhisperHandler(IOutput console, SpamHandler spamHandler)
+	public WhisperHandler(IOutput console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
 	{
 		this.console = console;
 		this.spamHandler = spamHandler;
+		this.ignoreHandler = ignoreHandler;
 		this.lastWhisperList = new HashMap<String, String>();
 	}
 
 	public void sendWhisper(ICommandExecutor sender, RunsafePlayer toPlayer, String message)
 	{
 		if (sender instanceof RunsafePlayer)
-			message = spamHandler.getFilteredMessage((RunsafePlayer) sender, message);
+		{
+			RunsafePlayer senderPlayer = (RunsafePlayer) sender;
+
+			if (ignoreHandler.playerIsIgnoring(toPlayer, senderPlayer))
+			{
+				// The player being whispered is ignoring the sender.
+				senderPlayer.sendColouredMessage("&cThat player is ignoring you.");
+				return;
+			}
+
+			if (ignoreHandler.playerIsIgnoring(senderPlayer, toPlayer))
+			{
+				// The player is ignoring the person they are whispering.
+				senderPlayer.sendColouredMessage("&cYou are ignoring that player.");
+				return;
+			}
+
+			message = spamHandler.getFilteredMessage(senderPlayer, message);
+		}
 
 		if (message != null)
 		{
@@ -93,4 +112,5 @@ public class WhisperHandler implements IConfigurationChanged
 	private final HashMap<String, String> lastWhisperList;
 	private final IOutput console;
 	private final SpamHandler spamHandler;
+	private final IgnoreHandler ignoreHandler;
 }
