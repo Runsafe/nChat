@@ -3,35 +3,35 @@ package no.runsafe.nchat.events;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerJoinEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerJoinEvent;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
-import no.runsafe.nchat.handlers.ChatHandler;
+import no.runsafe.nchat.chat.ChatEngine;
+import no.runsafe.nchat.tablist.TabListHandler;
 
 public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 {
-	public JoinEvent(ChatHandler chatHandler)
+	public JoinEvent(ChatEngine chatEngine, TabListHandler tabListHandler)
 	{
-		this.chatHandler = chatHandler;
+		this.chatEngine = chatEngine;
+		this.tabListHandler = tabListHandler;
 	}
 
 	@Override
 	public void OnPlayerJoinEvent(RunsafePlayerJoinEvent event)
 	{
-		RunsafePlayer player = event.getPlayer();
 		event.setJoinMessage(null);
-		RunsafeServer.Instance.broadcastMessage(
-			this.chatHandler.formatPlayerSystemMessage(this.joinServerMessage, player)
-		);
-		this.chatHandler.refreshPlayerTabListName(player);
+		RunsafePlayer player = event.getPlayer();
+		chatEngine.broadcastMessage(joinServerMessage.replace("#player", player.getPrettyName()));
+		tabListHandler.refreshPlayerTabListName(player);
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration iConfiguration)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.joinServerMessage = iConfiguration.getConfigValueAsString("chatMessage.joinServer");
+		this.joinServerMessage = configuration.getConfigValueAsString("chatMessage.joinServer");
 	}
 
 	private String joinServerMessage;
-	private final ChatHandler chatHandler;
+	private final ChatEngine chatEngine;
+	private final TabListHandler tabListHandler;
 }

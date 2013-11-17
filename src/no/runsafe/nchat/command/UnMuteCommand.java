@@ -5,8 +5,7 @@ import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
-import no.runsafe.nchat.Constants;
-import no.runsafe.nchat.handlers.MuteHandler;
+import no.runsafe.nchat.chat.MuteHandler;
 
 import java.util.Map;
 
@@ -32,30 +31,27 @@ public class UnMuteCommand extends PlayerCommand
 			if (player.hasPermission("nChat.commands.muteServer"))
 			{
 				this.muteHandler.unMuteServer();
-				console.write(String.format("%s un-muted server chat.", player.getName()));
-				return Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_UNMUTED;
+				return "&bGlobal chat has been un-muted! Praise the sun.";
 			}
 			else
-				return Constants.COMMAND_NO_PERMISSION;
+			{
+				return "&cYou do not have permission to do that.";
+			}
 		}
 		if (!player.hasPermission("nChat.commands.mutePlayer"))
-			return Constants.COMMAND_NO_PERMISSION;
+			return "&cYou do not have permission to do that.";
 
 		RunsafePlayer unMutePlayer = RunsafeServer.Instance.getPlayer(unMutePlayerName);
 
 		if (unMutePlayer == null)
-			return Constants.COMMAND_TARGET_NO_EXISTS;
+			return "&cTry to pick a player who exists.";
 
 		if (unMutePlayer.hasPermission("nChat.muteExempt"))
-			return Constants.COMMAND_TARGET_EXEMPT;
+			return "&cThat player is exempt from being un-muted, silly as it sounds.";
 
-		console.write(String.format(
-			"%s un-muted %s",
-			player.getName(),
-			unMutePlayer.getName()
-		));
+		console.write(String.format("%s un-muted %s", player.getName(), unMutePlayer.getName()));
 		this.muteHandler.unMutePlayer(unMutePlayer);
-		return Constants.DEFAULT_MESSAGE_COLOR + "Unmuted " + unMutePlayer.getPrettyName();
+		return String.format("&bUnmuted %s.", unMutePlayer.getPrettyName());
 	}
 
 	private final IOutput console;

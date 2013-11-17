@@ -1,4 +1,4 @@
-package no.runsafe.nchat.handlers;
+package no.runsafe.nchat.chat.formatting;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
@@ -17,7 +17,7 @@ public class RegionHandler implements IConfigurationChanged
 
 	public String getRegionTag(RunsafePlayer player)
 	{
-		String worldName = player.getWorld().getName();
+		String worldName = player.getWorldName();
 		List<String> regions = this.worldGuard.getRegionsAtLocation(player.getLocation());
 
 		if (regions != null)

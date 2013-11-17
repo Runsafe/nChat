@@ -7,9 +7,8 @@ import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
-import no.runsafe.nchat.Constants;
-import no.runsafe.nchat.handlers.MuteHandler;
-import no.runsafe.nchat.handlers.WhisperHandler;
+import no.runsafe.nchat.chat.MuteHandler;
+import no.runsafe.nchat.chat.WhisperHandler;
 
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public class WhisperCommand extends ExecutableCommand
 		RunsafePlayer target = RunsafeServer.Instance.getPlayer(targetPlayerName);
 
 		if (target == null)
-			return String.format(Constants.WHISPER_NO_TARGET, targetPlayerName);
+			return String.format("&c%s does not exist.", targetPlayerName);
 
 		if (target instanceof RunsafeAmbiguousPlayer)
 			return target.toString();
@@ -38,10 +37,10 @@ public class WhisperCommand extends ExecutableCommand
 		{
 			RunsafePlayer playerExecutor = (RunsafePlayer) executor;
 			if (this.whisperHandler.blockWhisper(playerExecutor, target))
-				return String.format(Constants.WHISPER_TARGET_OFFLINE, targetPlayerName);
+				return String.format("&cThe player %s is offline.", targetPlayerName);
 
 			if (this.muteHandler.isPlayerMuted(playerExecutor))
-				return Constants.CHAT_MUTED;
+				return "&cYou are currently muted!";
 		}
 
 		this.whisperHandler.sendWhisper(executor, target, parameters.get("message"));

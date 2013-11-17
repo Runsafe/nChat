@@ -1,4 +1,4 @@
-package no.runsafe.nchat.handlers;
+package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IOutput;

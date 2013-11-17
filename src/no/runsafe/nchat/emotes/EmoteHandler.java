@@ -1,7 +1,6 @@
 package no.runsafe.nchat.emotes;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.player.IPlayerCommandPreprocessEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.files.PluginDataFile;
@@ -10,19 +9,16 @@ import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
-import no.runsafe.nchat.Core;
+import no.runsafe.nchat.chat.ChatEngine;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
-	public EmoteHandler(PluginFileManager fileManager)
+	public EmoteHandler(PluginFileManager fileManager, ChatEngine chatEngine)
 	{
+		this.chatEngine = chatEngine;
 		emoteFile = fileManager.getFile("emotes.txt");
 	}
 
@@ -65,19 +61,12 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		}
 
 		if (target != null)
-		{
-			RunsafeServer.Instance.broadcastMessage(String.format(
-					emote.getTargetEmote(), player.getPrettyName(), target.getPrettyName()
-			));
-		}
+			chatEngine.playerSystemBroadcast(player, String.format(emote.getTargetEmote(), player.getPrettyName(), target.getPrettyName()));
 		else
-		{
-			RunsafeServer.Instance.broadcastMessage(String.format(
-					emote.getSingleEmote(), player.getPrettyName()
-			));
-		}
+			chatEngine.playerSystemBroadcast(player, String.format(emote.getSingleEmote(), player.getPrettyName()));
 	}
 
+	private final ChatEngine chatEngine;
 	private PluginDataFile emoteFile;
 	private List<Emote> emotes = new ArrayList<Emote>();
 }

@@ -1,14 +1,7 @@
 # default config.yml
 
 nChat:
-  enableChatGroupPrefixes: true
-  enableWorldPrefixes: true
-  enableNicknames: true
-  enablePlayerTags: true
-  enableOpTag: true
   enableColorCodes: true
-  enableChatChannels: true
-  enableAFKSystem: true
   enableRegionPrefixes: true
 antiSpam:
   enableDuplicationFilter: true
@@ -50,8 +43,8 @@ worldPrefixes:
 regionPrefixes:
   gameroom-pvp_arena: '&c[PvP]'
 chatMessage:
-  joinServer: 'has joined the server.'
-  leaveServer: 'has left the server.'
+  joinServer: '#player has joined the server.'
+  leaveServer: '#player has left the server.'
   kicked: 'has been kicked from the server for #reason.'
   banned: 'has been banned from the server for #reason.'
   whisperTo: '&6You &7-> #target&f: #message'
@@ -59,12 +52,5 @@ chatMessage:
 chatFormatting:
   playerName: '#op#world#group#tags #ban#player'
   playerChatMessage: '#player: &f#message'
-  playerSystemMessage: '#player &e#message'
-  channelTagFormat: '&e[%s]'
-  playerTagFormat: '&7[%s]'
   opTagFormat: '&f@'
   banTagFormat: '&m'
-playerTags:
-  ExampleMan:
-    - CLANTAG
-    - AWESOMETAG

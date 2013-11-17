@@ -3,9 +3,8 @@ package no.runsafe.nchat.command;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
-import no.runsafe.nchat.Constants;
-import no.runsafe.nchat.handlers.MuteHandler;
-import no.runsafe.nchat.handlers.WhisperHandler;
+import no.runsafe.nchat.chat.MuteHandler;
+import no.runsafe.nchat.chat.WhisperHandler;
 
 import java.util.Map;
 
@@ -24,13 +23,13 @@ public class ReplyCommand extends PlayerCommand
 		RunsafePlayer whisperer = this.whisperHandler.getLastWhisperedBy(player);
 
 		if (whisperer == null)
-			return Constants.WHISPER_NO_REPLY_TARGET;
+			return "&cYou have nothing to reply to.";
 
 		if (this.whisperHandler.blockWhisper(player, whisperer))
-			return String.format(Constants.WHISPER_TARGET_OFFLINE, whisperer.getName());
+			return String.format("&cThe player %s is currently offline.", whisperer.getPrettyName());
 
 		if (this.muteHandler.isPlayerMuted(player))
-			return Constants.CHAT_MUTED;
+			return "&cYou are currently muted.";
 
 		this.whisperHandler.sendWhisper(player, whisperer, args.get("message"));
 		return null;

@@ -5,8 +5,7 @@ import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
-import no.runsafe.nchat.Constants;
-import no.runsafe.nchat.handlers.MuteHandler;
+import no.runsafe.nchat.chat.MuteHandler;
 
 import java.util.Map;
 
@@ -31,27 +30,22 @@ public class MuteCommand extends PlayerCommand
 		if (mutePlayerName.equalsIgnoreCase("server"))
 		{
 			if (!player.hasPermission("runsafe.nchat.mute.server"))
-				return Constants.COMMAND_NO_PERMISSION;
+				return "&cYou do not have permission to do that";
 
 			this.muteHandler.muteServer();
-			console.write(String.format("%s muted server chat.", player.getName()));
-			return Constants.DEFAULT_MESSAGE_COLOR + Constants.COMMAND_CHAT_MUTED;
+			return "&bGlobal chat has been muted, you monster.";
 		}
 		RunsafePlayer mutePlayer = RunsafeServer.Instance.getPlayer(mutePlayerName);
 
 		if (mutePlayer == null)
-			return Constants.COMMAND_TARGET_NO_EXISTS;
+			return "&cThat player does not exist.";
 
 		if (mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
-			return Constants.COMMAND_TARGET_EXEMPT;
+			return "&cNice try, but you cannot mute that player.";
 
-		console.write(String.format(
-			"%s muted %s",
-			player.getName(),
-			mutePlayer.getName()
-		));
+		console.write(String.format("%s muted %s", player.getName(), mutePlayer.getName()));
 		this.muteHandler.mutePlayer(mutePlayer);
-		return Constants.DEFAULT_MESSAGE_COLOR + "Muted " + mutePlayer.getPrettyName();
+		return String.format("&bMuted %s.", mutePlayer.getPrettyName());
 	}
 
 	private final IOutput console;

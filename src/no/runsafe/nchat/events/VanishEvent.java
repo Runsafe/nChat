@@ -2,21 +2,21 @@ package no.runsafe.nchat.events;
 
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
-import no.runsafe.nchat.handlers.ChatHandler;
+import no.runsafe.nchat.tablist.TabListHandler;
 
 public class VanishEvent implements IPlayerCustomEvent
 {
-	public VanishEvent(ChatHandler chatHandler)
+	public VanishEvent(TabListHandler tabListHandler)
 	{
-		this.chatHandler = chatHandler;
+		this.tabListHandler = tabListHandler;
 	}
 
 	@Override
 	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
 	{
 		if (event.getEvent().equalsIgnoreCase("vanished"))
-			this.chatHandler.refreshPlayerTabListName(event.getPlayer());
+			tabListHandler.refreshPlayerTabListName(event.getPlayer());
 	}
 
-	private final ChatHandler chatHandler;
+	private final TabListHandler tabListHandler;
 }

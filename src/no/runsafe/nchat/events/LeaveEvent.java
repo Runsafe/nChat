@@ -3,28 +3,25 @@ package no.runsafe.nchat.events;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerQuitEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerQuitEvent;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
-import no.runsafe.nchat.handlers.ChatHandler;
-import no.runsafe.nchat.handlers.WhisperHandler;
+import no.runsafe.nchat.chat.ChatEngine;
+import no.runsafe.nchat.chat.WhisperHandler;
 
 public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 {
-	public LeaveEvent(ChatHandler chatHandler, WhisperHandler whisperHandler)
+	public LeaveEvent(ChatEngine chatEngine, WhisperHandler whisperHandler)
 	{
-		this.chatHandler = chatHandler;
+		this.chatEngine = chatEngine;
 		this.whisperHandler = whisperHandler;
 	}
 
 	@Override
 	public void OnPlayerQuit(RunsafePlayerQuitEvent event)
 	{
-		RunsafePlayer player = event.getPlayer();
 		event.setQuitMessage(null);
-		RunsafeServer.Instance.broadcastMessage(
-			chatHandler.formatPlayerSystemMessage(this.leaveServerMessage, player)
-		);
+		RunsafePlayer player = event.getPlayer();
+		chatEngine.broadcastMessage(leaveServerMessage.replace("#player", player.getPrettyName()));
 		this.whisperHandler.deleteLastWhisperedBy(player);
 	}
 
@@ -34,7 +31,7 @@ public class LeaveEvent implements IPlayerQuitEvent, IConfigurationChanged
 		this.leaveServerMessage = iConfiguration.getConfigValueAsString("chatMessage.leaveServer");
 	}
 
-	private final ChatHandler chatHandler;
+	private final ChatEngine chatEngine;
 	private final WhisperHandler whisperHandler;
 	private String leaveServerMessage;
 }
