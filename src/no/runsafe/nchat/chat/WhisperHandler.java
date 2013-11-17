@@ -24,54 +24,48 @@ public class WhisperHandler implements IConfigurationChanged
 	public void sendWhisper(ICommandExecutor sender, RunsafePlayer toPlayer, String message)
 	{
 		if (sender instanceof RunsafePlayer)
-			message = this.spamHandler.getFilteredMessage((RunsafePlayer) sender, message);
+			message = spamHandler.getFilteredMessage((RunsafePlayer) sender, message);
 
 		if (message != null)
 		{
-			if (!(this.enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
+			if (!(enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
 				message = ChatColour.Strip(message);
 
 			sender.sendColouredMessage(
-				this.whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
+				whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
 			);
 
-			String senderName = (sender instanceof RunsafePlayer ? ((RunsafePlayer) sender).getPrettyName() : this.consoleWhisperName);
+			String senderName = (sender instanceof RunsafePlayer ? ((RunsafePlayer) sender).getPrettyName() : consoleWhisperName);
 
 			toPlayer.sendColouredMessage(
-				this.whisperFromFormat.replace("#source", senderName).replace("#message", message)
+				whisperFromFormat.replace("#source", senderName).replace("#message", message)
 			);
 
 			if (sender instanceof RunsafePlayer)
-				this.setLastWhisperedBy(toPlayer, (RunsafePlayer) sender);
+				setLastWhisperedBy(toPlayer, (RunsafePlayer) sender);
 
-			console.writeColoured(
-				"%s -> %s: %s",
-				Level.INFO,
-				senderName,
-				toPlayer.getPrettyName(),
-				message
-			);
+			console.writeColoured("%s -> %s: %s",	Level.INFO,	senderName,	toPlayer.getPrettyName(), message);
 		}
 	}
 
 	private void setLastWhisperedBy(RunsafePlayer player, RunsafePlayer whisperer)
 	{
-		this.lastWhisperList.put(player.getName(), whisperer.getName());
+		lastWhisperList.put(player.getName(), whisperer.getName());
 	}
 
 	public void deleteLastWhisperedBy(RunsafePlayer player)
 	{
-		if (this.lastWhisperList.containsKey(player.getName()))
-			this.lastWhisperList.remove(player.getName());
+		if (lastWhisperList.containsKey(player.getName()))
+			lastWhisperList.remove(player.getName());
 	}
 
 	public RunsafePlayer getLastWhisperedBy(RunsafePlayer player)
 	{
 		String playerName = player.getName();
 
-		if (this.lastWhisperList.containsKey(playerName))
+		if (lastWhisperList.containsKey(playerName))
 		{
-			RunsafePlayer whisperer = RunsafeServer.Instance.getPlayer(this.lastWhisperList.get(playerName));
+			RunsafePlayer whisperer = RunsafeServer.Instance.getPlayer(lastWhisperList.get(playerName));
 			if (whisperer != null)
 				return whisperer;
 		}
@@ -86,17 +80,17 @@ public class WhisperHandler implements IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.whisperToFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
-		this.whisperFromFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
-		this.enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
-		this.consoleWhisperName = configuration.getConfigValueAsString("console.whisper");
+		whisperToFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
+		whisperFromFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
+		enableColorCodes = configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
+		consoleWhisperName = configuration.getConfigValueAsString("console.whisper");
 	}
 
 	private boolean enableColorCodes;
 	private String whisperToFormat;
 	private String whisperFromFormat;
-	private final IOutput console;
-	private final HashMap<String, String> lastWhisperList;
 	private String consoleWhisperName;
+	private final HashMap<String, String> lastWhisperList;
+	private final IOutput console;
 	private final SpamHandler spamHandler;
 }
