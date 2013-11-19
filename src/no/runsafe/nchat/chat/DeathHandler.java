@@ -5,7 +5,6 @@ import no.runsafe.framework.api.event.player.IPlayerDeathEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.files.PluginDataFile;
 import no.runsafe.framework.files.PluginFileManager;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
 
 import java.util.List;
