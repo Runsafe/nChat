@@ -23,13 +23,13 @@ public class PlayerDataProvider implements IPlayerDataProvider
 	{
 		Map<String, String> data = new HashMap<String, String>();
 
-		data.put("nChat.isMuted", muteHandler.isPlayerMuted(player) ? "True" : "False");
+		data.put("nchat.ismuted", muteHandler.isPlayerMuted(player) ? "True" : "False");
 
 		List<String> ignoringPlayers = ignoreHandler.getPlayersIgnoring(player);
-		data.put("nChat.ignoredBy", ignoringPlayers.size() == 0 ? "Nobody" : StringUtils.join(ignoringPlayers, ", "));
+		data.put("nchat.ignoredby", ignoringPlayers.size() == 0 ? "Nobody" : StringUtils.join(ignoringPlayers, ", "));
 
 		List<String> ignoredPlayers = ignoreHandler.getIgnoredPlayers(player);
-		data.put("nChat.ignoring", ignoredPlayers.size() == 0 ? "Nobody" : StringUtils.join(ignoredPlayers, ", "));
+		data.put("nchat.ignoring", ignoredPlayers.size() == 0 ? "Nobody" : StringUtils.join(ignoredPlayers, ", "));
 
 		return data;
 	}
