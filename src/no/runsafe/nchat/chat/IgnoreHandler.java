@@ -6,6 +6,7 @@ import no.runsafe.nchat.database.IgnoreDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class IgnoreHandler
 {
@@ -91,6 +92,23 @@ public class IgnoreHandler
 			return ignoreList.get(ignoreName);
 
 		return new ArrayList<String>(0);
+	}
+
+	/**
+	 * Returns a list of players being ignored by a player.
+	 *
+	 * @param player The player who's list to return.
+	 * @return A list of players being ignored.
+	 */
+	public List<String> getIgnoredPlayers(RunsafePlayer player)
+	{
+		List<String> ignoredPlayers = new ArrayList<String>();
+
+		for (Map.Entry<String, List<String>> node : ignoreList.entrySet())
+			if (node.getValue().contains(player.getName()))
+				ignoredPlayers.add(node.getKey());
+
+		return ignoredPlayers;
 	}
 
 	private final IgnoreDatabase database;

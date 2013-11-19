@@ -62,5 +62,8 @@ public class Core extends RunsafeConfigurablePlugin
 		addComponent(KickEvent.class);
 		addComponent(ChatEvent.class);
 		addComponent(VanishEvent.class);
+
+		// External
+		addComponent(PlayerDataProvider.class);
 	}
 }
