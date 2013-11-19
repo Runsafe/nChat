@@ -13,8 +13,9 @@ import java.util.Random;
 
 public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 {
-	public DeathHandler(PluginFileManager fileManager)
+	public DeathHandler(PluginFileManager fileManager, ChatEngine chatEngine)
 	{
+		this.chatEngine = chatEngine;
 		deathMessageFile = fileManager.getFile("death_messages.txt");
 	}
 
@@ -31,11 +32,12 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 		{
 			event.setDeathMessage(""); // Set the Minecraft death message to blank to silence output
 			String message = messages.get(random.nextInt(messages.size())); // Get a random death message.
-			RunsafeServer.Instance.broadcastMessage(message.replaceAll("#player", event.getEntity().getPrettyName()));
+			chatEngine.broadcastMessage(message.replaceAll("#player", event.getEntity().getPrettyName()));
 		}
 	}
 
 	private PluginDataFile deathMessageFile;
 	private List<String> messages;
 	private Random random = new Random();
+	private final ChatEngine chatEngine;
 }
