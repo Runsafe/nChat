@@ -7,6 +7,7 @@ import no.runsafe.nchat.chat.MuteHandler;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PlayerDataProvider implements IPlayerDataProvider
@@ -23,8 +24,12 @@ public class PlayerDataProvider implements IPlayerDataProvider
 		Map<String, String> data = new HashMap<String, String>();
 
 		data.put("nChat.isMuted", muteHandler.isPlayerMuted(player) ? "True" : "False");
-		data.put("nChat.ignoredBy", StringUtils.join(ignoreHandler.getPlayersIgnoring(player), ", "));
-		data.put("nChat.ignoring", StringUtils.join(ignoreHandler.getIgnoredPlayers(player), ", "));
+
+		List<String> ignoringPlayers = ignoreHandler.getPlayersIgnoring(player);
+		data.put("nChat.ignoredBy", ignoringPlayers.size() == 0 ? "Nobody" : StringUtils.join(ignoringPlayers, ", "));
+
+		List<String> ignoredPlayers = ignoreHandler.getIgnoredPlayers(player);
+		data.put("nChat.ignoring", ignoredPlayers.size() == 0 ? "Nobody" : StringUtils.join(ignoredPlayers, ", "));
 
 		return data;
 	}
