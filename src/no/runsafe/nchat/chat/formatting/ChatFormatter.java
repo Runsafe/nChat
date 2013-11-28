@@ -25,7 +25,7 @@ public class ChatFormatter implements IPlayerNameDecorator
 			message = ChatColour.Strip(message);
 
 		replacements.put("#player", formatPlayerName(player, player.getName()));
-		replacements.put("#message", message.trim().replaceAll("([\\\\\\$])", "\\$1"));
+		replacements.put("#message", message.trim().replaceAll("([\\\\$])", "\\\\$1"));
 
 		return Utils.mapReplace(config.getPlayerChatFormat(), replacements);
 	}
