@@ -20,7 +20,6 @@ public class ChatFormatter implements IPlayerNameDecorator
 	public String formatChatMessage(RunsafePlayer player, String message)
 	{
 		HashMap<String, String> replacements = new HashMap<String, String>();
-		replacements.put("%", "%%"); // Prevent escaping.
 
 		if (!(config.colorCodesEnabled() || player.hasPermission("runsafe.nchat.colors")))
 			message = ChatColour.Strip(message);
