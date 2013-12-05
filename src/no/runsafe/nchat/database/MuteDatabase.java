@@ -1,6 +1,6 @@
 package no.runsafe.nchat.database;
 
-import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IDebug;
 import no.runsafe.framework.api.database.IDatabase;
 import no.runsafe.framework.api.database.Repository;
 
@@ -10,9 +10,9 @@ import java.util.List;
 
 public class MuteDatabase extends Repository
 {
-	public MuteDatabase(IOutput console, IDatabase database)
+	public MuteDatabase(IDebug console, IDatabase database)
 	{
-		this.console = console;
+		this.debugger = console;
 		this.database = database;
 	}
 
@@ -44,16 +44,16 @@ public class MuteDatabase extends Repository
 
 	public void mutePlayer(String playerName)
 	{
-		console.fine("Updating mute database with " + playerName);
+		debugger.debugFine("Updating mute database with " + playerName);
 		database.Update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", playerName);
 	}
 
 	public void unMutePlayer(String playerName)
 	{
-		console.fine("Updating mute database with removal of " + playerName);
+		debugger.debugFine("Updating mute database with removal of " + playerName);
 		database.Execute("DELETE FROM nchat_muted WHERE player = ?", playerName);
 	}
 
-	private final IOutput console;
+	private final IDebug debugger;
 	private final IDatabase database;
 }

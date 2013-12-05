@@ -8,6 +8,7 @@ import no.runsafe.nchat.chat.formatting.ChatFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class ChatEngine
 {
@@ -24,7 +25,7 @@ public class ChatEngine
 	 * Used to send a broadcast from a player, will be subject to mute and spam checks.
 	 * Returns true if the message was broadcast successfully, otherwise false.
 	 *
-	 * @param player The player to broadcast the message.
+	 * @param player  The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 */
 	public boolean playerBroadcast(RunsafePlayer player, String message)
@@ -44,7 +45,7 @@ public class ChatEngine
 	 * Used to broadcast a system message from a player, will be subject to mute and spam checks.
 	 * Will not be seen by people ignoring the player.
 	 *
-	 * @param player The player to broadcast the message.
+	 * @param player  The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 * @return boolean True if the message was broadcast, otherwise false.
 	 */
@@ -61,7 +62,7 @@ public class ChatEngine
 	 * Broadcast a message from a player, not subject to any spam/mute checks.
 	 * Will not be seen by people ignoring the player.
 	 *
-	 * @param player The player to broadcast the message.
+	 * @param player  The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 */
 	public void broadcastMessageAsPlayer(RunsafePlayer player, String message)
@@ -82,7 +83,7 @@ public class ChatEngine
 	/**
 	 * Broadcast a message to the server.
 	 *
-	 * @param message The message to be broadcast.
+	 * @param message         The message to be broadcast.
 	 * @param excludedPlayers A list of players who will not see this message.
 	 */
 	public void broadcastMessage(String message, List<String> excludedPlayers)
@@ -94,7 +95,7 @@ public class ChatEngine
 			if (!excludedPlayers.contains(worldPlayer.getName()))
 				worldPlayer.sendColouredMessage(message);
 
-		console.writeColoured(message);
+		console.writeColoured(message, Level.INFO);
 	}
 
 	/**

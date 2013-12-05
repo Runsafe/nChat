@@ -1,6 +1,6 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IConsole;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.RunsafeServer;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class UnMuteCommand extends PlayerCommand
 {
-	public UnMuteCommand(IOutput console, MuteHandler muteHandler)
+	public UnMuteCommand(IConsole console, MuteHandler muteHandler)
 	{
 		super(
 			"unmute", "Unmutes a previously muted player", "runsafe.nchat.mute",
@@ -49,11 +49,11 @@ public class UnMuteCommand extends PlayerCommand
 		if (unMutePlayer.hasPermission("nChat.muteExempt"))
 			return "&cThat player is exempt from being un-muted, silly as it sounds.";
 
-		console.write(String.format("%s un-muted %s", player.getName(), unMutePlayer.getName()));
+		console.logInformation(String.format("%s un-muted %s", player.getName(), unMutePlayer.getName()));
 		this.muteHandler.unMutePlayer(unMutePlayer);
 		return String.format("&bUnmuted %s.", unMutePlayer.getPrettyName());
 	}
 
-	private final IOutput console;
+	private final IConsole console;
 	private final MuteHandler muteHandler;
 }

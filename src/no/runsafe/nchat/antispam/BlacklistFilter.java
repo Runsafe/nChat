@@ -1,7 +1,7 @@
 package no.runsafe.nchat.antispam;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IConsole;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.Core;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 {
-	public BlacklistFilter(Core nChat, IOutput output)
+	public BlacklistFilter(Core nChat, IConsole output)
 	{
 		this.output = output;
 		this.filePath = new File(nChat.getDataFolder(), "blacklist.txt");
@@ -53,18 +53,18 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 			{
 				if (!filePath.getParentFile().isDirectory())
 				{
-					this.output.warning("Unable to locate plugin data folder at: " + filePath.getParentFile());
+					this.output.logWarning("Unable to locate plugin data folder at: " + filePath.getParentFile());
 					return;
 				}
 				if (!filePath.createNewFile())
 				{
-					this.output.warning("Unable to create blacklist file at: " + filePath);
+					this.output.logWarning("Unable to create blacklist file at: " + filePath);
 					return;
 				}
 			}
 			catch (IOException exception)
 			{
-				this.output.warning("Unable to create blacklist file due to exception:");
+				this.output.logWarning("Unable to create blacklist file due to exception:");
 				exception.printStackTrace();
 				return;
 			}
@@ -87,12 +87,12 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 		catch (Exception exception)
 		{
 			// We should not get here, but we catch it just in-case.
-			this.output.warning("Unexpected exception prevented blacklist loading:");
+			this.output.logWarning("Unexpected exception prevented blacklist loading:");
 			exception.printStackTrace();
 		}
 	}
 
 	private List<String> blacklist = new ArrayList<String>();
 	private File filePath;
-	private IOutput output;
+	private IConsole output;
 }

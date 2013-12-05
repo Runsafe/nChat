@@ -43,7 +43,7 @@ public class MuteCommand extends PlayerCommand
 		if (mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return "&cNice try, but you cannot mute that player.";
 
-		console.write(String.format("%s muted %s", player.getName(), mutePlayer.getName()));
+		console.logInformation(String.format("%s muted %s", player.getName(), mutePlayer.getName()));
 		this.muteHandler.mutePlayer(mutePlayer);
 		return String.format("&bMuted %s.", mutePlayer.getPrettyName());
 	}
