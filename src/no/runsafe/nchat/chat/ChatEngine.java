@@ -95,7 +95,7 @@ public class ChatEngine
 			if (!excludedPlayers.contains(worldPlayer.getName()))
 				worldPlayer.sendColouredMessage(message);
 
-		console.writeColoured(message, Level.INFO);
+		console.writeColoured(message.replace("%","%%"), Level.INFO);
 	}
 
 	/**
