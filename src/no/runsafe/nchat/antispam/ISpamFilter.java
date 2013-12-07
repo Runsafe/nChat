@@ -1,8 +1,8 @@
 package no.runsafe.nchat.antispam;
 
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 
 public interface ISpamFilter
 {
-	public String processString(RunsafePlayer player, String message);
+	public String processString(IPlayer player, String message);
 }

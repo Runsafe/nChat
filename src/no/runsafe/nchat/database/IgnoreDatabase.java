@@ -4,7 +4,7 @@ import no.runsafe.framework.api.database.IDatabase;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISet;
 import no.runsafe.framework.api.database.Repository;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,11 +29,11 @@ public class IgnoreDatabase extends Repository
 		HashMap<Integer, List<String>> queries = new HashMap<Integer, List<String>>();
 		ArrayList<String> sql = new ArrayList<String>();
 		sql.add(
-				"CREATE TABLE `nchat_ignore` (" +
-						"`player` VARCHAR(16) NULL," +
-						"`ignore` VARCHAR(16) NULL," +
-						"PRIMARY KEY (`player`, `ignore`)" +
-						")"
+			"CREATE TABLE `nchat_ignore` (" +
+				"`player` VARCHAR(16) NULL," +
+				"`ignore` VARCHAR(16) NULL," +
+				"PRIMARY KEY (`player`, `ignore`)" +
+				")"
 		);
 		queries.put(1, sql);
 		return queries;
@@ -55,12 +55,12 @@ public class IgnoreDatabase extends Repository
 		return ignoreList;
 	}
 
-	public void ignorePlayer(RunsafePlayer player, RunsafePlayer ignore)
+	public void ignorePlayer(IPlayer player, IPlayer ignore)
 	{
 		database.Update("INSERT IGNORE INTO nchat_ignore (`player`, `ignore`) VALUES(?, ?)", player.getName(), ignore.getName());
 	}
 
-	public void removeIgnorePlayer(RunsafePlayer player, RunsafePlayer ignore)
+	public void removeIgnorePlayer(IPlayer player, IPlayer ignore)
 	{
 		database.Update("DELETE FROM nchat_ignore WHERE `player` = ? AND `ignore` = ?", player.getName(), ignore.getName());
 	}

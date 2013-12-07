@@ -3,6 +3,7 @@ package no.runsafe.nchat.events;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerJoinEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerJoinEvent;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.ChatEngine;
@@ -20,7 +21,7 @@ public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 	public void OnPlayerJoinEvent(RunsafePlayerJoinEvent event)
 	{
 		event.setJoinMessage(null);
-		RunsafePlayer player = event.getPlayer();
+		IPlayer player = event.getPlayer();
 		chatEngine.broadcastMessage(joinServerMessage.replace("#player", player.getPrettyName()));
 		tabListHandler.refreshPlayerTabListName(player);
 	}

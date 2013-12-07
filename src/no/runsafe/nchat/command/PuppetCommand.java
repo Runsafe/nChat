@@ -4,9 +4,9 @@ import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.ChatEngine;
 
 import java.util.Map;
@@ -22,7 +22,7 @@ public class PuppetCommand extends ExecutableCommand
 	@Override
 	public String OnExecute(ICommandExecutor executor, Map<String, String> args)
 	{
-		RunsafePlayer targetPlayer = RunsafeServer.Instance.getPlayer(args.get("player"));
+		IPlayer targetPlayer = RunsafeServer.Instance.getPlayer(args.get("player"));
 		if (targetPlayer == null)
 			return "&cThat player does not exist.";
 

@@ -1,6 +1,6 @@
 package no.runsafe.nchat.antispam;
 
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ public class SpamHandler
 		this.filters.addAll(Arrays.asList(filters));
 	}
 
-	public String getFilteredMessage(RunsafePlayer player, String message)
+	public String getFilteredMessage(IPlayer player, String message)
 	{
 		for (ISpamFilter filter : this.filters)
 			if (message != null)

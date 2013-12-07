@@ -3,6 +3,7 @@ package no.runsafe.nchat.antispam;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +16,7 @@ public class FloodFilter implements ISpamFilter, IConfigurationChanged
 	}
 
 	@Override
-	public String processString(RunsafePlayer player, String message)
+	public String processString(IPlayer player, String message)
 	{
 		if (this.isEnabled)
 		{

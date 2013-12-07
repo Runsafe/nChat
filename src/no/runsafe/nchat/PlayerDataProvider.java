@@ -1,7 +1,7 @@
 package no.runsafe.nchat;
 
 import no.runsafe.framework.api.hook.IPlayerDataProvider;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.chat.MuteHandler;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +19,7 @@ public class PlayerDataProvider implements IPlayerDataProvider
 	}
 
 	@Override
-	public Map<String, String> GetPlayerData(RunsafePlayer player)
+	public Map<String, String> GetPlayerData(IPlayer player)
 	{
 		Map<String, String> data = new HashMap<String, String>();
 

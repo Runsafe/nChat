@@ -3,15 +3,15 @@ package no.runsafe.nchat.tablist;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.framework.text.ChatColour;
 
 import java.util.Map;
 
 public class TabListHandler implements IPlayerCustomEvent, IConfigurationChanged
 {
-	private String getTabListName(RunsafePlayer player)
+	private String getTabListName(IPlayer player)
 	{
 		String firstGroup = (player.isVanished() ? "vanish" : player.getGroups().get(0).toLowerCase());
 		String playerName = player.getName();
@@ -32,7 +32,7 @@ public class TabListHandler implements IPlayerCustomEvent, IConfigurationChanged
 			refreshPlayerTabListName(event.getPlayer());
 	}
 
-	public void refreshPlayerTabListName(RunsafePlayer player)
+	public void refreshPlayerTabListName(IPlayer player)
 	{
 		player.setPlayerListName(ChatColour.ToMinecraft(getTabListName(player)));
 	}

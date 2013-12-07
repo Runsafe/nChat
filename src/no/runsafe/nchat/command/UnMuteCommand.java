@@ -3,8 +3,8 @@ package no.runsafe.nchat.command;
 import no.runsafe.framework.api.IConsole;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 
 import java.util.Map;
@@ -22,7 +22,7 @@ public class UnMuteCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer player, Map<String, String> args)
+	public String OnExecute(IPlayer player, Map<String, String> args)
 	{
 		String unMutePlayerName = args.get("player");
 
@@ -41,7 +41,7 @@ public class UnMuteCommand extends PlayerCommand
 		if (!player.hasPermission("nChat.commands.mutePlayer"))
 			return "&cYou do not have permission to do that.";
 
-		RunsafePlayer unMutePlayer = RunsafeServer.Instance.getPlayer(unMutePlayerName);
+		IPlayer unMutePlayer = RunsafeServer.Instance.getPlayer(unMutePlayerName);
 
 		if (unMutePlayer == null)
 			return "&cTry to pick a player who exists.";

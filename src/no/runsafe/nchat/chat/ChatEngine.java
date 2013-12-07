@@ -1,8 +1,8 @@
 package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.antispam.SpamHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 
@@ -28,7 +28,7 @@ public class ChatEngine
 	 * @param player  The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 */
-	public boolean playerBroadcast(RunsafePlayer player, String message)
+	public boolean playerBroadcast(IPlayer player, String message)
 	{
 		if (!muteCheck(player))
 			return false;
@@ -49,7 +49,7 @@ public class ChatEngine
 	 * @param message The message the player will broadcast.
 	 * @return boolean True if the message was broadcast, otherwise false.
 	 */
-	public boolean playerSystemBroadcast(RunsafePlayer player, String message)
+	public boolean playerSystemBroadcast(IPlayer player, String message)
 	{
 		if (!muteCheck(player))
 			return false;
@@ -65,7 +65,7 @@ public class ChatEngine
 	 * @param player  The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 */
-	public void broadcastMessageAsPlayer(RunsafePlayer player, String message)
+	public void broadcastMessageAsPlayer(IPlayer player, String message)
 	{
 		broadcastMessage(chatFormatter.formatChatMessage(player, message), ignoreHandler.getPlayersIgnoring(player));
 	}
@@ -89,13 +89,13 @@ public class ChatEngine
 	public void broadcastMessage(String message, List<String> excludedPlayers)
 	{
 		excludedPlayers = excludedPlayers == null ? new ArrayList<String>() : excludedPlayers;
-		List<RunsafePlayer> worldPlayers = RunsafeServer.Instance.getOnlinePlayers();
+		List<IPlayer> worldPlayers = RunsafeServer.Instance.getOnlinePlayers();
 
-		for (RunsafePlayer worldPlayer : worldPlayers)
+		for (IPlayer worldPlayer : worldPlayers)
 			if (!excludedPlayers.contains(worldPlayer.getName()))
 				worldPlayer.sendColouredMessage(message);
 
-		console.writeColoured(message.replace("%","%%"), Level.INFO);
+		console.writeColoured(message.replace("%", "%%"), Level.INFO);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class ChatEngine
 	 * @param player The player to check.
 	 * @return False if the player us muted.
 	 */
-	private boolean muteCheck(RunsafePlayer player)
+	private boolean muteCheck(IPlayer player)
 	{
 		// Mute check.
 		if (muteHandler.isPlayerMuted(player))

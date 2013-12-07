@@ -2,7 +2,7 @@ package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 
@@ -18,9 +18,9 @@ public class ReplyCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer player, Map<String, String> args)
+	public String OnExecute(IPlayer player, Map<String, String> args)
 	{
-		RunsafePlayer whisperer = this.whisperHandler.getLastWhisperedBy(player);
+		IPlayer whisperer = this.whisperHandler.getLastWhisperedBy(player);
 
 		if (whisperer == null)
 			return "&cYou have nothing to reply to.";

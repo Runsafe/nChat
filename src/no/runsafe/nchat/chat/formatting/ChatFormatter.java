@@ -1,8 +1,8 @@
 package no.runsafe.nchat.chat.formatting;
 
 import no.runsafe.framework.api.hook.IPlayerNameDecorator;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.framework.text.ChatColour;
 import no.runsafe.nchat.Utils;
 
@@ -17,7 +17,7 @@ public class ChatFormatter implements IPlayerNameDecorator
 		this.regionHandler = regionHandler;
 	}
 
-	public String formatChatMessage(RunsafePlayer player, String message)
+	public String formatChatMessage(IPlayer player, String message)
 	{
 		HashMap<String, String> replacements = new HashMap<String, String>();
 
@@ -39,7 +39,7 @@ public class ChatFormatter implements IPlayerNameDecorator
 		return "";
 	}
 
-	public String getGroupPrefix(RunsafePlayer player)
+	public String getGroupPrefix(IPlayer player)
 	{
 		if (!player.getGroups().isEmpty())
 		{
@@ -51,7 +51,7 @@ public class ChatFormatter implements IPlayerNameDecorator
 		return "";
 	}
 
-	public String formatPlayerName(RunsafePlayer player, String name)
+	public String formatPlayerName(IPlayer player, String name)
 	{
 		String formatName = config.getPlayerNameFormat();
 		if (formatName == null) return null;
@@ -81,7 +81,7 @@ public class ChatFormatter implements IPlayerNameDecorator
 	}
 
 	@Override
-	public String DecorateName(RunsafePlayer runsafePlayer, String name)
+	public String DecorateName(IPlayer runsafePlayer, String name)
 	{
 		return formatPlayerName(runsafePlayer, name);
 	}

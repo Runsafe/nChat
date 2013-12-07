@@ -4,8 +4,9 @@ import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
+import no.runsafe.framework.api.player.IAmbiguousPlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
-import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
@@ -25,12 +26,12 @@ public class WhisperCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
 		String targetPlayerName = parameters.get("player");
-		RunsafePlayer target = RunsafeServer.Instance.getPlayer(targetPlayerName);
+		IPlayer target = RunsafeServer.Instance.getPlayer(targetPlayerName);
 
 		if (target == null)
 			return String.format("&c%s does not exist.", targetPlayerName);
 
-		if (target instanceof RunsafeAmbiguousPlayer)
+		if (target instanceof IAmbiguousPlayer)
 			return target.toString();
 
 		if (executor instanceof RunsafePlayer)

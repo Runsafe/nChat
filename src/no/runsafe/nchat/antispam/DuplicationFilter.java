@@ -3,7 +3,7 @@ package no.runsafe.nchat.antispam;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 	}
 
 	@Override
-	public String processString(RunsafePlayer player, final String message)
+	public String processString(IPlayer player, final String message)
 	{
 		if (this.isEnabled)
 		{
@@ -37,9 +37,11 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 
 			this.cooldowns.get(playerName).add(message.toLowerCase());
 
-			this.scheduler.startAsyncTask(new Runnable() {
+			this.scheduler.startAsyncTask(new Runnable()
+			{
 				@Override
-				public void run() {
+				public void run()
+				{
 					cooldowns.get(playerName).remove(message.toLowerCase());
 					if (cooldowns.get(playerName).isEmpty())
 						cooldowns.remove(playerName);

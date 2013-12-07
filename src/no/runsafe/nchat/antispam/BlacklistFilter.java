@@ -3,7 +3,7 @@ package no.runsafe.nchat.antispam;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IConsole;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.Core;
 
 import java.io.BufferedReader;
@@ -22,7 +22,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	}
 
 	@Override
-	public String processString(RunsafePlayer player, String message)
+	public String processString(IPlayer player, String message)
 	{
 		// Parse the message to lowercase to prevent bypassing that way.
 		String lowerMessage = message.toLowerCase();

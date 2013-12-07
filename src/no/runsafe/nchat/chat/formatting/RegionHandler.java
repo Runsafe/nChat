@@ -2,7 +2,7 @@ package no.runsafe.nchat.chat.formatting;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.worldguardbridge.WorldGuardInterface;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class RegionHandler implements IConfigurationChanged
 		this.worldGuard = worldGuard;
 	}
 
-	public String getRegionTag(RunsafePlayer player)
+	public String getRegionTag(IPlayer player)
 	{
 		String worldName = player.getWorldName();
 		List<String> regions = this.worldGuard.getRegionsAtLocation(player.getLocation());

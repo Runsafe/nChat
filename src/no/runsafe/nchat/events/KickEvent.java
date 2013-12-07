@@ -1,8 +1,8 @@
 package no.runsafe.nchat.events;
 
 import no.runsafe.framework.api.event.player.IPlayerKickEvent;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerKickEvent;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.WhisperHandler;
 
 public class KickEvent implements IPlayerKickEvent
@@ -15,7 +15,7 @@ public class KickEvent implements IPlayerKickEvent
 	@Override
 	public void OnPlayerKick(RunsafePlayerKickEvent runsafePlayerKickEvent)
 	{
-		RunsafePlayer kickedPlayer = runsafePlayerKickEvent.getPlayer();
+		IPlayer kickedPlayer = runsafePlayerKickEvent.getPlayer();
 		this.whisperHandler.deleteLastWhisperedBy(kickedPlayer);
 	}
 

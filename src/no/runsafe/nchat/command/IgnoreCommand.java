@@ -2,8 +2,8 @@ package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.IgnoreHandler;
 
 import java.util.Map;
@@ -17,9 +17,9 @@ public class IgnoreCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer player, Map<String, String> args)
+	public String OnExecute(IPlayer player, Map<String, String> args)
 	{
-		RunsafePlayer ignorePlayer = RunsafeServer.Instance.getPlayerExact(args.get("player"));
+		IPlayer ignorePlayer = RunsafeServer.Instance.getPlayerExact(args.get("player"));
 		if (ignorePlayer == null)
 			return "&cUnable to ignore that player, server error.";
 

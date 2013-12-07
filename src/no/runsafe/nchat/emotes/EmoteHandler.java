@@ -3,12 +3,12 @@ package no.runsafe.nchat.emotes;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerCommandPreprocessEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.files.PluginDataFile;
 import no.runsafe.framework.files.PluginFileManager;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.ChatEngine;
 
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		{
 			if (parts[0].equalsIgnoreCase("/" + emote.getEmote()))
 			{
-				RunsafePlayer targetPlayer = parts.length > 1 ? RunsafeServer.Instance.getPlayer(parts[1]) : null;
-				this.broadcastEmote(emote, event.getPlayer(),  targetPlayer);
+				IPlayer targetPlayer = parts.length > 1 ? RunsafeServer.Instance.getPlayer(parts[1]) : null;
+				this.broadcastEmote(emote, event.getPlayer(), targetPlayer);
 				event.cancel();
 				break;
 			}
@@ -52,7 +52,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 
 	}
 
-	private void broadcastEmote(Emote emote, RunsafePlayer player, RunsafePlayer target)
+	private void broadcastEmote(Emote emote, IPlayer player, IPlayer target)
 	{
 		if (target instanceof RunsafeAmbiguousPlayer)
 		{

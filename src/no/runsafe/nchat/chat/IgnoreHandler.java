@@ -1,6 +1,6 @@
 package no.runsafe.nchat.chat;
 
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.database.IgnoreDatabase;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class IgnoreHandler
 	 * @param player The player who will ignore.
 	 * @param ignorePlayer The player to be ignored.
 	 */
-	public void ignorePlayer(RunsafePlayer player, RunsafePlayer ignorePlayer)
+	public void ignorePlayer(IPlayer player, IPlayer ignorePlayer)
 	{
 		database.ignorePlayer(player, ignorePlayer);
 		String ignorePlayerName = ignorePlayer.getName();
@@ -39,7 +39,7 @@ public class IgnoreHandler
 	 * @param player The player to perform the removal.
 	 * @param ignorePlayer The player to be removed.
 	 */
-	public void removeIgnorePlayer(RunsafePlayer player, RunsafePlayer ignorePlayer)
+	public void removeIgnorePlayer(IPlayer player, IPlayer ignorePlayer)
 	{
 		database.removeIgnorePlayer(player, ignorePlayer);
 		String ignorePlayerName = ignorePlayer.getName();
@@ -62,7 +62,7 @@ public class IgnoreHandler
 	 * @param ignorePlayer The player who is being ignored.
 	 * @return True if the player is being ignored.
 	 */
-	public boolean playerIsIgnoring(RunsafePlayer player, RunsafePlayer ignorePlayer)
+	public boolean playerIsIgnoring(IPlayer player, IPlayer ignorePlayer)
 	{
 		String ignorePlayerName = ignorePlayer.getName();
 		return ignoreList.containsKey(ignorePlayerName) && ignoreList.get(ignorePlayerName).contains(player.getName());
@@ -74,7 +74,7 @@ public class IgnoreHandler
 	 * @param ignorePlayer The player to check.
 	 * @return True if the player can be ignored, otherwise false.
 	 */
-	public boolean canIgnore(RunsafePlayer ignorePlayer)
+	public boolean canIgnore(IPlayer ignorePlayer)
 	{
 		return !ignorePlayer.hasPermission("runsafe.nchat.ignore.exempt");
 	}
@@ -85,7 +85,7 @@ public class IgnoreHandler
 	 * @param ignorePlayer The player to query for.
 	 * @return A list of player names.
 	 */
-	public List<String> getPlayersIgnoring(RunsafePlayer ignorePlayer)
+	public List<String> getPlayersIgnoring(IPlayer ignorePlayer)
 	{
 		String ignoreName = ignorePlayer.getName();
 		if (ignoreList.containsKey(ignoreName))
@@ -100,7 +100,7 @@ public class IgnoreHandler
 	 * @param player The player who's list to return.
 	 * @return A list of players being ignored.
 	 */
-	public List<String> getIgnoredPlayers(RunsafePlayer player)
+	public List<String> getIgnoredPlayers(IPlayer player)
 	{
 		List<String> ignoredPlayers = new ArrayList<String>();
 

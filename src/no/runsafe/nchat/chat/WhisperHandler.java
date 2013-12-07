@@ -4,8 +4,8 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.framework.text.ChatColour;
 import no.runsafe.nchat.antispam.SpamHandler;
 
@@ -22,11 +22,11 @@ public class WhisperHandler implements IConfigurationChanged
 		this.lastWhisperList = new HashMap<String, String>();
 	}
 
-	public void sendWhisper(ICommandExecutor sender, RunsafePlayer toPlayer, String message)
+	public void sendWhisper(ICommandExecutor sender, IPlayer toPlayer, String message)
 	{
-		if (sender instanceof RunsafePlayer)
+		if (sender instanceof IPlayer)
 		{
-			RunsafePlayer senderPlayer = (RunsafePlayer) sender;
+			IPlayer senderPlayer = (IPlayer) sender;
 
 			if (ignoreHandler.playerIsIgnoring(toPlayer, senderPlayer))
 			{
@@ -54,44 +54,44 @@ public class WhisperHandler implements IConfigurationChanged
 				whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
 			);
 
-			String senderName = (sender instanceof RunsafePlayer ? ((RunsafePlayer) sender).getPrettyName() : consoleWhisperName);
+			String senderName = (sender instanceof IPlayer ? ((IPlayer) sender).getPrettyName() : consoleWhisperName);
 
 			toPlayer.sendColouredMessage(
 				whisperFromFormat.replace("#source", senderName).replace("#message", message)
 			);
 
-			if (sender instanceof RunsafePlayer)
-				setLastWhisperedBy(toPlayer, (RunsafePlayer) sender);
+			if (sender instanceof IPlayer)
+				setLastWhisperedBy(toPlayer, (IPlayer) sender);
 
-			console.writeColoured("%s -> %s: %s",	Level.INFO,	senderName,	toPlayer.getPrettyName(), message);
+			console.writeColoured("%s -> %s: %s", Level.INFO, senderName, toPlayer.getPrettyName(), message);
 		}
 	}
 
-	private void setLastWhisperedBy(RunsafePlayer player, RunsafePlayer whisperer)
+	private void setLastWhisperedBy(IPlayer player, IPlayer whisperer)
 	{
 		lastWhisperList.put(player.getName(), whisperer.getName());
 	}
 
-	public void deleteLastWhisperedBy(RunsafePlayer player)
+	public void deleteLastWhisperedBy(IPlayer player)
 	{
 		if (lastWhisperList.containsKey(player.getName()))
 			lastWhisperList.remove(player.getName());
 	}
 
-	public RunsafePlayer getLastWhisperedBy(RunsafePlayer player)
+	public IPlayer getLastWhisperedBy(IPlayer player)
 	{
 		String playerName = player.getName();
 
 		if (lastWhisperList.containsKey(playerName))
 		{
-			RunsafePlayer whisperer = RunsafeServer.Instance.getPlayer(lastWhisperList.get(playerName));
+			IPlayer whisperer = RunsafeServer.Instance.getPlayer(lastWhisperList.get(playerName));
 			if (whisperer != null)
 				return whisperer;
 		}
 		return null;
 	}
 
-	public boolean blockWhisper(RunsafePlayer player, RunsafePlayer target)
+	public boolean blockWhisper(IPlayer player, IPlayer target)
 	{
 		return !target.isOnline() || player.shouldNotSee(target);
 	}

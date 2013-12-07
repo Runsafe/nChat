@@ -2,7 +2,7 @@ package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.database.MuteDatabase;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class MuteHandler implements IConfigurationChanged
 		mutedPlayers.addAll(this.muteDatabase.getMuteList());
 	}
 
-	public boolean isPlayerMuted(RunsafePlayer player)
+	public boolean isPlayerMuted(IPlayer player)
 	{
 		return (this.isPlayerMuted(player.getName()) && !player.hasPermission("runsafe.nchat.mute.exempt"));
 	}
@@ -31,7 +31,7 @@ public class MuteHandler implements IConfigurationChanged
 		return (this.serverMute || this.mutedPlayers.contains(playerName));
 	}
 
-	public void mutePlayer(RunsafePlayer player)
+	public void mutePlayer(IPlayer player)
 	{
 		this.mutePlayer(player.getName());
 	}
@@ -42,7 +42,7 @@ public class MuteHandler implements IConfigurationChanged
 		this.muteDatabase.mutePlayer(playerName);
 	}
 
-	public void unMutePlayer(RunsafePlayer player)
+	public void unMutePlayer(IPlayer player)
 	{
 		this.unMutePlayer(player.getName());
 	}
