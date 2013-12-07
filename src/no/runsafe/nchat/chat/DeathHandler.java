@@ -1,11 +1,11 @@
 package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.player.IPlayerDeathEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.files.PluginDataFile;
 import no.runsafe.framework.files.PluginFileManager;
-import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 		}
 	}
 
-	private boolean canBroadcastHere(RunsafeWorld world)
+	private boolean canBroadcastHere(IWorld world)
 	{
 		return world != null && !ignoreWorlds.contains(world.getName());
 	}
