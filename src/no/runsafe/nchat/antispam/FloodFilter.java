@@ -4,7 +4,6 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,9 +36,11 @@ public class FloodFilter implements ISpamFilter, IConfigurationChanged
 			else
 			{
 				this.floodChecks.put(playerName, 1);
-				this.scheduler.startAsyncTask(new Runnable() {
+				this.scheduler.startAsyncTask(new Runnable()
+				{
 					@Override
-					public void run() {
+					public void run()
+					{
 						floodChecks.remove(playerName);
 					}
 				}, this.period);

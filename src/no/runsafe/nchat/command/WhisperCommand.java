@@ -7,7 +7,6 @@ import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 
@@ -35,9 +34,9 @@ public class WhisperCommand extends ExecutableCommand
 		if (target instanceof IAmbiguousPlayer)
 			return target.toString();
 
-		if (executor instanceof RunsafePlayer)
+		if (executor instanceof IPlayer)
 		{
-			RunsafePlayer playerExecutor = (RunsafePlayer) executor;
+			IPlayer playerExecutor = (IPlayer) executor;
 			if (this.whisperHandler.blockWhisper(playerExecutor, target))
 				return String.format("&cThe player %s is offline.", targetPlayerName);
 
