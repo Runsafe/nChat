@@ -1,12 +1,12 @@
 package no.runsafe.nchat.command;
 
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
@@ -15,18 +15,19 @@ import java.util.Map;
 
 public class WhisperCommand extends ExecutableCommand
 {
-	public WhisperCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
+	public WhisperCommand(WhisperHandler whisperHandler, MuteHandler muteHandler, IServer server)
 	{
 		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new PlayerArgument(), new TrailingArgument("message"));
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
+		this.server = server;
 	}
 
 	@Override
 	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
 		String targetPlayerName = parameters.get("player");
-		IPlayer target = RunsafeServer.Instance.getPlayer(targetPlayerName);
+		IPlayer target = server.getPlayer(targetPlayerName);
 
 		if (target == null)
 			return String.format("&c%s does not exist.", targetPlayerName);
@@ -50,4 +51,5 @@ public class WhisperCommand extends ExecutableCommand
 
 	private final WhisperHandler whisperHandler;
 	private final MuteHandler muteHandler;
+	private final IServer server;
 }

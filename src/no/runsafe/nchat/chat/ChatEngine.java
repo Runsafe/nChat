@@ -1,8 +1,8 @@
 package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.nchat.antispam.SpamHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 
@@ -12,13 +12,14 @@ import java.util.logging.Level;
 
 public class ChatEngine
 {
-	public ChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IOutput console)
+	public ChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IOutput console, IServer server)
 	{
 		this.chatFormatter = chatFormatter;
 		this.muteHandler = muteHandler;
 		this.spamHandler = spamHandler;
 		this.ignoreHandler = ignoreHandler;
 		this.console = console;
+		this.server = server;
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class ChatEngine
 	public void broadcastMessage(String message, List<String> excludedPlayers)
 	{
 		excludedPlayers = excludedPlayers == null ? new ArrayList<String>() : excludedPlayers;
-		List<IPlayer> worldPlayers = RunsafeServer.Instance.getOnlinePlayers();
+		List<IPlayer> worldPlayers = server.getOnlinePlayers();
 
 		for (IPlayer worldPlayer : worldPlayers)
 			if (!excludedPlayers.contains(worldPlayer.getName()))
@@ -120,4 +121,5 @@ public class ChatEngine
 	private final SpamHandler spamHandler;
 	private final IgnoreHandler ignoreHandler;
 	private final IOutput console;
+	private final IServer server;
 }

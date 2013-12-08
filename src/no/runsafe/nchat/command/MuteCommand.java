@@ -1,23 +1,23 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.nchat.chat.MuteHandler;
 
 import java.util.Map;
 
 public class MuteCommand extends PlayerCommand
 {
-
-	public MuteCommand(IOutput console, MuteHandler muteHandler)
+	public MuteCommand(IServer server, IOutput console, MuteHandler muteHandler)
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
 			new PlayerArgument()
 		);
+		this.server = server;
 		this.console = console;
 		this.muteHandler = muteHandler;
 	}
@@ -35,7 +35,7 @@ public class MuteCommand extends PlayerCommand
 			this.muteHandler.muteServer();
 			return "&bGlobal chat has been muted, you monster.";
 		}
-		IPlayer mutePlayer = RunsafeServer.Instance.getPlayer(mutePlayerName);
+		IPlayer mutePlayer = server.getPlayer(mutePlayerName);
 
 		if (mutePlayer == null)
 			return "&cThat player does not exist.";
@@ -50,4 +50,5 @@ public class MuteCommand extends PlayerCommand
 
 	private final IOutput console;
 	private final MuteHandler muteHandler;
+	private final IServer server;
 }

@@ -1,14 +1,14 @@
 package no.runsafe.nchat.emotes;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.event.player.IPlayerCommandPreprocessEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.files.PluginDataFile;
 import no.runsafe.framework.files.PluginFileManager;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
-import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.nchat.chat.ChatEngine;
 
 import java.util.ArrayList;
@@ -16,9 +16,10 @@ import java.util.List;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
-	public EmoteHandler(PluginFileManager fileManager, ChatEngine chatEngine)
+	public EmoteHandler(PluginFileManager fileManager, ChatEngine chatEngine, IServer server)
 	{
 		this.chatEngine = chatEngine;
+		this.server = server;
 		emoteFile = fileManager.getFile("emotes.txt");
 	}
 
@@ -43,7 +44,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		{
 			if (parts[0].equalsIgnoreCase("/" + emote.getEmote()))
 			{
-				IPlayer targetPlayer = parts.length > 1 ? RunsafeServer.Instance.getPlayer(parts[1]) : null;
+				IPlayer targetPlayer = parts.length > 1 ? server.getPlayer(parts[1]) : null;
 				this.broadcastEmote(emote, event.getPlayer(), targetPlayer);
 				event.cancel();
 				break;
@@ -54,7 +55,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 
 	private void broadcastEmote(Emote emote, IPlayer player, IPlayer target)
 	{
-		if (target instanceof RunsafeAmbiguousPlayer)
+		if (target instanceof IAmbiguousPlayer)
 		{
 			player.sendColouredMessage(target.toString());
 			return;
@@ -67,6 +68,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 	}
 
 	private final ChatEngine chatEngine;
+	private final IServer server;
 	private PluginDataFile emoteFile;
 	private List<Emote> emotes = new ArrayList<Emote>();
 }

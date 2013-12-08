@@ -2,10 +2,10 @@ package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.text.ChatColour;
 import no.runsafe.nchat.antispam.SpamHandler;
 
@@ -14,8 +14,9 @@ import java.util.logging.Level;
 
 public class WhisperHandler implements IConfigurationChanged
 {
-	public WhisperHandler(IOutput console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
+	public WhisperHandler(IServer server, IOutput console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
 	{
+		this.server = server;
 		this.console = console;
 		this.spamHandler = spamHandler;
 		this.ignoreHandler = ignoreHandler;
@@ -84,7 +85,7 @@ public class WhisperHandler implements IConfigurationChanged
 
 		if (lastWhisperList.containsKey(playerName))
 		{
-			IPlayer whisperer = RunsafeServer.Instance.getPlayer(lastWhisperList.get(playerName));
+			IPlayer whisperer = server.getPlayer(lastWhisperList.get(playerName));
 			if (whisperer != null)
 				return whisperer;
 		}
@@ -113,4 +114,5 @@ public class WhisperHandler implements IConfigurationChanged
 	private final IOutput console;
 	private final SpamHandler spamHandler;
 	private final IgnoreHandler ignoreHandler;
+	private final IServer server;
 }
