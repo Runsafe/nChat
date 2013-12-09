@@ -1,8 +1,8 @@
 package no.runsafe.nchat.database;
 
-import no.runsafe.framework.api.IDebug;
 import no.runsafe.framework.api.database.IDatabase;
 import no.runsafe.framework.api.database.Repository;
+import no.runsafe.framework.api.log.IDebug;
 
 import java.util.ArrayList;
 import java.util.HashMap;

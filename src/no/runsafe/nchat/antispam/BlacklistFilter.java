@@ -1,8 +1,8 @@
 package no.runsafe.nchat.antispam;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IConsole;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.Core;
 
