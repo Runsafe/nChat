@@ -1,9 +1,9 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class MuteCommand extends PlayerCommand
 {
-	public MuteCommand(IServer server, IOutput console, MuteHandler muteHandler)
+	public MuteCommand(IServer server, IConsole console, MuteHandler muteHandler)
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
@@ -48,7 +48,7 @@ public class MuteCommand extends PlayerCommand
 		return String.format("&bMuted %s.", mutePlayer.getPrettyName());
 	}
 
-	private final IOutput console;
+	private final IConsole console;
 	private final MuteHandler muteHandler;
 	private final IServer server;
 }

@@ -1,18 +1,17 @@
 package no.runsafe.nchat.chat;
 
-import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.antispam.SpamHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public class ChatEngine
 {
-	public ChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IOutput console, IServer server)
+	public ChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IConsole console, IServer server)
 	{
 		this.chatFormatter = chatFormatter;
 		this.muteHandler = muteHandler;
@@ -96,7 +95,7 @@ public class ChatEngine
 			if (!excludedPlayers.contains(worldPlayer.getName()))
 				worldPlayer.sendColouredMessage(message);
 
-		console.writeColoured(message.replace("%", "%%"), Level.INFO);
+		console.logInformation(message.replace("%", "%%"));
 	}
 
 	/**
@@ -120,6 +119,6 @@ public class ChatEngine
 	private final MuteHandler muteHandler;
 	private final SpamHandler spamHandler;
 	private final IgnoreHandler ignoreHandler;
-	private final IOutput console;
+	private final IConsole console;
 	private final IServer server;
 }

@@ -1,20 +1,19 @@
 package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.text.ChatColour;
 import no.runsafe.nchat.antispam.SpamHandler;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 public class WhisperHandler implements IConfigurationChanged
 {
-	public WhisperHandler(IServer server, IOutput console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
+	public WhisperHandler(IServer server, IConsole console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
 	{
 		this.server = server;
 		this.console = console;
@@ -64,7 +63,7 @@ public class WhisperHandler implements IConfigurationChanged
 			if (sender instanceof IPlayer)
 				setLastWhisperedBy(toPlayer, (IPlayer) sender);
 
-			console.writeColoured("%s -> %s: %s", Level.INFO, senderName, toPlayer.getPrettyName(), message);
+			console.logInformation("%s -> %s: %s", senderName, toPlayer.getPrettyName(), message);
 		}
 	}
 
@@ -111,7 +110,7 @@ public class WhisperHandler implements IConfigurationChanged
 	private String whisperFromFormat;
 	private String consoleWhisperName;
 	private final HashMap<String, String> lastWhisperList;
-	private final IOutput console;
+	private final IConsole console;
 	private final SpamHandler spamHandler;
 	private final IgnoreHandler ignoreHandler;
 	private final IServer server;
