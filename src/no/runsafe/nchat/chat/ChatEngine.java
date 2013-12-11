@@ -88,6 +88,7 @@ public class ChatEngine
 	 */
 	public void broadcastMessage(String message, List<String> excludedPlayers)
 	{
+		message = message.replace("%", "%%");
 		excludedPlayers = excludedPlayers == null ? new ArrayList<String>() : excludedPlayers;
 		List<IPlayer> worldPlayers = server.getOnlinePlayers();
 
@@ -95,7 +96,7 @@ public class ChatEngine
 			if (!excludedPlayers.contains(worldPlayer.getName()))
 				worldPlayer.sendColouredMessage(message);
 
-		console.logInformation(message.replace("%", "%%"));
+		console.logInformation(message);
 	}
 
 	/**
