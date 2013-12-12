@@ -65,7 +65,7 @@ public class WhisperHandler implements IConfigurationChanged
 			if (sender instanceof IPlayer)
 				setLastWhisperedBy(toPlayer, (IPlayer) sender);
 			else
-				setLastWhisperedByServer((IPlayer) sender);
+				setLastWhisperedByServer(toPlayer);
 
 			console.logInformation("%s -> %s: %s", senderName, toPlayer.getPrettyName(), message);
 		}
