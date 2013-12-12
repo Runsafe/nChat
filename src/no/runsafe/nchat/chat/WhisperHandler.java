@@ -52,9 +52,10 @@ public class WhisperHandler implements IConfigurationChanged
 			if (!(enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
 				message = ChatColour.Strip(message);
 
-			sender.sendColouredMessage(
-				whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
-			);
+			if (sender instanceof IPlayer)
+				sender.sendColouredMessage(
+					whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
+				);
 
 			String senderName = (sender instanceof IPlayer ? ((IPlayer) sender).getPrettyName() : consoleWhisperName);
 
@@ -70,6 +71,7 @@ public class WhisperHandler implements IConfigurationChanged
 			console.logInformation("%s -> %s: %s", senderName, toPlayer.getPrettyName(), message);
 		}
 	}
+
 	public void sendWhisperToConsole(IPlayer sender, String message)
 	{
 		if (!(enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
