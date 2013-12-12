@@ -25,7 +25,10 @@ public class ReplyCommand extends PlayerCommand
 		if (whisperer == null)
 		{
 			if (this.whisperHandler.wasWhisperedByServer(player))
+			{
 				this.whisperHandler.sendWhisperToConsole(player, args.get("message"));
+				return null;
+			}
 			else
 				return "&cYou have nothing to reply to.";
 		}
