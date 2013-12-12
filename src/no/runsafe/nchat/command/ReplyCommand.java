@@ -23,7 +23,12 @@ public class ReplyCommand extends PlayerCommand
 		IPlayer whisperer = this.whisperHandler.getLastWhisperedBy(player);
 
 		if (whisperer == null)
-			return "&cYou have nothing to reply to.";
+		{
+			if (this.whisperHandler.wasWhisperedByServer(player))
+				this.whisperHandler.sendWhisperToConsole(player, args.get("message"));
+			else
+				return "&cYou have nothing to reply to.";
+		}
 
 		if (this.whisperHandler.blockWhisper(player, whisperer))
 			return String.format("&cThe player %s is currently offline.", whisperer.getPrettyName());

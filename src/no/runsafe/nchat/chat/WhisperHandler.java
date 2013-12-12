@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 public class WhisperHandler implements IConfigurationChanged
 {
+	private static final String SERVER = "@_SERVER!\0";
+
 	public WhisperHandler(IServer server, IConsole console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
 	{
 		this.server = server;
@@ -62,14 +64,38 @@ public class WhisperHandler implements IConfigurationChanged
 
 			if (sender instanceof IPlayer)
 				setLastWhisperedBy(toPlayer, (IPlayer) sender);
+			else
+				setLastWhisperedByServer((IPlayer) sender);
 
 			console.logInformation("%s -> %s: %s", senderName, toPlayer.getPrettyName(), message);
 		}
+	}
+	public void sendWhisperToConsole(IPlayer sender, String message)
+	{
+		if (!(enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
+			message = ChatColour.Strip(message);
+
+		sender.sendColouredMessage(
+			whisperToFormat.replace("#target", consoleWhisperName).replace("#message", message)
+		);
+
+		console.logInformation("%s -> %s: %s", sender.getPrettyName(), consoleWhisperName, message);
+
 	}
 
 	private void setLastWhisperedBy(IPlayer player, IPlayer whisperer)
 	{
 		lastWhisperList.put(player.getName(), whisperer.getName());
+	}
+
+	private void setLastWhisperedByServer(IPlayer player)
+	{
+		lastWhisperList.put(player.getName(), SERVER);
+	}
+
+	public boolean wasWhisperedByServer(IPlayer player)
+	{
+		return lastWhisperList.containsKey(player.getName()) && lastWhisperList.get(player.getName()).equals(SERVER);
 	}
 
 	public void deleteLastWhisperedBy(IPlayer player)
