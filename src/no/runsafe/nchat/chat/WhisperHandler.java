@@ -5,6 +5,7 @@ import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.text.ChatColour;
 import no.runsafe.nchat.antispam.SpamHandler;
@@ -15,12 +16,13 @@ public class WhisperHandler implements IConfigurationChanged
 {
 	private static final String SERVER = "@_SERVER!\0";
 
-	public WhisperHandler(IServer server, IConsole console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
+	public WhisperHandler(IServer server, IConsole console, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IDebug debug)
 	{
 		this.server = server;
 		this.console = console;
 		this.spamHandler = spamHandler;
 		this.ignoreHandler = ignoreHandler;
+		this.debug = debug;
 		this.lastWhisperList = new HashMap<String, String>();
 	}
 
@@ -121,6 +123,7 @@ public class WhisperHandler implements IConfigurationChanged
 
 	public boolean blockWhisper(IPlayer player, IPlayer target)
 	{
+		debug.debugInfo(player.shouldNotSee(target) ? "Player cannot see their target." : "Player can see their target");
 		return !target.isOnline() || player.shouldNotSee(target);
 	}
 
@@ -142,4 +145,5 @@ public class WhisperHandler implements IConfigurationChanged
 	private final SpamHandler spamHandler;
 	private final IgnoreHandler ignoreHandler;
 	private final IServer server;
+	private final IDebug debug;
 }
