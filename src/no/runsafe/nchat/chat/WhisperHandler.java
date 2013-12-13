@@ -123,7 +123,6 @@ public class WhisperHandler implements IConfigurationChanged
 
 	public boolean blockWhisper(IPlayer player, IPlayer target)
 	{
-		debug.debugInfo(player.shouldNotSee(target) ? "Player cannot see their target." : "Player can see their target");
 		return !target.isOnline() || player.shouldNotSee(target);
 	}
 
