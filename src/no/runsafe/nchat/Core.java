@@ -19,7 +19,7 @@ public class Core extends RunsafeConfigurablePlugin
 	@Override
 	protected void PluginSetup()
 	{
-		addComponent(Instances.get("RunsafeWorldGuardBridge").getComponent(WorldGuardInterface.class));
+		addDependence(WorldGuardInterface.class);
 
 		// Core
 		addComponent(Utils.class);
