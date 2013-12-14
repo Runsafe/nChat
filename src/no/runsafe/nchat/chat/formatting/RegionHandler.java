@@ -3,14 +3,14 @@ package no.runsafe.nchat.chat.formatting;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.worldguardbridge.WorldGuardInterface;
+import no.runsafe.worldguardbridge.IRegionControl;
 
 import java.util.List;
 import java.util.Map;
 
 public class RegionHandler implements IConfigurationChanged
 {
-	public RegionHandler(WorldGuardInterface worldGuard)
+	public RegionHandler(IRegionControl worldGuard)
 	{
 		this.worldGuard = worldGuard;
 	}
@@ -39,5 +39,5 @@ public class RegionHandler implements IConfigurationChanged
 	}
 
 	private Map<String, String> regionTags;
-	private final WorldGuardInterface worldGuard;
+	private final IRegionControl worldGuard;
 }

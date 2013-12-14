@@ -19,8 +19,6 @@ public class Core extends RunsafeConfigurablePlugin
 	@Override
 	protected void PluginSetup()
 	{
-		addDependence(WorldGuardInterface.class);
-
 		// Core
 		addComponent(Utils.class);
 
