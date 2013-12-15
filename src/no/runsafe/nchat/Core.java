@@ -1,6 +1,10 @@
 package no.runsafe.nchat;
 
 import no.runsafe.framework.RunsafeConfigurablePlugin;
+import no.runsafe.framework.features.Commands;
+import no.runsafe.framework.features.Database;
+import no.runsafe.framework.features.Events;
+import no.runsafe.framework.features.FrameworkHooks;
 import no.runsafe.nchat.antispam.*;
 import no.runsafe.nchat.chat.*;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
@@ -19,6 +23,12 @@ public class Core extends RunsafeConfigurablePlugin
 	@Override
 	protected void PluginSetup()
 	{
+		// Framework features used
+		addComponent(Commands.class);
+		addComponent(Events.class);
+		addComponent(Database.class);
+		addComponent(FrameworkHooks.class);
+
 		// Core
 		addComponent(Utils.class);
 
