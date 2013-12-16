@@ -21,7 +21,7 @@ import no.runsafe.worldguardbridge.WorldGuardInterface;
 public class Core extends RunsafeConfigurablePlugin
 {
 	@Override
-	protected void PluginSetup()
+	protected void pluginSetup()
 	{
 		// Framework features used
 		addComponent(Commands.class);
