@@ -4,10 +4,10 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.event.player.IPlayerCommandPreprocessEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.filesystem.IPluginDataFile;
+import no.runsafe.framework.api.filesystem.IPluginFileManager;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.files.PluginDataFile;
-import no.runsafe.framework.files.PluginFileManager;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
 import no.runsafe.nchat.chat.ChatEngine;
 
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
-	public EmoteHandler(PluginFileManager fileManager, ChatEngine chatEngine, IServer server)
+	public EmoteHandler(IPluginFileManager fileManager, ChatEngine chatEngine, IServer server)
 	{
 		this.chatEngine = chatEngine;
 		this.server = server;
@@ -69,6 +69,6 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 
 	private final ChatEngine chatEngine;
 	private final IServer server;
-	private PluginDataFile emoteFile;
+	private IPluginDataFile emoteFile;
 	private List<Emote> emotes = new ArrayList<Emote>();
 }
