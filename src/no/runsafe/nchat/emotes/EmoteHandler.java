@@ -10,9 +10,13 @@ import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
 import no.runsafe.nchat.chat.ChatEngine;
+import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
@@ -29,8 +33,12 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		this.emotes.clear(); // Clear existing emotes.
 
 		List<String> emotes = emoteFile.getLines(); // Grab all emotes from the file.
-		for (String emote : emotes)
-			this.emotes.add(new Emote(emote)); // Add the emote to the list.
+		for (String emoteDefinition : emotes)
+		{
+			Emote emote = new Emote(emoteDefinition);
+			this.emotes.put(emote.getEmote(), emote); // Add the emote to the list.
+		}
+		emoteChecker = Pattern.compile("^/(" + StringUtils.join(this.emotes.keySet(), '|') + ")( (\\S+)|)");
 	}
 
 	@Override
@@ -39,18 +47,14 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		if (event.isCancelled())
 			return;
 
-		String[] parts = event.getMessage().split(" ");
-		for (Emote emote : emotes)
+		Matcher matcher = emoteChecker.matcher(event.getMessage());
+		if (matcher.matches())
 		{
-			if (parts[0].equalsIgnoreCase("/" + emote.getEmote()))
-			{
-				IPlayer targetPlayer = parts.length > 1 ? server.getPlayer(parts[1]) : null;
-				this.broadcastEmote(emote, event.getPlayer(), targetPlayer);
-				event.cancel();
-				break;
-			}
+			Emote emote = emotes.get(matcher.group(1));
+			IPlayer targetPlayer = matcher.groupCount() > 2 ? server.getPlayer(matcher.group(3)) : null;
+			this.broadcastEmote(emote, event.getPlayer(), targetPlayer);
+			event.cancel();
 		}
-
 	}
 
 	private void broadcastEmote(Emote emote, IPlayer player, IPlayer target)
@@ -70,5 +74,6 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 	private final ChatEngine chatEngine;
 	private final IServer server;
 	private IPluginDataFile emoteFile;
-	private List<Emote> emotes = new ArrayList<Emote>();
+	private final Map<String, Emote> emotes = new HashMap<String, Emote>();
+	private Pattern emoteChecker;
 }
