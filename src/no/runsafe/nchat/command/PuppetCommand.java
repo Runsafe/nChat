@@ -31,10 +31,7 @@ public class PuppetCommand extends ExecutableCommand
 		if (targetPlayer instanceof IAmbiguousPlayer)
 			return targetPlayer.toString();
 
-		RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(targetPlayer, args.get("message"));
-		event.Fire();
-		if (event.isCancelled())
-			return "&cChat event got cancelled by a plugin!";
+		chatEngine.broadcastMessageAsPlayer(targetPlayer, args.get("message"));
 		return null;
 	}
 
