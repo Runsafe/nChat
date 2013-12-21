@@ -14,11 +14,12 @@ public class ChatEvent implements IPlayerChatEvent
 	@Override
 	public void OnPlayerChatEvent(RunsafePlayerChatEvent event)
 	{
+		// Don't recurse our own internal events...
 		if (event instanceof no.runsafe.nchat.chat.ChatEvent)
-		{
-			event.cancel(); // We don't want Minecraft handling this.
-			chatEngine.playerBroadcast(event.getPlayer(), event.getMessage());
-		}
+			return;
+
+		event.cancel(); // We don't want Minecraft handling this.
+		chatEngine.playerBroadcast(event.getPlayer(), event.getMessage());
 	}
 
 	private final ChatEngine chatEngine;
