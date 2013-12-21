@@ -1,6 +1,8 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.command.ExecutableCommand;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.log.IConsole;
@@ -9,7 +11,7 @@ import no.runsafe.nchat.chat.MuteHandler;
 
 import java.util.Map;
 
-public class MuteCommand extends PlayerCommand
+public class MuteCommand extends ExecutableCommand
 {
 	public MuteCommand(IServer server, IConsole console, MuteHandler muteHandler)
 	{
@@ -23,13 +25,14 @@ public class MuteCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(IPlayer player, Map<String, String> args)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> args)
 	{
+		IPlayer player = executor instanceof IPlayer ? (IPlayer)executor : null;
 		String mutePlayerName = args.get("player");
 
 		if (mutePlayerName.equalsIgnoreCase("server"))
 		{
-			if (!player.hasPermission("runsafe.nchat.mute.server"))
+			if (player != null && !player.hasPermission("runsafe.nchat.mute.server"))
 				return "&cYou do not have permission to do that";
 
 			this.muteHandler.muteServer();
@@ -40,10 +43,10 @@ public class MuteCommand extends PlayerCommand
 		if (mutePlayer == null)
 			return "&cThat player does not exist.";
 
-		if (mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
-			return "&cNice try, but you cannot mute that player.";
+		if (player != null && mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
+			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^
 
-		console.logInformation(String.format("%s muted %s", player.getName(), mutePlayer.getName()));
+		console.logInformation(String.format("%s muted %s", executor.getName(), mutePlayer.getName()));
 		this.muteHandler.mutePlayer(mutePlayer);
 		return String.format("&bMuted %s.", mutePlayer.getPrettyName());
 	}

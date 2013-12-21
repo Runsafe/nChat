@@ -1,15 +1,16 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.command.ExecutableCommand;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
-import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 
 import java.util.Map;
 
-public class UnMuteCommand extends PlayerCommand
+public class UnMuteCommand extends ExecutableCommand
 {
 	public UnMuteCommand(IConsole console, MuteHandler muteHandler, IServer server)
 	{
@@ -23,13 +24,14 @@ public class UnMuteCommand extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(IPlayer player, Map<String, String> args)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> args)
 	{
+		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
 		String unMutePlayerName = args.get("player");
 
 		if (unMutePlayerName.equalsIgnoreCase("server"))
 		{
-			if (player.hasPermission("nChat.commands.muteServer"))
+			if (player == null || player.hasPermission("nChat.commands.muteServer"))
 			{
 				this.muteHandler.unMuteServer();
 				return "&bGlobal chat has been un-muted! Praise the sun.";
@@ -39,7 +41,7 @@ public class UnMuteCommand extends PlayerCommand
 				return "&cYou do not have permission to do that.";
 			}
 		}
-		if (!player.hasPermission("nChat.commands.mutePlayer"))
+		if (player != null && !player.hasPermission("nChat.commands.mutePlayer"))
 			return "&cYou do not have permission to do that.";
 
 		IPlayer unMutePlayer = server.getPlayer(unMutePlayerName);
@@ -47,10 +49,10 @@ public class UnMuteCommand extends PlayerCommand
 		if (unMutePlayer == null)
 			return "&cTry to pick a player who exists.";
 
-		if (unMutePlayer.hasPermission("nChat.muteExempt"))
-			return "&cThat player is exempt from being un-muted, silly as it sounds.";
+		if (player != null && unMutePlayer.hasPermission("nChat.muteExempt"))
+			return "&cThat player is exempt from being un-muted, silly as it sounds."; // Unless you are the console ^w^
 
-		console.logInformation(String.format("%s un-muted %s", player.getName(), unMutePlayer.getName()));
+		console.logInformation(String.format("%s un-muted %s", executor.getName(), unMutePlayer.getName()));
 		this.muteHandler.unMutePlayer(unMutePlayer);
 		return String.format("&bUnmuted %s.", unMutePlayer.getPrettyName());
 	}
