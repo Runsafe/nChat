@@ -14,7 +14,7 @@ public class ChatEvent implements IPlayerChatEvent
 	@Override
 	public void OnPlayerChatEvent(RunsafePlayerChatEvent event)
 	{
-		if (!event.isFake())
+		if (event instanceof no.runsafe.nchat.chat.ChatEvent)
 		{
 			event.cancel(); // We don't want Minecraft handling this.
 			chatEngine.playerBroadcast(event.getPlayer(), event.getMessage());

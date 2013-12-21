@@ -35,7 +35,6 @@ public class PuppetCommand extends ExecutableCommand
 		event.Fire();
 		if (event.isCancelled())
 			return "&cChat event got cancelled by a plugin!";
-		chatEngine.broadcastMessageAsPlayer(targetPlayer, event.getMessage());
 		return null;
 	}
 

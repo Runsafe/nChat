@@ -14,9 +14,9 @@ import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.IgnoreDatabase;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.emotes.EmoteHandler;
+import no.runsafe.nchat.events.ChatEvent;
 import no.runsafe.nchat.events.*;
 import no.runsafe.nchat.tablist.TabListHandler;
-import no.runsafe.worldguardbridge.WorldGuardInterface;
 
 public class Core extends RunsafeConfigurablePlugin
 {

@@ -68,7 +68,7 @@ public class ChatEngine
 	 */
 	public void broadcastMessageAsPlayer(IPlayer player, String message)
 	{
-		RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(player, message);
+		ChatEvent event = new ChatEvent(player, message);
 		event.Fire();
 		broadcastMessage(chatFormatter.formatChatMessage(player, event.getMessage()), ignoreHandler.getPlayersIgnoring(player));
 	}
