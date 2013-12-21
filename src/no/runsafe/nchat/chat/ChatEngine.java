@@ -3,6 +3,7 @@ package no.runsafe.nchat.chat;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.nchat.antispam.SpamHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 
@@ -67,7 +68,9 @@ public class ChatEngine
 	 */
 	public void broadcastMessageAsPlayer(IPlayer player, String message)
 	{
-		broadcastMessage(chatFormatter.formatChatMessage(player, message), ignoreHandler.getPlayersIgnoring(player));
+		RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(player, message);
+		event.Fire();
+		broadcastMessage(chatFormatter.formatChatMessage(player, event.getMessage()), ignoreHandler.getPlayersIgnoring(player));
 	}
 
 	/**

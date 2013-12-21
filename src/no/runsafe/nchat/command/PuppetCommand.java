@@ -7,6 +7,7 @@ import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.nchat.chat.ChatEngine;
 
 import java.util.Map;
@@ -30,7 +31,11 @@ public class PuppetCommand extends ExecutableCommand
 		if (targetPlayer instanceof IAmbiguousPlayer)
 			return targetPlayer.toString();
 
-		chatEngine.broadcastMessageAsPlayer(targetPlayer, args.get("message"));
+		RunsafePlayerFakeChatEvent event = new RunsafePlayerFakeChatEvent(targetPlayer, args.get("message"));
+		event.Fire();
+		if (event.isCancelled())
+			return "&cChat event got cancelled by a plugin!";
+		chatEngine.broadcastMessageAsPlayer(targetPlayer, event.getMessage());
 		return null;
 	}
 
