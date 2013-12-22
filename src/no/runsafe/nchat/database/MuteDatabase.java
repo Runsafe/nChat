@@ -5,6 +5,7 @@ import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.log.IDebug;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class MuteDatabase extends Repository
 {
 	public MuteDatabase(IDebug console, IDatabase database)
 	{
-		this.debugger = console;
+		debugger = console;
 		this.database = database;
 	}
 
@@ -25,21 +26,21 @@ public class MuteDatabase extends Repository
 	@Override
 	public HashMap<Integer, List<String>> getSchemaUpdateQueries()
 	{
-		HashMap<Integer, List<String>> queries = new HashMap<Integer, List<String>>();
-		ArrayList<String> sql = new ArrayList<String>();
+		HashMap<Integer, List<String>> queries = new HashMap<Integer, List<String>>(1);
+		List<String> sql = new ArrayList<String>(1);
 		sql.add(
 			"CREATE TABLE `nchat_muted` (" +
 				"`player` VARCHAR(255) NULL," +
 				"PRIMARY KEY (`player`)" +
-				")"
+				')'
 		);
 		queries.put(1, sql);
 		return queries;
 	}
 
-	public List<String> getMuteList()
+	public Collection<String> getMuteList()
 	{
-		return this.database.QueryStrings("SELECT player FROM nchat_muted");
+		return database.QueryStrings("SELECT player FROM nchat_muted");
 	}
 
 	public void mutePlayer(String playerName)

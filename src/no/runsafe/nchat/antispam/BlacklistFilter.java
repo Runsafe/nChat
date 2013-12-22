@@ -4,31 +4,33 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.nchat.Core;
+import org.bukkit.plugin.Plugin;
 
+import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 {
-	public BlacklistFilter(Core nChat, IConsole output)
+	public BlacklistFilter(Plugin nChat, IConsole output)
 	{
 		this.output = output;
-		this.filePath = new File(nChat.getDataFolder(), "blacklist.txt");
+		filePath = new File(nChat.getDataFolder(), "blacklist.txt");
 	}
 
 	@Override
+	@Nullable
 	public String processString(IPlayer player, String message)
 	{
 		// Parse the message to lowercase to prevent bypassing that way.
 		String lowerMessage = message.toLowerCase();
 
 		// Check each node, if we find it in the string, cancel the message.
-		for (String blacklisted : this.blacklist)
+		for (String blacklisted : blacklist)
 		{
 			if (lowerMessage.contains(blacklisted))
 			{
@@ -41,9 +43,9 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration iConfiguration)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.blacklist.clear(); // Clear the current blacklist.
+		blacklist.clear(); // Clear the current blacklist.
 
 		// Check if the file exists.
 		if (!filePath.exists())
@@ -51,48 +53,63 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 			// The file does not exist, lets try creating it.
 			try
 			{
-				if (!filePath.getParentFile().isDirectory())
+				if (filePath.getParentFile().isDirectory())
 				{
-					this.output.logWarning("Unable to locate plugin data folder at: " + filePath.getParentFile());
-					return;
+					if (!filePath.createNewFile())
+					{
+						output.logWarning("Unable to create blacklist file at: %s", filePath);
+						return;
+					}
 				}
-				if (!filePath.createNewFile())
+				else
 				{
-					this.output.logWarning("Unable to create blacklist file at: " + filePath);
+					output.logWarning("Unable to locate plugin data folder at: %s", filePath.getParentFile());
 					return;
 				}
 			}
 			catch (IOException exception)
 			{
-				this.output.logWarning("Unable to create blacklist file due to exception:");
-				exception.printStackTrace();
+				output.logWarning("Unable to create blacklist file due to exception:");
+				output.logException(exception);
 				return;
 			}
 		}
 
+		BufferedReader reader = null;
 		try
 		{
-			BufferedReader reader = new BufferedReader(new FileReader(filePath));
-			String line;
+			reader = new BufferedReader(new FileReader(filePath));
 			while (true)
 			{
-				line = reader.readLine();
+				String line = reader.readLine();
 				if (line == null)
 					break;
 				// Add every line we find to the blacklist array, converting it to lowercase.
-				this.blacklist.add(line.toLowerCase());
+				blacklist.add(line.toLowerCase());
 			}
-			output.logInformation("Loaded %s blacklist filters from file.", blacklist.size());
+			output.logInformation("Loaded %d blacklist filters from file.", blacklist.size());
 		}
 		catch (Exception exception)
 		{
 			// We should not get here, but we catch it just in-case.
-			this.output.logWarning("Unexpected exception prevented blacklist loading:");
-			exception.printStackTrace();
+			output.logWarning("Unexpected exception prevented blacklist loading:");
+			output.logException(exception);
+		}
+		finally
+		{
+			if (reader != null)
+				try
+				{
+					reader.close();
+				}
+				catch (IOException e)
+				{
+					output.logException(e);
+				}
 		}
 	}
 
-	private List<String> blacklist = new ArrayList<String>();
-	private File filePath;
-	private IConsole output;
+	private final Collection<String> blacklist = new ArrayList<String>(0);
+	private final File filePath;
+	private final IConsole output;
 }

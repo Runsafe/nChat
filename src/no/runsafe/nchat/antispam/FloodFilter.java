@@ -5,6 +5,7 @@ import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FloodFilter implements ISpamFilter, IConfigurationChanged
@@ -14,47 +15,48 @@ public class FloodFilter implements ISpamFilter, IConfigurationChanged
 		this.scheduler = scheduler;
 	}
 
+	@Nullable
 	@Override
 	public String processString(IPlayer player, String message)
 	{
-		if (this.isEnabled)
+		if (isEnabled)
 		{
 			final String playerName = player.getName();
-			if (this.floodChecks.containsKey(playerName))
+			if (floodChecks.containsKey(playerName))
 			{
-				int currentAmount = this.floodChecks.get(playerName);
-				if (currentAmount >= this.threshold)
+				int currentAmount = floodChecks.get(playerName);
+				if (currentAmount >= threshold)
 				{
 					player.sendColouredMessage("&cYou are talking too fast, slow down.");
 					return null;
 				}
 				else
 				{
-					this.floodChecks.put(playerName, currentAmount + 1);
+					floodChecks.put(playerName, currentAmount + 1);
 				}
 			}
 			else
 			{
-				this.floodChecks.put(playerName, 1);
-				this.scheduler.startAsyncTask(new Runnable()
+				floodChecks.put(playerName, 1);
+				scheduler.startAsyncTask(new Runnable()
 				{
 					@Override
 					public void run()
 					{
 						floodChecks.remove(playerName);
 					}
-				}, this.period);
+				}, period);
 			}
 		}
 		return message;
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration config)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableFloodFilter");
-		this.threshold = config.getConfigValueAsInt("antiSpam.floodFilterThreshold");
-		this.period = config.getConfigValueAsInt("antiSpam.floodFilterPeriod");
+		isEnabled = configuration.getConfigValueAsBoolean("antiSpam.enableFloodFilter");
+		threshold = configuration.getConfigValueAsInt("antiSpam.floodFilterThreshold");
+		period = configuration.getConfigValueAsInt("antiSpam.floodFilterPeriod");
 	}
 
 	private boolean isEnabled;

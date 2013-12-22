@@ -13,10 +13,10 @@ public class KickEvent implements IPlayerKickEvent
 	}
 
 	@Override
-	public void OnPlayerKick(RunsafePlayerKickEvent runsafePlayerKickEvent)
+	public void OnPlayerKick(RunsafePlayerKickEvent event)
 	{
-		IPlayer kickedPlayer = runsafePlayerKickEvent.getPlayer();
-		this.whisperHandler.deleteLastWhisperedBy(kickedPlayer);
+		IPlayer kickedPlayer = event.getPlayer();
+		whisperHandler.deleteLastWhisperedBy(kickedPlayer);
 	}
 
 	private final WhisperHandler whisperHandler;

@@ -4,19 +4,23 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
 
+import javax.annotation.Nullable;
 import java.util.regex.Pattern;
 
 public class IPFilter implements ISpamFilter, IConfigurationChanged
 {
+	private static final Pattern WHITESPACE = Pattern.compile("\\s*");
+
 	public IPFilter()
 	{
-		this.IPv4Address = Pattern.compile("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}");
+		IPv4Address = Pattern.compile("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}");
 	}
 
+	@Nullable
 	@Override
 	public String processString(IPlayer player, String message)
 	{
-		if (this.isEnabled && this.IPv4Address.matcher(message.replaceAll("\\s*", "")).find())
+		if (isEnabled && IPv4Address.matcher(WHITESPACE.matcher(message).replaceAll("")).find())
 		{
 			player.sendColouredMessage("&cResorting to advertising your server on other servers is pathetic.");
 			return null;
@@ -25,9 +29,9 @@ public class IPFilter implements ISpamFilter, IConfigurationChanged
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration config)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableIPFilter");
+		isEnabled = configuration.getConfigValueAsBoolean("antiSpam.enableIPFilter");
 	}
 
 	private final Pattern IPv4Address;

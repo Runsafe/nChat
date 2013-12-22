@@ -5,6 +5,7 @@ import no.runsafe.framework.api.IScheduler;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,15 +17,16 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 		this.scheduler = scheduler;
 	}
 
+	@Nullable
 	@Override
 	public String processString(IPlayer player, final String message)
 	{
-		if (this.isEnabled)
+		if (isEnabled)
 		{
 			final String playerName = player.getName();
-			if (this.cooldowns.containsKey(playerName))
+			if (cooldowns.containsKey(playerName))
 			{
-				if (this.cooldowns.get(playerName).contains(message.toLowerCase()))
+				if (cooldowns.get(playerName).contains(message.toLowerCase()))
 				{
 					player.sendColouredMessage("&cYou cannot send the same message that quickly.");
 					return null;
@@ -32,12 +34,12 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 			}
 			else
 			{
-				this.cooldowns.put(playerName, new ArrayList<String>());
+				cooldowns.put(playerName, new ArrayList<String>(1));
 			}
 
-			this.cooldowns.get(playerName).add(message.toLowerCase());
+			cooldowns.get(playerName).add(message.toLowerCase());
 
-			this.scheduler.startAsyncTask(new Runnable()
+			scheduler.startAsyncTask(new Runnable()
 			{
 				@Override
 				public void run()
@@ -46,16 +48,16 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 					if (cooldowns.get(playerName).isEmpty())
 						cooldowns.remove(playerName);
 				}
-			}, this.cooldown);
+			}, cooldown);
 		}
 		return message;
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration config)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableDuplicationFilter");
-		this.cooldown = config.getConfigValueAsInt("antiSpam.duplicationFilterCooldown");
+		isEnabled = configuration.getConfigValueAsBoolean("antiSpam.enableDuplicationFilter");
+		cooldown = configuration.getConfigValueAsInt("antiSpam.duplicationFilterCooldown");
 	}
 
 	private boolean isEnabled;

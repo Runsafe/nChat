@@ -5,6 +5,7 @@ import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.worldguardbridge.IRegionControl;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -15,27 +16,28 @@ public class RegionHandler implements IConfigurationChanged
 		this.worldGuard = worldGuard;
 	}
 
+	@Nullable
 	public String getRegionTag(IPlayer player)
 	{
 		String worldName = player.getWorldName();
-		List<String> regions = this.worldGuard.getRegionsAtLocation(player.getLocation());
+		List<String> regions = worldGuard.getRegionsAtLocation(player.getLocation());
 
 		if (regions != null)
 		{
 			for (String region : regions)
 			{
-				String regionName = worldName + "-" + region;
-				if (this.regionTags.containsKey(regionName))
-					return this.regionTags.get(regionName);
+				String regionName = worldName + '-' + region;
+				if (regionTags.containsKey(regionName))
+					return regionTags.get(regionName);
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration iConfiguration)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.regionTags = iConfiguration.getConfigValuesAsMap("regionPrefixes");
+		regionTags = configuration.getConfigValuesAsMap("regionPrefixes");
 	}
 
 	private Map<String, String> regionTags;

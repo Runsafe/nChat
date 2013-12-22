@@ -10,6 +10,7 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class WhisperCommand extends ExecutableCommand
@@ -22,6 +23,7 @@ public class WhisperCommand extends ExecutableCommand
 		this.server = server;
 	}
 
+	@Nullable
 	@Override
 	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
@@ -37,14 +39,14 @@ public class WhisperCommand extends ExecutableCommand
 		if (executor instanceof IPlayer)
 		{
 			IPlayer playerExecutor = (IPlayer) executor;
-			if (this.whisperHandler.blockWhisper(playerExecutor, target))
+			if (WhisperHandler.blockWhisper(playerExecutor, target))
 				return String.format("&cThe player %s is offline.", targetPlayerName);
 
-			if (this.muteHandler.isPlayerMuted(playerExecutor))
+			if (muteHandler.isPlayerMuted(playerExecutor))
 				return "&cYou are currently muted!";
 		}
 
-		this.whisperHandler.sendWhisper(executor, target, parameters.get("message"));
+		whisperHandler.sendWhisper(executor, target, parameters.get("message"));
 		return null;
 	}
 

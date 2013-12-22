@@ -21,15 +21,15 @@ public class PlayerDataProvider implements IPlayerDataProvider
 	@Override
 	public Map<String, String> GetPlayerData(IPlayer player)
 	{
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<String, String>(3);
 
-		data.put("nchat.ismuted", muteHandler.isPlayerMuted(player) ? "True" : "False");
+		data.put("nchat.isMuted", muteHandler.isPlayerMuted(player) ? "True" : "False");
 
 		List<String> ignoringPlayers = ignoreHandler.getPlayersIgnoring(player);
-		data.put("nchat.ignoredby", ignoringPlayers.size() == 0 ? "Nobody" : StringUtils.join(ignoringPlayers, ", "));
+		data.put("nchat.ignoredBy", ignoringPlayers.isEmpty() ? "Nobody" : StringUtils.join(ignoringPlayers, ", "));
 
 		List<String> ignoredPlayers = ignoreHandler.getIgnoredPlayers(player);
-		data.put("nchat.ignoring", ignoredPlayers.size() == 0 ? "Nobody" : StringUtils.join(ignoredPlayers, ", "));
+		data.put("nchat.ignoring", ignoredPlayers.isEmpty() ? "Nobody" : StringUtils.join(ignoredPlayers, ", "));
 
 		return data;
 	}

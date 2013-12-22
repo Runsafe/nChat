@@ -11,32 +11,33 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 {
 	public CapsFilter()
 	{
-		this.caps = Pattern.compile("[A-Z]");
+		caps = Pattern.compile("[A-Z]");
 	}
 
 	@Override
 	public String processString(IPlayer player, String message)
 	{
-		if (this.isEnabled)
+		if (isEnabled)
 		{
-			Matcher matcher = this.caps.matcher(message);
+			Matcher matcher = caps.matcher(message);
 			int count = 0;
 			while (matcher.find()) count++;
 
-			if ((count * 100) / message.replaceAll("\\s*", "").length() >= this.percent)
+			if (count * 100 / WHITESPACE.matcher(message).replaceAll("").length() >= percent)
 				return message.toLowerCase();
 		}
 		return message;
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration config)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.isEnabled = config.getConfigValueAsBoolean("antiSpam.enableCapsFilter");
-		this.percent = config.getConfigValueAsInt("antiSpam.capsFilterPercent");
+		isEnabled = configuration.getConfigValueAsBoolean("antiSpam.enableCapsFilter");
+		percent = configuration.getConfigValueAsInt("antiSpam.capsFilterPercent");
 	}
 
 	private boolean isEnabled;
 	private int percent;
 	private final Pattern caps;
+	private static final Pattern WHITESPACE = Pattern.compile("\\s*");
 }

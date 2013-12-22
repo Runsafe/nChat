@@ -4,7 +4,6 @@ import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
-import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
@@ -25,17 +24,17 @@ public class MuteCommand extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, Map<String, String> args)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
-		IPlayer player = executor instanceof IPlayer ? (IPlayer)executor : null;
-		String mutePlayerName = args.get("player");
+		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
+		String mutePlayerName = parameters.get("player");
 
 		if (mutePlayerName.equalsIgnoreCase("server"))
 		{
 			if (player != null && !player.hasPermission("runsafe.nchat.mute.server"))
 				return "&cYou do not have permission to do that";
 
-			this.muteHandler.muteServer();
+			muteHandler.muteServer();
 			return "&bGlobal chat has been muted, you monster.";
 		}
 		IPlayer mutePlayer = server.getPlayer(mutePlayerName);
@@ -47,7 +46,7 @@ public class MuteCommand extends ExecutableCommand
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^
 
 		console.logInformation(String.format("%s muted %s", executor.getName(), mutePlayer.getName()));
-		this.muteHandler.mutePlayer(mutePlayer);
+		muteHandler.mutePlayer(mutePlayer);
 		return String.format("&bMuted %s.", mutePlayer.getPrettyName());
 	}
 

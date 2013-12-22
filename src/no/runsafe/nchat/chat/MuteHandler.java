@@ -1,12 +1,12 @@
 package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
-import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.database.MuteDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class MuteHandler implements IConfigurationChanged
 {
@@ -18,59 +18,59 @@ public class MuteHandler implements IConfigurationChanged
 	public void loadMuteList()
 	{
 		mutedPlayers.clear();
-		mutedPlayers.addAll(this.muteDatabase.getMuteList());
+		mutedPlayers.addAll(muteDatabase.getMuteList());
 	}
 
-	public boolean isPlayerMuted(IPlayer player)
+	public boolean isPlayerMuted(ICommandExecutor player)
 	{
-		return (this.isPlayerMuted(player.getName()) && !player.hasPermission("runsafe.nchat.mute.exempt"));
+		return isPlayerMuted(player.getName()) && !player.hasPermission("runsafe.nchat.mute.exempt");
 	}
 
 	private boolean isPlayerMuted(String playerName)
 	{
-		return (this.serverMute || this.mutedPlayers.contains(playerName));
+		return serverMute || mutedPlayers.contains(playerName);
 	}
 
-	public void mutePlayer(IPlayer player)
+	public void mutePlayer(ICommandExecutor player)
 	{
-		this.mutePlayer(player.getName());
+		mutePlayer(player.getName());
 	}
 
 	public void mutePlayer(String playerName)
 	{
-		this.mutedPlayers.add(playerName);
-		this.muteDatabase.mutePlayer(playerName);
+		mutedPlayers.add(playerName);
+		muteDatabase.mutePlayer(playerName);
 	}
 
-	public void unMutePlayer(IPlayer player)
+	public void unMutePlayer(ICommandExecutor player)
 	{
-		this.unMutePlayer(player.getName());
+		unMutePlayer(player.getName());
 	}
 
 	public void unMutePlayer(String playerName)
 	{
-		this.mutedPlayers.remove(playerName);
-		this.muteDatabase.unMutePlayer(playerName);
+		mutedPlayers.remove(playerName);
+		muteDatabase.unMutePlayer(playerName);
 	}
 
 	public void muteServer()
 	{
-		this.serverMute = true;
+		serverMute = true;
 	}
 
 	public void unMuteServer()
 	{
-		this.serverMute = false;
+		serverMute = false;
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration iConfiguration)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.serverMute = iConfiguration.getConfigValueAsBoolean("spamControl.muteChat");
-		this.loadMuteList();
+		serverMute = configuration.getConfigValueAsBoolean("spamControl.muteChat");
+		loadMuteList();
 	}
 
-	private final List<String> mutedPlayers = new ArrayList<String>();
+	private final Collection<String> mutedPlayers = new ArrayList<String>(0);
 	private final MuteDatabase muteDatabase;
 	private boolean serverMute;
 }

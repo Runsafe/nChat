@@ -5,25 +5,25 @@ import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
-import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.player.IPlayerVisibility;
 import no.runsafe.framework.text.ChatColour;
 import no.runsafe.nchat.antispam.SpamHandler;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class WhisperHandler implements IConfigurationChanged
 {
 	private static final String SERVER = "@_SERVER!\0";
 
-	public WhisperHandler(IServer server, IConsole console, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IDebug debug)
+	public WhisperHandler(IServer server, IConsole console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
 	{
 		this.server = server;
 		this.console = console;
 		this.spamHandler = spamHandler;
 		this.ignoreHandler = ignoreHandler;
-		this.debug = debug;
-		this.lastWhisperList = new HashMap<String, String>();
+		lastWhisperList = new HashMap<String, String>(0);
 	}
 
 	public void sendWhisper(ICommandExecutor sender, IPlayer toPlayer, String message)
@@ -59,14 +59,14 @@ public class WhisperHandler implements IConfigurationChanged
 					whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
 				);
 
-			String senderName = (sender instanceof IPlayer ? ((IPlayer) sender).getPrettyName() : consoleWhisperName);
+			String senderName = sender instanceof IPlayer ? ((IPlayer) sender).getPrettyName() : consoleWhisperName;
 
 			toPlayer.sendColouredMessage(
 				whisperFromFormat.replace("#source", senderName).replace("#message", message)
 			);
 
 			if (sender instanceof IPlayer)
-				setLastWhisperedBy(toPlayer, (IPlayer) sender);
+				setLastWhisperedBy(toPlayer, sender);
 			else
 				setLastWhisperedByServer(toPlayer);
 
@@ -87,28 +87,29 @@ public class WhisperHandler implements IConfigurationChanged
 
 	}
 
-	private void setLastWhisperedBy(IPlayer player, IPlayer whisperer)
+	private void setLastWhisperedBy(ICommandExecutor player, ICommandExecutor whisperer)
 	{
 		lastWhisperList.put(player.getName(), whisperer.getName());
 	}
 
-	private void setLastWhisperedByServer(IPlayer player)
+	private void setLastWhisperedByServer(ICommandExecutor player)
 	{
 		lastWhisperList.put(player.getName(), SERVER);
 	}
 
-	public boolean wasWhisperedByServer(IPlayer player)
+	public boolean wasWhisperedByServer(ICommandExecutor player)
 	{
 		return lastWhisperList.containsKey(player.getName()) && lastWhisperList.get(player.getName()).equals(SERVER);
 	}
 
-	public void deleteLastWhisperedBy(IPlayer player)
+	public void deleteLastWhisperedBy(ICommandExecutor player)
 	{
 		if (lastWhisperList.containsKey(player.getName()))
 			lastWhisperList.remove(player.getName());
 	}
 
-	public IPlayer getLastWhisperedBy(IPlayer player)
+	@Nullable
+	public IPlayer getLastWhisperedBy(ICommandExecutor player)
 	{
 		String playerName = player.getName();
 
@@ -121,7 +122,7 @@ public class WhisperHandler implements IConfigurationChanged
 		return null;
 	}
 
-	public boolean blockWhisper(IPlayer player, IPlayer target)
+	public static boolean blockWhisper(IPlayerVisibility player, IPlayer target)
 	{
 		return !target.isOnline() || player.shouldNotSee(target);
 	}
@@ -144,5 +145,4 @@ public class WhisperHandler implements IConfigurationChanged
 	private final SpamHandler spamHandler;
 	private final IgnoreHandler ignoreHandler;
 	private final IServer server;
-	private final IDebug debug;
 }

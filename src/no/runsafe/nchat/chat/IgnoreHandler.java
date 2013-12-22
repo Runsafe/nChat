@@ -1,6 +1,6 @@
 package no.runsafe.nchat.chat;
 
-import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.nchat.database.IgnoreDatabase;
 
 import java.util.ArrayList;
@@ -22,13 +22,13 @@ public class IgnoreHandler
 	 * @param player The player who will ignore.
 	 * @param ignorePlayer The player to be ignored.
 	 */
-	public void ignorePlayer(IPlayer player, IPlayer ignorePlayer)
+	public void ignorePlayer(ICommandExecutor player, ICommandExecutor ignorePlayer)
 	{
 		database.ignorePlayer(player, ignorePlayer);
 		String ignorePlayerName = ignorePlayer.getName();
 
 		if (!ignoreList.containsKey(ignorePlayerName))
-			ignoreList.put(ignorePlayerName, new ArrayList<String>());
+			ignoreList.put(ignorePlayerName, new ArrayList<String>(1));
 
 		ignoreList.get(ignorePlayerName).add(player.getName());
 	}
@@ -39,7 +39,7 @@ public class IgnoreHandler
 	 * @param player The player to perform the removal.
 	 * @param ignorePlayer The player to be removed.
 	 */
-	public void removeIgnorePlayer(IPlayer player, IPlayer ignorePlayer)
+	public void removeIgnorePlayer(ICommandExecutor player, ICommandExecutor ignorePlayer)
 	{
 		database.removeIgnorePlayer(player, ignorePlayer);
 		String ignorePlayerName = ignorePlayer.getName();
@@ -50,7 +50,7 @@ public class IgnoreHandler
 			playersIgnoring.remove(player.getName());
 
 			// Check if we still have anyone ignoring the player, no need to keep empty lists.
-			if (playersIgnoring.size() == 0)
+			if (playersIgnoring.isEmpty())
 				ignoreList.remove(ignorePlayerName);
 		}
 	}
@@ -62,21 +62,10 @@ public class IgnoreHandler
 	 * @param ignorePlayer The player who is being ignored.
 	 * @return True if the player is being ignored.
 	 */
-	public boolean playerIsIgnoring(IPlayer player, IPlayer ignorePlayer)
+	public boolean playerIsIgnoring(ICommandExecutor player, ICommandExecutor ignorePlayer)
 	{
 		String ignorePlayerName = ignorePlayer.getName();
 		return ignoreList.containsKey(ignorePlayerName) && ignoreList.get(ignorePlayerName).contains(player.getName());
-	}
-
-	/**
-	 * Checks to see if a player can be ignored.
-	 *
-	 * @param ignorePlayer The player to check.
-	 * @return True if the player can be ignored, otherwise false.
-	 */
-	public boolean canIgnore(IPlayer ignorePlayer)
-	{
-		return !ignorePlayer.hasPermission("runsafe.nchat.ignore.exempt");
 	}
 
 	/**
@@ -85,7 +74,7 @@ public class IgnoreHandler
 	 * @param ignorePlayer The player to query for.
 	 * @return A list of player names.
 	 */
-	public List<String> getPlayersIgnoring(IPlayer ignorePlayer)
+	public List<String> getPlayersIgnoring(ICommandExecutor ignorePlayer)
 	{
 		String ignoreName = ignorePlayer.getName();
 		if (ignoreList.containsKey(ignoreName))
@@ -100,9 +89,9 @@ public class IgnoreHandler
 	 * @param player The player who's list to return.
 	 * @return A list of players being ignored.
 	 */
-	public List<String> getIgnoredPlayers(IPlayer player)
+	public List<String> getIgnoredPlayers(ICommandExecutor player)
 	{
-		List<String> ignoredPlayers = new ArrayList<String>();
+		List<String> ignoredPlayers = new ArrayList<String>(0);
 
 		for (Map.Entry<String, List<String>> node : ignoreList.entrySet())
 			if (node.getValue().contains(player.getName()))
@@ -112,5 +101,5 @@ public class IgnoreHandler
 	}
 
 	private final IgnoreDatabase database;
-	private HashMap<String, List<String>> ignoreList;
+	private final HashMap<String, List<String>> ignoreList;
 }

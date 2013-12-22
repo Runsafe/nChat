@@ -5,13 +5,12 @@ import no.runsafe.framework.api.event.player.IPlayerJoinEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerJoinEvent;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
-import no.runsafe.nchat.chat.ChatEngine;
-import no.runsafe.nchat.tablist.TabListHandler;
+import no.runsafe.nchat.chat.PlayerChatEngine;
+import no.runsafe.nchat.tablist.PlayerTablistNameHandler;
 
 public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 {
-	public JoinEvent(ChatEngine chatEngine, TabListHandler tabListHandler)
+	public JoinEvent(PlayerChatEngine chatEngine, PlayerTablistNameHandler tabListHandler)
 	{
 		this.chatEngine = chatEngine;
 		this.tabListHandler = tabListHandler;
@@ -29,10 +28,10 @@ public class JoinEvent implements IPlayerJoinEvent, IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		this.joinServerMessage = configuration.getConfigValueAsString("chatMessage.joinServer");
+		joinServerMessage = configuration.getConfigValueAsString("chatMessage.joinServer");
 	}
 
 	private String joinServerMessage;
-	private final ChatEngine chatEngine;
-	private final TabListHandler tabListHandler;
+	private final PlayerChatEngine chatEngine;
+	private final PlayerTablistNameHandler tabListHandler;
 }

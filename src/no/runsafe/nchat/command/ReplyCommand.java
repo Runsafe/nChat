@@ -6,6 +6,7 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class ReplyCommand extends PlayerCommand
@@ -17,29 +18,30 @@ public class ReplyCommand extends PlayerCommand
 		this.muteHandler = muteHandler;
 	}
 
+	@Nullable
 	@Override
-	public String OnExecute(IPlayer player, Map<String, String> args)
+	public String OnExecute(IPlayer executor, Map<String, String> parameters)
 	{
-		IPlayer whisperer = this.whisperHandler.getLastWhisperedBy(player);
+		IPlayer whisperer = whisperHandler.getLastWhisperedBy(executor);
 
 		if (whisperer == null)
 		{
-			if (this.whisperHandler.wasWhisperedByServer(player))
+			if (whisperHandler.wasWhisperedByServer(executor))
 			{
-				this.whisperHandler.sendWhisperToConsole(player, args.get("message"));
+				whisperHandler.sendWhisperToConsole(executor, parameters.get("message"));
 				return null;
 			}
 			else
 				return "&cYou have nothing to reply to.";
 		}
 
-		if (this.whisperHandler.blockWhisper(player, whisperer))
+		if (WhisperHandler.blockWhisper(executor, whisperer))
 			return String.format("&cThe player %s is currently offline.", whisperer.getPrettyName());
 
-		if (this.muteHandler.isPlayerMuted(player))
+		if (muteHandler.isPlayerMuted(executor))
 			return "&cYou are currently muted.";
 
-		this.whisperHandler.sendWhisper(player, whisperer, args.get("message"));
+		whisperHandler.sendWhisper(executor, whisperer, parameters.get("message"));
 		return null;
 	}
 

@@ -4,23 +4,23 @@ import no.runsafe.framework.api.player.IPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 public class SpamHandler
 {
-	public SpamHandler(ISpamFilter[] filters)
+	public SpamHandler(ISpamFilter... filters)
 	{
 		this.filters.addAll(Arrays.asList(filters));
 	}
 
 	public String getFilteredMessage(IPlayer player, String message)
 	{
-		for (ISpamFilter filter : this.filters)
+		for (ISpamFilter filter : filters)
 			if (message != null)
 				message = filter.processString(player, message);
 
 		return message;
 	}
 
-	private final List<ISpamFilter> filters = new ArrayList<ISpamFilter>();
+	private final Collection<ISpamFilter> filters = new ArrayList<ISpamFilter>(0);
 }

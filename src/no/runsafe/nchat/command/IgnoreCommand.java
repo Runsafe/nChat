@@ -1,6 +1,7 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
@@ -17,24 +18,35 @@ public class IgnoreCommand extends PlayerCommand
 		this.ignoreHandler = ignoreHandler;
 	}
 
-	@Override
-	public String OnExecute(IPlayer player, Map<String, String> args)
+	/**
+	 * Checks to see if a player can be ignored.
+	 *
+	 * @param ignorePlayer The player to check.
+	 * @return True if the player can be ignored, otherwise false.
+	 */
+	public static boolean isMuteExempt(ICommandExecutor ignorePlayer)
 	{
-		IPlayer ignorePlayer = server.getPlayerExact(args.get("player"));
+		return ignorePlayer.hasPermission("runsafe.nchat.ignore.exempt");
+	}
+
+	@Override
+	public String OnExecute(IPlayer executor, Map<String, String> parameters)
+	{
+		IPlayer ignorePlayer = server.getPlayerExact(parameters.get("player"));
 		if (ignorePlayer == null)
 			return "&cUnable to ignore that player, server error.";
 
-		if (ignoreHandler.playerIsIgnoring(player, ignorePlayer))
+		if (ignoreHandler.playerIsIgnoring(executor, ignorePlayer))
 		{
-			ignoreHandler.removeIgnorePlayer(player, ignorePlayer);
+			ignoreHandler.removeIgnorePlayer(executor, ignorePlayer);
 			return String.format("&aYou are no longer ignoring %s.", ignorePlayer.getName());
 		}
 		else
 		{
-			if (!ignoreHandler.canIgnore(ignorePlayer))
+			if (isMuteExempt(ignorePlayer))
 				return "&cYou cannot ignore that player.";
 
-			ignoreHandler.ignorePlayer(player, ignorePlayer);
+			ignoreHandler.ignorePlayer(executor, ignorePlayer);
 			return String.format("&aYou are now ignoring %s. Repeat the command again to un-ignore.", ignorePlayer.getName());
 		}
 	}

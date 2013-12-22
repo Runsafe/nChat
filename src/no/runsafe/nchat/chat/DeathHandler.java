@@ -13,17 +13,17 @@ import java.util.Random;
 
 public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 {
-	public DeathHandler(IPluginFileManager fileManager, ChatEngine chatEngine)
+	public DeathHandler(IPluginFileManager fileManager, PlayerChatEngine chatEngine)
 	{
 		this.chatEngine = chatEngine;
 		deathMessageFile = fileManager.getFile("death_messages.txt");
 	}
 
 	@Override
-	public void OnConfigurationChanged(IConfiguration config)
+	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		messages = deathMessageFile.getLines();
-		ignoreWorlds = config.getConfigValueAsList("hideDeaths");
+		ignoreWorlds = configuration.getConfigValueAsList("hideDeaths");
 	}
 
 	@Override
@@ -42,9 +42,9 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 		return world != null && !ignoreWorlds.contains(world.getName());
 	}
 
-	private IPluginDataFile deathMessageFile;
+	private final IPluginDataFile deathMessageFile;
 	private List<String> messages;
 	private List<String> ignoreWorlds;
-	private Random random = new Random();
-	private final ChatEngine chatEngine;
+	private final Random random = new Random();
+	private final PlayerChatEngine chatEngine;
 }

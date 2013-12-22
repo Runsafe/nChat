@@ -1,5 +1,5 @@
 name: nChat
-main: no.runsafe.nchat.Core
+main: no.runsafe.nchat.ChatPlugin
 version: 1.0.@BUILD@
 author: Kruithne
 depend: [RunsafeWorldGuardBridge]

@@ -24,16 +24,16 @@ public class UnMuteCommand extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, Map<String, String> args)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
-		String unMutePlayerName = args.get("player");
+		String unMutePlayerName = parameters.get("player");
 
 		if (unMutePlayerName.equalsIgnoreCase("server"))
 		{
 			if (player == null || player.hasPermission("nChat.commands.muteServer"))
 			{
-				this.muteHandler.unMuteServer();
+				muteHandler.unMuteServer();
 				return "&bGlobal chat has been un-muted! Praise the sun.";
 			}
 			else
@@ -53,7 +53,7 @@ public class UnMuteCommand extends ExecutableCommand
 			return "&cThat player is exempt from being un-muted, silly as it sounds."; // Unless you are the console ^w^
 
 		console.logInformation(String.format("%s un-muted %s", executor.getName(), unMutePlayer.getName()));
-		this.muteHandler.unMutePlayer(unMutePlayer);
+		muteHandler.unMutePlayer(unMutePlayer);
 		return String.format("&bUnmuted %s.", unMutePlayer.getPrettyName());
 	}
 
