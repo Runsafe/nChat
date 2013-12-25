@@ -29,9 +29,9 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 	@Override
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
+		event.setDeathMessage(""); // Set the Minecraft death message to blank to silence output
 		if (!messages.isEmpty() && canBroadcastHere(event.getEntity().getWorld())) // We have no messages!
 		{
-			event.setDeathMessage(""); // Set the Minecraft death message to blank to silence output
 			String message = messages.get(random.nextInt(messages.size())); // Get a random death message.
 			chatEngine.broadcastMessage(message.replaceAll("#player", event.getEntity().getPrettyName()));
 		}
