@@ -48,5 +48,6 @@ chatMessage:
 chatFormatting:
   playerName: '#op#world#group #ban#player'
   playerChatMessage: '#player: &f#message'
+  mentionHighlightCharacter: ':'
   opTagFormat: '&f@'
   banTagFormat: '&m'

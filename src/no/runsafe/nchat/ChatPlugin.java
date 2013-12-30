@@ -8,6 +8,7 @@ import no.runsafe.framework.features.FrameworkHooks;
 import no.runsafe.nchat.antispam.*;
 import no.runsafe.nchat.chat.*;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
+import no.runsafe.nchat.chat.formatting.MentionHighlighter;
 import no.runsafe.nchat.chat.formatting.RegionHandler;
 import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.IgnoreDatabase;
@@ -40,6 +41,7 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(SpamHandler.class);
 
 		// Chat engine
+		addComponent(MentionHighlighter.class);
 		addComponent(ChatFormatter.class);
 		addComponent(IgnoreHandler.class);
 		addComponent(PlayerChatEngine.class);

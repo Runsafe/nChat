@@ -6,13 +6,15 @@ import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.antispam.SpamHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
+import no.runsafe.nchat.chat.formatting.IChatHighlighter;
+import no.runsafe.nchat.chat.formatting.MentionHighlighter;
 
 import java.util.Collections;
 import java.util.List;
 
 public class PlayerChatEngine
 {
-	public PlayerChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IConsole console, IServer server)
+	public PlayerChatEngine(ChatFormatter chatFormatter, MuteHandler muteHandler, SpamHandler spamHandler, IgnoreHandler ignoreHandler, IConsole console, IServer server, MentionHighlighter mentionHighlighter)
 	{
 		this.chatFormatter = chatFormatter;
 		this.muteHandler = muteHandler;
@@ -20,6 +22,7 @@ public class PlayerChatEngine
 		this.ignoreHandler = ignoreHandler;
 		this.console = console;
 		this.server = server;
+		this.mentionHighlighter = mentionHighlighter;
 	}
 
 	/**
@@ -52,7 +55,7 @@ public class PlayerChatEngine
 		if (isMuted(player))
 			return;
 
-		broadcastMessage(message, ignoreHandler.getPlayersIgnoring(player));
+		broadcastMessage(message, ignoreHandler.getPlayersIgnoring(player), mentionHighlighter);
 	}
 
 	/**
@@ -66,7 +69,7 @@ public class PlayerChatEngine
 	{
 		InternalChatEvent event = new InternalChatEvent(player, message);
 		event.Fire();
-		broadcastMessage(chatFormatter.formatChatMessage(player, event.getMessage()), ignoreHandler.getPlayersIgnoring(player));
+		broadcastMessage(chatFormatter.formatChatMessage(player, event.getMessage()), ignoreHandler.getPlayersIgnoring(player), mentionHighlighter);
 	}
 
 	/**
@@ -76,7 +79,7 @@ public class PlayerChatEngine
 	 */
 	public void broadcastMessage(String message)
 	{
-		broadcastMessage(message, null);
+		broadcastMessage(message, null, null);
 	}
 
 	/**
@@ -84,8 +87,9 @@ public class PlayerChatEngine
 	 *
 	 * @param message         The message to be broadcast.
 	 * @param excludedPlayers A list of players who will not see this message.
+	 * @param highlighter A highlighter to be used for this broadcast.
 	 */
-	public void broadcastMessage(String message, List<String> excludedPlayers)
+	public void broadcastMessage(String message, List<String> excludedPlayers, IChatHighlighter highlighter)
 	{
 		message = message.replace("%", "%%");
 
@@ -94,7 +98,7 @@ public class PlayerChatEngine
 
 		for (IPlayer worldPlayer : worldPlayers)
 			if (!excludedPlayers.contains(worldPlayer.getName()))
-				worldPlayer.sendColouredMessage(message);
+				worldPlayer.sendColouredMessage(highlighter == null ? message : highlighter.highlight(worldPlayer, message));
 
 		console.logInformation(message);
 	}
@@ -122,4 +126,5 @@ public class PlayerChatEngine
 	private final IgnoreHandler ignoreHandler;
 	private final IConsole console;
 	private final IServer server;
+	private final MentionHighlighter mentionHighlighter;
 }
