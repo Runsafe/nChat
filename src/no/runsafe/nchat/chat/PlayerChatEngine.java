@@ -52,7 +52,7 @@ public class PlayerChatEngine
 		if (isMuted(player))
 			return;
 
-		broadcastMessage(message, ignoreHandler.getPlayersIgnoring(player), true);
+		broadcastMessage(message, ignoreHandler.getPlayersIgnoring(player));
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class PlayerChatEngine
 	{
 		InternalChatEvent event = new InternalChatEvent(player, message);
 		event.Fire();
-		broadcastMessage(chatFormatter.formatChatMessage(player, event.getMessage()), ignoreHandler.getPlayersIgnoring(player), true);
+		broadcastMessage(chatFormatter.formatChatMessage(player, event.getMessage()), ignoreHandler.getPlayersIgnoring(player));
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class PlayerChatEngine
 	 */
 	public void broadcastMessage(String message)
 	{
-		broadcastMessage(message, null, false);
+		broadcastMessage(message, null);
 	}
 
 	/**
@@ -84,9 +84,8 @@ public class PlayerChatEngine
 	 *
 	 * @param message         The message to be broadcast.
 	 * @param excludedPlayers A list of players who will not see this message.
-	 * @param highlightName Should the player who receives the broadcast have their name highlighted?
 	 */
-	public void broadcastMessage(String message, List<String> excludedPlayers, boolean highlightName)
+	public void broadcastMessage(String message, List<String> excludedPlayers)
 	{
 		message = message.replace("%", "%%");
 
@@ -94,14 +93,8 @@ public class PlayerChatEngine
 		List<IPlayer> worldPlayers = server.getOnlinePlayers();
 
 		for (IPlayer worldPlayer : worldPlayers)
-		{
 			if (!excludedPlayers.contains(worldPlayer.getName()))
-			{
-				String playerName = worldPlayer.getName();
-				String sendMessage = highlightName ? message.replace(playerName, "&a" + playerName + "&r") : message;
-				worldPlayer.sendColouredMessage(sendMessage);
-			}
-		}
+				worldPlayer.sendColouredMessage(message);
 
 		console.logInformation(message);
 	}
