@@ -21,7 +21,7 @@ public class MentionHighlighter implements IChatHighlighter, IConfigurationChang
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		highlightChar = configuration.getConfigValueAsString("mentionHighlightCharacter");
+		highlightChar = configuration.getConfigValueAsString("chatFormatting.mentionHighlightCharacter");
 	}
 
 	private String highlightChar;
