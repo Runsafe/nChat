@@ -15,14 +15,16 @@ public class MentionHighlighter implements IChatHighlighter, IConfigurationChang
 		String[] parts = message.split(highlightChar, 2);
 		String playerName = contextPlayer.getName();
 
-		return parts[0] + highlightChar + parts[1].replace(playerName, "&4>&a" + playerName + "&4<&r");
+		return parts[0] + highlightChar + parts[1].replace(playerName, highlightFormat.replace("#player", playerName));
 	}
 
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		highlightChar = configuration.getConfigValueAsString("chatFormatting.mentionHighlightCharacter");
+		highlightFormat = configuration.getConfigValueAsString("chatFormatting.mentionHighlight");
 	}
 
 	private String highlightChar;
+	private String highlightFormat;
 }
