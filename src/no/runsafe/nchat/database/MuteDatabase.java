@@ -40,19 +40,19 @@ public class MuteDatabase extends Repository
 
 	public Collection<String> getMuteList()
 	{
-		return database.QueryStrings("SELECT player FROM nchat_muted");
+		return database.queryStrings("SELECT player FROM nchat_muted");
 	}
 
 	public void mutePlayer(String playerName)
 	{
 		debugger.debugFine("Updating mute database with " + playerName);
-		database.Update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", playerName);
+		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", playerName);
 	}
 
 	public void unMutePlayer(String playerName)
 	{
 		debugger.debugFine("Updating mute database with removal of " + playerName);
-		database.Execute("DELETE FROM nchat_muted WHERE player = ?", playerName);
+		database.execute("DELETE FROM nchat_muted WHERE player = ?", playerName);
 	}
 
 	private final IDebug debugger;

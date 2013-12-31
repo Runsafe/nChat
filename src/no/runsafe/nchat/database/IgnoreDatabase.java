@@ -42,7 +42,7 @@ public class IgnoreDatabase extends Repository
 	public HashMap<String, List<String>> getIgnoreList()
 	{
 		HashMap<String, List<String>> ignoreList = new HashMap<String, List<String>>(1);
-		ISet result = database.Query("SELECT `player`, `ignore` FROM nchat_ignore");
+		ISet result = database.query("SELECT `player`, `ignore` FROM nchat_ignore");
 		for (IRow row : result)
 		{
 			String ignoredPlayer = row.String("ignore");
@@ -57,12 +57,12 @@ public class IgnoreDatabase extends Repository
 
 	public void ignorePlayer(ICommandExecutor player, ICommandExecutor ignore)
 	{
-		database.Update("INSERT IGNORE INTO nchat_ignore (`player`, `ignore`) VALUES(?, ?)", player.getName(), ignore.getName());
+		database.update("INSERT IGNORE INTO nchat_ignore (`player`, `ignore`) VALUES(?, ?)", player.getName(), ignore.getName());
 	}
 
 	public void removeIgnorePlayer(ICommandExecutor player, ICommandExecutor ignore)
 	{
-		database.Update("DELETE FROM nchat_ignore WHERE `player` = ? AND `ignore` = ?", player.getName(), ignore.getName());
+		database.update("DELETE FROM nchat_ignore WHERE `player` = ? AND `ignore` = ?", player.getName(), ignore.getName());
 	}
 
 	private final IDatabase database;
