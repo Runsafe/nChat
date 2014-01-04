@@ -8,6 +8,7 @@ import no.runsafe.framework.api.database.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class IgnoreDatabase extends Repository
@@ -41,7 +42,7 @@ public class IgnoreDatabase extends Repository
 
 	public HashMap<String, List<String>> getIgnoreList()
 	{
-		HashMap<String, List<String>> ignoreList = new HashMap<String, List<String>>(1);
+		HashMap<String, List<String>> ignoreList = new LinkedHashMap<String, List<String>>(1);
 		ISet result = database.query("SELECT `player`, `ignore` FROM nchat_ignore");
 		for (IRow row : result)
 		{
