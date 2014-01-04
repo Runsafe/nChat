@@ -85,7 +85,7 @@ public class PlayerChatEngine
 	/**
 	 * Broadcast a message to the server.
 	 *
-	 * @param message         The message to be broadcast.
+	 * @param message The message to be broadcast.
 	 * @param excludedPlayers A list of players who will not see this message.
 	 * @param highlighter A highlighter to be used for this broadcast.
 	 */
