@@ -1,10 +1,7 @@
 package no.runsafe.nchat.database;
 
 import no.runsafe.framework.api.command.ICommandExecutor;
-import no.runsafe.framework.api.database.IDatabase;
-import no.runsafe.framework.api.database.IRow;
-import no.runsafe.framework.api.database.ISet;
-import no.runsafe.framework.api.database.Repository;
+import no.runsafe.framework.api.database.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,19 +22,19 @@ public class IgnoreDatabase extends Repository
 	}
 
 	@Override
-	public HashMap<Integer, List<String>> getSchemaUpdateQueries()
+	public ISchemaUpdate getSchemaUpdateQueries()
 	{
-		HashMap<Integer, List<String>> queries = new HashMap<Integer, List<String>>(1);
-		List<String> sql = new ArrayList<String>(1);
-		sql.add(
+		ISchemaUpdate update = new SchemaUpdate();
+
+		update.addQueries(
 			"CREATE TABLE `nchat_ignore` (" +
 				"`player` VARCHAR(16) NULL," +
 				"`ignore` VARCHAR(16) NULL," +
 				"PRIMARY KEY (`player`, `ignore`)" +
-				')'
+			')'
 		);
-		queries.put(1, sql);
-		return queries;
+
+		return update;
 	}
 
 	public HashMap<String, List<String>> getIgnoreList()

@@ -1,7 +1,9 @@
 package no.runsafe.nchat.database;
 
 import no.runsafe.framework.api.database.IDatabase;
+import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
+import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.log.IDebug;
 
 import java.util.*;
@@ -21,18 +23,18 @@ public class MuteDatabase extends Repository
 	}
 
 	@Override
-	public HashMap<Integer, List<String>> getSchemaUpdateQueries()
+	public ISchemaUpdate getSchemaUpdateQueries()
 	{
-		HashMap<Integer, List<String>> queries = new LinkedHashMap<Integer, List<String>>(1);
-		List<String> sql = new ArrayList<String>(1);
-		sql.add(
+		ISchemaUpdate update = new SchemaUpdate();
+
+		update.addQueries(
 			"CREATE TABLE `nchat_muted` (" +
 				"`player` VARCHAR(255) NULL," +
 				"PRIMARY KEY (`player`)" +
-				')'
+			')'
 		);
-		queries.put(1, sql);
-		return queries;
+
+		return update;
 	}
 
 	public Collection<String> getMuteList()
