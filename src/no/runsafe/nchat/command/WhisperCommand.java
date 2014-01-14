@@ -3,6 +3,7 @@ package no.runsafe.nchat.command;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
@@ -11,7 +12,6 @@ import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 
 import javax.annotation.Nullable;
-import java.util.Map;
 
 public class WhisperCommand extends ExecutableCommand
 {
@@ -25,7 +25,7 @@ public class WhisperCommand extends ExecutableCommand
 
 	@Nullable
 	@Override
-	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		String targetPlayerName = parameters.get("player");
 		IPlayer target = server.getPlayer(targetPlayerName);
