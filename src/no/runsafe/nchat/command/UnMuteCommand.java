@@ -1,25 +1,23 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
 import no.runsafe.framework.api.command.argument.IArgumentList;
-import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 
 public class UnMuteCommand extends ExecutableCommand
 {
-	public UnMuteCommand(IConsole console, MuteHandler muteHandler, IServer server)
+	public UnMuteCommand(IConsole console, MuteHandler muteHandler)
 	{
 		super(
 			"unmute", "Unmutes a previously muted player", "runsafe.nchat.mute",
-			new PlayerArgument()
+			new AnyPlayerRequired()
 		);
 		this.console = console;
 		this.muteHandler = muteHandler;
-		this.server = server;
 	}
 
 	@Override
@@ -43,7 +41,7 @@ public class UnMuteCommand extends ExecutableCommand
 		if (player != null && !player.hasPermission("nChat.commands.mutePlayer"))
 			return "&cYou do not have permission to do that.";
 
-		IPlayer unMutePlayer = server.getPlayer(unMutePlayerName);
+		IPlayer unMutePlayer = parameters.getPlayer("player");
 
 		if (unMutePlayer == null)
 			return "&cTry to pick a player who exists.";
@@ -58,5 +56,4 @@ public class UnMuteCommand extends ExecutableCommand
 
 	private final IConsole console;
 	private final MuteHandler muteHandler;
-	private final IServer server;
 }

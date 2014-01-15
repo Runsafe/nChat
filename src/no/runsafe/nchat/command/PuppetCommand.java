@@ -1,10 +1,9 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
 import no.runsafe.framework.api.command.argument.IArgumentList;
-import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
@@ -14,18 +13,17 @@ import javax.annotation.Nullable;
 
 public class PuppetCommand extends ExecutableCommand
 {
-	public PuppetCommand(PlayerChatEngine chatEngine, IServer server)
+	public PuppetCommand(PlayerChatEngine chatEngine)
 	{
-		super("puppet", "Make it look like someone said something", "runsafe.nchat.puppet", new PlayerArgument(), new TrailingArgument("message"));
+		super("puppet", "Make it look like someone said something", "runsafe.nchat.puppet", new AnyPlayerRequired(), new TrailingArgument("message"));
 		this.chatEngine = chatEngine;
-		this.server = server;
 	}
 
 	@Nullable
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		IPlayer targetPlayer = server.getPlayer(parameters.get("player"));
+		IPlayer targetPlayer = parameters.getPlayer("player");
 		if (targetPlayer == null)
 			return "&cThat player does not exist.";
 
@@ -37,5 +35,4 @@ public class PuppetCommand extends ExecutableCommand
 	}
 
 	private final PlayerChatEngine chatEngine;
-	private final IServer server;
 }
