@@ -3,12 +3,11 @@ package no.runsafe.nchat.command;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
-
-import java.util.Map;
 
 public class MuteCommand extends ExecutableCommand
 {
@@ -24,7 +23,7 @@ public class MuteCommand extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
 		String mutePlayerName = parameters.get("player");

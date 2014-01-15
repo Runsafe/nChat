@@ -1,5 +1,6 @@
 package no.runsafe.nchat.command;
 
+import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
@@ -7,7 +8,6 @@ import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 
 import javax.annotation.Nullable;
-import java.util.Map;
 
 public class ReplyCommand extends PlayerCommand
 {
@@ -20,7 +20,7 @@ public class ReplyCommand extends PlayerCommand
 
 	@Nullable
 	@Override
-	public String OnExecute(IPlayer executor, Map<String, String> parameters)
+	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
 		IPlayer whisperer = whisperHandler.getLastWhisperedBy(executor);
 
