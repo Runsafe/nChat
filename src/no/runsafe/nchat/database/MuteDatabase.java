@@ -10,10 +10,9 @@ import java.util.*;
 
 public class MuteDatabase extends Repository
 {
-	public MuteDatabase(IDebug console, IDatabase database)
+	public MuteDatabase(IDebug console)
 	{
 		debugger = console;
-		this.database = database;
 	}
 
 	@Override
@@ -55,5 +54,4 @@ public class MuteDatabase extends Repository
 	}
 
 	private final IDebug debugger;
-	private final IDatabase database;
 }

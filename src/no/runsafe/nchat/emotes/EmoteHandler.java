@@ -47,14 +47,21 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		if (event.isCancelled())
 			return;
 
-		Matcher matcher = emoteChecker.matcher(event.getMessage());
+		if (executeEmote(event.getPlayer(), event.getMessage()))
+			event.cancel();
+	}
+
+	public boolean executeEmote(IPlayer player, CharSequence command)
+	{
+		Matcher matcher = emoteChecker.matcher(command);
 		if (matcher.matches())
 		{
 			EmoteDefinition emote = emotes.get(matcher.group(1));
 			IPlayer targetPlayer = matcher.groupCount() > 2 ? server.getPlayer(matcher.group(3)) : null;
-			broadcastEmote(emote, event.getPlayer(), targetPlayer);
-			event.cancel();
+			broadcastEmote(emote, player, targetPlayer);
+			return true;
 		}
+		return false;
 	}
 
 	private void broadcastEmote(EmoteDefinition emote, IPlayer player, IPlayer target)

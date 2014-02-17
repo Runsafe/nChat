@@ -1,6 +1,7 @@
 package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.nchat.database.IgnoreDatabase;
 
 import java.util.ArrayList;
@@ -8,18 +9,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IgnoreHandler
+public class IgnoreHandler implements IServerReady
 {
 	public IgnoreHandler(IgnoreDatabase database)
 	{
 		this.database = database;
-		ignoreList = database.getIgnoreList();
+		ignoreList = new HashMap<String, List<String>>(0);
+	}
+
+	@Override
+	public void OnServerReady()
+	{
+		ignoreList.putAll(database.getIgnoreList());
 	}
 
 	/**
 	 * Adds a player to the players ignore list.
 	 *
-	 * @param player The player who will ignore.
+	 * @param player       The player who will ignore.
 	 * @param ignorePlayer The player to be ignored.
 	 */
 	public void ignorePlayer(ICommandExecutor player, ICommandExecutor ignorePlayer)
@@ -36,7 +43,7 @@ public class IgnoreHandler
 	/**
 	 * Removes a player from a players ignore list.
 	 *
-	 * @param player The player to perform the removal.
+	 * @param player       The player to perform the removal.
 	 * @param ignorePlayer The player to be removed.
 	 */
 	public void removeIgnorePlayer(ICommandExecutor player, ICommandExecutor ignorePlayer)
@@ -58,7 +65,7 @@ public class IgnoreHandler
 	/**
 	 * Checks to see if a player is ignoring another player.
 	 *
-	 * @param player The player to check for.
+	 * @param player       The player to check for.
 	 * @param ignorePlayer The player who is being ignored.
 	 * @return True if the player is being ignored.
 	 */

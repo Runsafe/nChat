@@ -10,11 +10,6 @@ import java.util.List;
 
 public class IgnoreDatabase extends Repository
 {
-	public IgnoreDatabase(IDatabase database)
-	{
-		this.database = database;
-	}
-
 	@Override
 	public String getTableName()
 	{
@@ -62,6 +57,4 @@ public class IgnoreDatabase extends Repository
 	{
 		database.update("DELETE FROM nchat_ignore WHERE `player` = ? AND `ignore` = ?", player.getName(), ignore.getName());
 	}
-
-	private final IDatabase database;
 }
