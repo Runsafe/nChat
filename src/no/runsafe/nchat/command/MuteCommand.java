@@ -6,6 +6,7 @@ import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.player.IPlayerVisibility;
 import no.runsafe.nchat.chat.MuteHandler;
 
 public class MuteCommand extends ExecutableCommand
@@ -36,8 +37,12 @@ public class MuteCommand extends ExecutableCommand
 		}
 		IPlayer mutePlayer = parameters.getPlayer("player");
 
+
 		if (mutePlayer == null)
 			return "&cThat player does not exist.";
+
+		if (player != null && (!mutePlayer.isOnline() || player.shouldNotSee(mutePlayer)))
+			return "&cThat player is currently offline.";
 
 		if (player != null && mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^
