@@ -30,11 +30,8 @@ public class MuteHandler implements IConfigurationChanged
 
 	private boolean isPlayerMuted(String playerName)
 	{
-		if (mutedPlayers.containsKey(playerName))
-		{
-			if (mutedPlayers.get(playerName) != null && mutedPlayers.get(playerName).isBeforeNow())
-				unMutePlayer(playerName);
-		}
+		if (mutedPlayers.containsKey(playerName) && mutedPlayers.get(playerName).isBeforeNow())
+			unMutePlayer(playerName);
 		return serverMute || mutedPlayers.containsKey(playerName);
 	}
 
