@@ -33,6 +33,9 @@ public class IgnoreCommand extends PlayerCommand
 		if (ignorePlayer == null)
 			return "&cUnable to ignore that player, server error.";
 
+		if (executor.getName().equalsIgnoreCase(ignorePlayer.getName()))
+			return "&cWhy would you want to do that?";
+
 		if (ignoreHandler.playerIsIgnoring(executor, ignorePlayer))
 		{
 			ignoreHandler.removeIgnorePlayer(executor, ignorePlayer);

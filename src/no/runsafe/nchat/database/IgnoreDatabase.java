@@ -28,7 +28,7 @@ public class IgnoreDatabase extends Repository
 				"PRIMARY KEY (`player`, `ignore`)" +
 			')'
 		);
-
+		update.addQueries("DELETE FROM `nchat_ignore` WHERE player like `ignore`");
 		return update;
 	}
 
