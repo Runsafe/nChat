@@ -3,6 +3,7 @@ package no.runsafe.nchat.chat;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.nchat.database.MuteDatabase;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -12,15 +13,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MuteHandler implements IConfigurationChanged
 {
-	public MuteHandler(MuteDatabase muteDatabase)
+	public MuteHandler(MuteDatabase muteDatabase, IConsole console)
 	{
 		this.muteDatabase = muteDatabase;
+		this.console = console;
 	}
 
 	public void loadMuteList()
 	{
 		mutedPlayers.clear();
 		mutedPlayers.putAll(muteDatabase.getMuteList());
+		console.logInformation("Loaded %d mutes from database.", mutedPlayers.size());
 	}
 
 	public boolean isPlayerMuted(ICommandExecutor player)
@@ -83,5 +86,6 @@ public class MuteHandler implements IConfigurationChanged
 
 	private final Map<String, DateTime> mutedPlayers = new ConcurrentHashMap<String, DateTime>(0);
 	private final MuteDatabase muteDatabase;
+	private final IConsole console;
 	private boolean serverMute;
 }
