@@ -1,12 +1,15 @@
 package no.runsafe.nchat.database;
 
-import no.runsafe.framework.api.database.IDatabase;
+import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.log.IDebug;
+import org.joda.time.DateTime;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MuteDatabase extends Repository
 {
@@ -30,21 +33,29 @@ public class MuteDatabase extends Repository
 			"CREATE TABLE `nchat_muted` (" +
 				"`player` VARCHAR(255) NULL," +
 				"PRIMARY KEY (`player`)" +
-			')'
+				')'
 		);
-
+		update.addQueries("ALTER TABLE `nchat_muted` ADD COLUMN temp_mute datetime NULL");
 		return update;
 	}
 
-	public Collection<String> getMuteList()
+	public Map<String, DateTime> getMuteList()
 	{
-		return database.queryStrings("SELECT player FROM nchat_muted");
+		Map<String, DateTime> mutes = new HashMap<String, DateTime>(0);
+		for(IRow row : database.query("SELECT player, temp_mute FROM nchat_muted"))
+			mutes.put(row.String("player"), row.DateTime("temp_mute"));
+		return mutes;
 	}
 
 	public void mutePlayer(String playerName)
 	{
 		debugger.debugFine("Updating mute database with " + playerName);
 		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", playerName);
+	}
+
+	public void tempMutePlayer(String playerName, DateTime expire)
+	{
+		database.update("INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)", playerName, expire);
 	}
 
 	public void unMutePlayer(String playerName)

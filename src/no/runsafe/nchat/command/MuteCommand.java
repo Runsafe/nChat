@@ -3,11 +3,13 @@ package no.runsafe.nchat.command;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
+import no.runsafe.framework.api.command.argument.DurationArgument;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.api.player.IPlayerVisibility;
 import no.runsafe.nchat.chat.MuteHandler;
+import org.joda.time.Duration;
+
 
 public class MuteCommand extends ExecutableCommand
 {
@@ -15,7 +17,7 @@ public class MuteCommand extends ExecutableCommand
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
-			new AnyPlayerRequired()
+			new AnyPlayerRequired(), new DurationArgument(false)
 		);
 		this.console = console;
 		this.muteHandler = muteHandler;
@@ -26,6 +28,7 @@ public class MuteCommand extends ExecutableCommand
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
 		String mutePlayerName = parameters.get("player");
+		Duration duration = parameters.getValue("duration");
 
 		if (mutePlayerName.equalsIgnoreCase("server"))
 		{
@@ -35,8 +38,7 @@ public class MuteCommand extends ExecutableCommand
 			muteHandler.muteServer();
 			return "&bGlobal chat has been muted, you monster.";
 		}
-		IPlayer mutePlayer = parameters.getPlayer("player");
-
+		IPlayer mutePlayer = parameters.getValue("player");
 
 		if (mutePlayer == null)
 			return "&cThat player does not exist.";
@@ -48,7 +50,10 @@ public class MuteCommand extends ExecutableCommand
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^
 
 		console.logInformation(String.format("%s muted %s", executor.getName(), mutePlayer.getName()));
-		muteHandler.mutePlayer(mutePlayer);
+		if (duration != null)
+			muteHandler.tempMutePlayer(mutePlayer, duration);
+		else
+			muteHandler.mutePlayer(mutePlayer);
 		return String.format("&bMuted %s.", mutePlayer.getPrettyName());
 	}
 

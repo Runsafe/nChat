@@ -4,9 +4,11 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.nchat.database.MuteDatabase;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MuteHandler implements IConfigurationChanged
 {
@@ -18,7 +20,7 @@ public class MuteHandler implements IConfigurationChanged
 	public void loadMuteList()
 	{
 		mutedPlayers.clear();
-		mutedPlayers.addAll(muteDatabase.getMuteList());
+		mutedPlayers.putAll(muteDatabase.getMuteList());
 	}
 
 	public boolean isPlayerMuted(ICommandExecutor player)
@@ -28,7 +30,19 @@ public class MuteHandler implements IConfigurationChanged
 
 	private boolean isPlayerMuted(String playerName)
 	{
-		return serverMute || mutedPlayers.contains(playerName);
+		if (mutedPlayers.containsKey(playerName))
+		{
+			if (mutedPlayers.get(playerName) != null && mutedPlayers.get(playerName).isBeforeNow())
+				unMutePlayer(playerName);
+		}
+		return serverMute || mutedPlayers.containsKey(playerName);
+	}
+
+	public void tempMutePlayer(ICommandExecutor player, Duration expire)
+	{
+		DateTime limit = DateTime.now().plus(expire);
+		mutedPlayers.put(player.getName(), limit);
+		muteDatabase.tempMutePlayer(player.getName(), limit);
 	}
 
 	public void mutePlayer(ICommandExecutor player)
@@ -38,7 +52,7 @@ public class MuteHandler implements IConfigurationChanged
 
 	public void mutePlayer(String playerName)
 	{
-		mutedPlayers.add(playerName);
+		mutedPlayers.put(playerName, null);
 		muteDatabase.mutePlayer(playerName);
 	}
 
@@ -70,7 +84,7 @@ public class MuteHandler implements IConfigurationChanged
 		loadMuteList();
 	}
 
-	private final Collection<String> mutedPlayers = new ArrayList<String>(0);
+	private final Map<String, DateTime> mutedPlayers = new ConcurrentHashMap<String, DateTime>(0);
 	private final MuteDatabase muteDatabase;
 	private boolean serverMute;
 }
