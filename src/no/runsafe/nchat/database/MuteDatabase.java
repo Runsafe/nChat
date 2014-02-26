@@ -5,10 +5,8 @@ import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.log.IDebug;
-import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,10 +41,11 @@ public class MuteDatabase extends Repository
 	public Map<String, DateTime> getMuteList()
 	{
 		Map<String, DateTime> mutes = new HashMap<String, DateTime>(0);
-		for(IRow row : database.query("SELECT player, temp_mute FROM nchat_muted"))
+		for (IRow row : database.query("SELECT player, temp_mute FROM nchat_muted"))
 		{
 			DateTime expiry = row.DateTime("temp_mute");
-			mutes.put(row.String("player"), expiry == null ? endOfTime : expiry);
+			if (row.String("player") != null)
+				mutes.put(row.String("player"), expiry == null ? END_OF_TIME : expiry);
 		}
 		return mutes;
 	}
@@ -69,5 +68,5 @@ public class MuteDatabase extends Repository
 	}
 
 	private final IDebug debugger;
-	private final DateTime endOfTime = new DateTime(Long.MAX_VALUE);
+	public static final DateTime END_OF_TIME = new DateTime(Long.MAX_VALUE);
 }

@@ -49,7 +49,7 @@ public class MuteHandler implements IConfigurationChanged
 
 	public void mutePlayer(String playerName)
 	{
-		mutedPlayers.put(playerName, null);
+		mutedPlayers.put(playerName, MuteDatabase.END_OF_TIME);
 		muteDatabase.mutePlayer(playerName);
 	}
 
