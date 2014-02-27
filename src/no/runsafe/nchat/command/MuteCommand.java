@@ -3,8 +3,8 @@ package no.runsafe.nchat.command;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
-import no.runsafe.framework.api.command.argument.DurationArgument;
 import no.runsafe.framework.api.command.argument.IArgumentList;
+import no.runsafe.framework.api.command.argument.Period;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
@@ -17,7 +17,7 @@ public class MuteCommand extends ExecutableCommand
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
-			new AnyPlayerRequired(), new DurationArgument(false)
+			new AnyPlayerRequired(), new Period.Optional()
 		);
 		this.console = console;
 		this.muteHandler = muteHandler;
