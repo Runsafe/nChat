@@ -2,7 +2,7 @@ package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
-import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
+import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.Period;
 import no.runsafe.framework.api.log.IConsole;
@@ -17,7 +17,7 @@ public class MuteCommand extends ExecutableCommand
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
-			new AnyPlayerRequired(), new Period.Optional()
+			new Player.Any().require(), new Period()
 		);
 		this.console = console;
 		this.muteHandler = muteHandler;
@@ -27,7 +27,9 @@ public class MuteCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
-		String mutePlayerName = parameters.get("player");
+		String mutePlayerName = parameters.getValue("player");
+		if (mutePlayerName == null)
+			return null;
 		Duration duration = parameters.getValue("duration");
 
 		if (mutePlayerName.equalsIgnoreCase("server"))

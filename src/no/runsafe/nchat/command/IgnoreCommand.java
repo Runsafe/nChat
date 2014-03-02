@@ -1,8 +1,8 @@
 package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.ICommandExecutor;
-import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
 import no.runsafe.framework.api.command.argument.IArgumentList;
+import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.IgnoreHandler;
@@ -11,7 +11,7 @@ public class IgnoreCommand extends PlayerCommand
 {
 	public IgnoreCommand(IgnoreHandler ignoreHandler)
 	{
-		super("ignore", "Toggle the ignoring of a player.", "runsafe.nchat.ignore", new AnyPlayerRequired());
+		super("ignore", "Toggle the ignoring of a player.", "runsafe.nchat.ignore", new Player.Any().require());
 		this.ignoreHandler = ignoreHandler;
 	}
 
@@ -29,9 +29,9 @@ public class IgnoreCommand extends PlayerCommand
 	@Override
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
-		IPlayer ignorePlayer = parameters.getPlayer("player");
+		IPlayer ignorePlayer = parameters.getValue("player");
 		if (ignorePlayer == null)
-			return "&cUnable to ignore that player, server error.";
+			return null;
 
 		if (executor.getName().equalsIgnoreCase(ignorePlayer.getName()))
 			return "&cWhy would you want to do that?";

@@ -3,7 +3,7 @@ package no.runsafe.nchat.command;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
-import no.runsafe.framework.api.command.argument.OnlinePlayerRequired;
+import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
@@ -15,7 +15,7 @@ public class WhisperCommand extends ExecutableCommand
 {
 	public WhisperCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
 	{
-		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new OnlinePlayerRequired(), new TrailingArgument("message"));
+		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new Player.Online().require(), new TrailingArgument("message"));
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
 	}
@@ -25,7 +25,7 @@ public class WhisperCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		String targetPlayerName = parameters.get("player");
-		IPlayer target = parameters.getPlayer("player");
+		IPlayer target = parameters.getValue("player");
 
 		if (target == null)
 			return String.format("&c%s does not exist.", targetPlayerName);
