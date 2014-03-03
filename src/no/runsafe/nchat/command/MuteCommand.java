@@ -27,7 +27,7 @@ public class MuteCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
-		String mutePlayerName = parameters.getValue("player");
+		String mutePlayerName = parameters.get("player");
 		if (mutePlayerName == null)
 			return null;
 		Duration duration = parameters.getValue("duration");
