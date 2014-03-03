@@ -15,7 +15,7 @@ public class WhisperCommand extends ExecutableCommand
 {
 	public WhisperCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
 	{
-		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new Player.Online().require(), new TrailingArgument("message"));
+		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new Player.Online.Required(), new TrailingArgument("message"));
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
 	}
