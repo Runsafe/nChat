@@ -14,7 +14,7 @@ public class UnMuteCommand extends ExecutableCommand
 	{
 		super(
 			"unmute", "Unmutes a previously muted player", "runsafe.nchat.mute",
-			new Player.Any.Required()
+			new Player.Any().require()
 		);
 		this.console = console;
 		this.muteHandler = muteHandler;

@@ -1,5 +1,6 @@
 package no.runsafe.nchat.command;
 
+import com.sun.org.apache.regexp.internal.recompile;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
@@ -15,7 +16,7 @@ public class WhisperCommand extends ExecutableCommand
 {
 	public WhisperCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
 	{
-		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new Player.Online.Required(), new TrailingArgument("message"));
+		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new Player.Online().require(), new TrailingArgument("message"));
 		this.whisperHandler = whisperHandler;
 		this.muteHandler = muteHandler;
 	}

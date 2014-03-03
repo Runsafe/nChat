@@ -17,7 +17,7 @@ public class MuteCommand extends ExecutableCommand
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
-			new Player.Any.Required(), new Period()
+			new Player.Any().require(), new Period()
 		);
 		this.console = console;
 		this.muteHandler = muteHandler;
