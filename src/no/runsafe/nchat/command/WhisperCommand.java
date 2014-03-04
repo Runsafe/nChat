@@ -1,6 +1,5 @@
 package no.runsafe.nchat.command;
 
-import com.sun.org.apache.regexp.internal.recompile;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
