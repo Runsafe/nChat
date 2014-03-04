@@ -2,13 +2,12 @@ package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
-import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.Period;
+import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
-import org.joda.time.Duration;
 
 
 public class MuteCommand extends ExecutableCommand
@@ -17,7 +16,7 @@ public class MuteCommand extends ExecutableCommand
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
-			new Player.Any().require(), new Period()
+			new Player().require(), new Period()
 		);
 		this.console = console;
 		this.muteHandler = muteHandler;
@@ -30,7 +29,7 @@ public class MuteCommand extends ExecutableCommand
 		String mutePlayerName = parameters.get("player");
 		if (mutePlayerName == null)
 			return null;
-		Duration duration = parameters.getValue("duration");
+		org.joda.time.Period duration = parameters.getValue("duration");
 
 		if (mutePlayerName.equalsIgnoreCase("server"))
 		{

@@ -15,7 +15,7 @@ public class PuppetCommand extends ExecutableCommand
 {
 	public PuppetCommand(EmoteHandler emoteHandler, PlayerChatEngine chatEngine)
 	{
-		super("puppet", "Make it look like someone said something", "runsafe.nchat.puppet", new Player.Any().require(), new TrailingArgument("message"));
+		super("puppet", "Make it look like someone said something", "runsafe.nchat.puppet", new Player().require(), new TrailingArgument("message"));
 		this.emoteHandler = emoteHandler;
 		this.chatEngine = chatEngine;
 	}

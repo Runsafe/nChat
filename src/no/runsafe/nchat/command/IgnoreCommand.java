@@ -11,7 +11,7 @@ public class IgnoreCommand extends PlayerCommand
 {
 	public IgnoreCommand(IgnoreHandler ignoreHandler)
 	{
-		super("ignore", "Toggle the ignoring of a player.", "runsafe.nchat.ignore", new Player.Any().require());
+		super("ignore", "Toggle the ignoring of a player.", "runsafe.nchat.ignore", new Player().require());
 		this.ignoreHandler = ignoreHandler;
 	}
 

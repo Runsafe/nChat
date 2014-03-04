@@ -6,7 +6,7 @@ import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.nchat.database.MuteDatabase;
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
+import org.joda.time.Period;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,7 +38,7 @@ public class MuteHandler implements IConfigurationChanged
 		return serverMute || mutedPlayers.containsKey(playerName);
 	}
 
-	public void tempMutePlayer(ICommandExecutor player, Duration expire)
+	public void tempMutePlayer(ICommandExecutor player, Period expire)
 	{
 		DateTime limit = DateTime.now().plus(expire);
 		mutedPlayers.put(player.getName(), limit);
