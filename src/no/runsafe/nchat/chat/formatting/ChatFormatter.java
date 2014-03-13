@@ -43,11 +43,13 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		return mapReplace(playerChatMessage, replacements);
 	}
 
-	private String getWorldPrefix(String worldName)
+	private String getWorldPrefix(IPlayer player, String worldName)
 	{
-		Map<String, String> prefixes = worldPrefixes;
-		if (prefixes.containsKey(worldName))
-			return prefixes.get(worldName);
+		if (player.isDead() && worldPrefixes.containsKey("dead"))
+			return worldPrefixes.get("dead");
+
+		if (worldPrefixes.containsKey(worldName))
+			return worldPrefixes.get(worldName);
 
 		return "";
 	}
@@ -79,11 +81,11 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		if (enableRegionPrefixes && !(player instanceof RunsafeFakePlayer) && player.isOnline() && !worldName.equals("console"))
 		{
 			String regionTag = regionHandler.getRegionTag(player);
-			worldName = regionTag != null ? regionTag : getWorldPrefix(worldName);
+			worldName = regionTag != null ? regionTag : getWorldPrefix(player, worldName);
 		}
 		else
 		{
-			worldName = getWorldPrefix(worldName);
+			worldName = getWorldPrefix(player, worldName);
 		}
 
 		replacements.put("#world", worldName);

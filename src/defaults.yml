@@ -38,6 +38,7 @@ worldPrefixes:
   world_nether: '&4[N]'
   world_the_end: '&9[E]'
   console: '&3[?]'
+  dead: '&7[X]'
 regionPrefixes:
   gameroom-pvp_arena: '&c[PvP]'
 chatMessage:
