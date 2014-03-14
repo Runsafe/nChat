@@ -45,7 +45,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 
 	private String getWorldPrefix(IPlayer player, String worldName)
 	{
-		if (player.isDead() && worldPrefixes.containsKey("dead"))
+		if (player.isOnline() && player.isDead() && worldPrefixes.containsKey("dead"))
 			return worldPrefixes.get("dead");
 
 		if (worldPrefixes.containsKey(worldName))
