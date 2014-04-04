@@ -67,13 +67,9 @@ public class PlayerChatEngine
 	 */
 	public void broadcastMessageAsPlayer(IPlayer player, String message)
 	{
-		message = chatFormatter.formatChatMessage(player, message);
-
-		if (message.length() > 0)
-		{
-			new InternalChatEvent(player, message).Fire();
-			broadcastMessage(message, ignoreHandler.getPlayersIgnoring(player), mentionHighlighter);
-		}
+		InternalChatEvent event = new InternalChatEvent(player, message);
+		event.Fire();
+		broadcastMessage(chatFormatter.formatChatMessage(player, event.getMessage()), ignoreHandler.getPlayersIgnoring(player), mentionHighlighter);
 	}
 
 	/**
