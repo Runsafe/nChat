@@ -44,9 +44,6 @@ public class MuteCommand extends ExecutableCommand
 		if (mutePlayer == null)
 			return "&cThat player does not exist.";
 
-		if (player != null && (!mutePlayer.isOnline() || player.shouldNotSee(mutePlayer)))
-			return "&cThat player is currently offline.";
-
 		if (player != null && mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^
 
