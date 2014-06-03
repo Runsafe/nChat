@@ -29,9 +29,13 @@ public class PuppetCommand extends ExecutableCommand
 			return null;
 
 		String message = parameters.get("message");
-		if (!emoteHandler.executeEmote(targetPlayer, message))
-			chatEngine.broadcastMessageAsPlayer(targetPlayer, message);
-
+		if (message != null)
+		{
+			if (message.startsWith("/"))
+				emoteHandler.executeEmote(targetPlayer, message);
+			else
+				chatEngine.broadcastMessageAsPlayer(targetPlayer, message);
+		}
 		return null;
 	}
 
