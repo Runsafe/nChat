@@ -2,6 +2,7 @@ package no.runsafe.nchat.channel;
 
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.player.IPlayer;
 
 public class PrivateChannel extends BasicChatChannel
 {
@@ -34,6 +35,15 @@ public class PrivateChannel extends BasicChatChannel
 				to = member;
 				break;
 			}
+
+		if (to instanceof IPlayer)
+		{
+			if(!((IPlayer) to).isOnline() || (from instanceof IPlayer && ((IPlayer) from).shouldNotSee((IPlayer)to)))
+			{
+				from.sendMessage(String.format("&cThe player %s is currently offline.", ((IPlayer) to).getPrettyName()));
+				return;
+			}
+		}
 		SendMessage(from, to, manager.FormatPrivateMessageFrom(from, to, message));
 		SendMessage(from, to, manager.FormatPrivateMessageTo(from, to, message));
 		console.logInformation(manager.FormatPrivateMessageLog(from, to, message));
