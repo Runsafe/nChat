@@ -3,6 +3,7 @@ package no.runsafe.nchat.database;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.database.*;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -11,12 +12,14 @@ import java.util.List;
 public class IgnoreDatabase extends Repository
 {
 	@Override
+	@Nonnull
 	public String getTableName()
 	{
 		return "nchat_ignore";
 	}
 
 	@Override
+	@Nonnull
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
 		ISchemaUpdate update = new SchemaUpdate();

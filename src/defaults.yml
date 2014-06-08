@@ -44,6 +44,7 @@ regionPrefixes:
 chatMessage:
   joinServer: '#player has joined the server.'
   leaveServer: '#player has left the server.'
+  whisperLog: '#source -> #target: #message'
   whisperTo: '&6You &7-> #target&f: #message'
   whisperFrom: '#source &7-> &6You&f: #message'
   channel: '#tag #player: &f#message'

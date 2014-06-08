@@ -2,14 +2,14 @@ package no.runsafe.nchat.events;
 
 import no.runsafe.framework.api.event.player.IPlayerChatEvent;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
-import no.runsafe.nchat.chat.PlayerChatEngine;
+import no.runsafe.nchat.channel.ChannelManager;
 import no.runsafe.nchat.chat.InternalChatEvent;
 
 public class ChatEvent implements IPlayerChatEvent
 {
-	public ChatEvent(PlayerChatEngine chatEngine)
+	public ChatEvent(ChannelManager channelManager)
 	{
-		this.chatEngine = chatEngine;
+		this.channelManager = channelManager;
 	}
 
 	@Override
@@ -20,8 +20,8 @@ public class ChatEvent implements IPlayerChatEvent
 			return;
 
 		event.cancel(); // We don't want Minecraft handling this.
-		chatEngine.playerBroadcast(event.getPlayer(), event.getMessage());
+		channelManager.getDefaultChannel(event.getPlayer()).Send(event.getPlayer(), event.getMessage());
 	}
 
-	private final PlayerChatEngine chatEngine;
+	private final ChannelManager channelManager;
 }

@@ -32,6 +32,7 @@ public class PlayerChatEngine
 	 * @param player  The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 */
+	@Deprecated
 	public void playerBroadcast(IPlayer player, String message)
 	{
 		if (isMuted(player))
@@ -50,6 +51,7 @@ public class PlayerChatEngine
 	 * @param player  The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 */
+	@Deprecated
 	public void playerSystemBroadcast(ICommandExecutor player, String message)
 	{
 		if (isMuted(player))
@@ -65,6 +67,7 @@ public class PlayerChatEngine
 	 * @param player  The player to broadcast the message.
 	 * @param message The message the player will broadcast.
 	 */
+	@Deprecated
 	public void broadcastMessageAsPlayer(IPlayer player, String message)
 	{
 		InternalChatEvent event = new InternalChatEvent(player, message);
@@ -77,6 +80,7 @@ public class PlayerChatEngine
 	 *
 	 * @param message The message to broadcast.
 	 */
+	@Deprecated
 	public void broadcastMessage(String message)
 	{
 		broadcastMessage(message, null, null);
@@ -89,6 +93,7 @@ public class PlayerChatEngine
 	 * @param excludedPlayers A list of players who will not see this message.
 	 * @param highlighter A highlighter to be used for this broadcast.
 	 */
+	@Deprecated
 	public void broadcastMessage(String message, List<String> excludedPlayers, IChatHighlighter highlighter)
 	{
 		message = message.replace("%", "%%");
@@ -109,6 +114,7 @@ public class PlayerChatEngine
 	 * @param player The player to check.
 	 * @return False if the player is muted.
 	 */
+	@Deprecated
 	private boolean isMuted(ICommandExecutor player)
 	{
 		// Mute check.

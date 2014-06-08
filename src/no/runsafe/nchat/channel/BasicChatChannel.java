@@ -1,5 +1,6 @@
 package no.runsafe.nchat.channel;
 
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 
 import java.util.HashMap;
@@ -7,8 +8,9 @@ import java.util.Map;
 
 public class BasicChatChannel implements IChatChannel
 {
-	public BasicChatChannel(ChannelManager manager, String name)
+	public BasicChatChannel(IConsole console, ChannelManager manager, String name)
 	{
+		this.console = console;
 		this.manager = manager;
 		this.name = name;
 	}
@@ -45,6 +47,14 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
+	public void SendSystem(String message)
+	{
+		console.logInformation(message);
+		for (IPlayer member : members.values())
+			member.sendColouredMessage(message);
+	}
+
+	@Override
 	public String getName()
 	{
 		return name;
@@ -52,8 +62,12 @@ public class BasicChatChannel implements IChatChannel
 
 	protected void SendFiltered(IPlayer player, String message)
 	{
+		String filtered = manager.FormatMessage(player, this, message);
+		if(filtered == null)
+			return;
+		console.logInformation(filtered);
 		for (IPlayer member : members.values())
-			SendMessage(player, member, message);
+			SendMessage(player, member, filtered);
 	}
 
 	protected void SendMessage(IPlayer source, IPlayer target, String message)
@@ -63,6 +77,7 @@ public class BasicChatChannel implements IChatChannel
 			target.sendColouredMessage(outgoing);
 	}
 
+	protected final IConsole console;
 	protected final ChannelManager manager;
 	protected final Map<String, IPlayer> members = new HashMap<String, IPlayer>();
 	private final String name;

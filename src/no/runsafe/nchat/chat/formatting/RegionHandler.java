@@ -3,7 +3,6 @@ package no.runsafe.nchat.chat.formatting;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.worldguardbridge.IRegionControl;
 
 import javax.annotation.Nullable;
 import java.util.List;

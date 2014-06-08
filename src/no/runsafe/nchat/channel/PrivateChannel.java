@@ -1,12 +1,13 @@
 package no.runsafe.nchat.channel;
 
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 
 public class PrivateChannel extends BasicChatChannel
 {
-	public PrivateChannel(ChannelManager manager, String name, IPlayer player1, IPlayer player2)
+	public PrivateChannel(ChannelManager manager, IConsole console, String name, IPlayer player1, IPlayer player2)
 	{
-		super(manager, name);
+		super(console, manager, name);
 		members.put(player1.getName(), player1);
 		members.put(player2.getName(), player2);
 	}
@@ -24,15 +25,14 @@ public class PrivateChannel extends BasicChatChannel
 	}
 
 	@Override
-	protected void SendFiltered(IPlayer player, String message)
+	protected void SendFiltered(IPlayer from, String message)
 	{
+		IPlayer to = null;
 		for(IPlayer member : members.values())
-			SendMessage(
-				player,
-				member,
-				player.getName().equals(member.getName())
-					? manager.FormatPrivateMessageFrom(player, member, message)
-					: manager.FormatPrivateMessageTo(player, member, message)
-			);
+			if(!member.getName().equals(from.getName()))
+				to = member;
+		SendMessage(from, to, manager.FormatPrivateMessageFrom(from, to, message));
+		SendMessage(from, to, manager.FormatPrivateMessageTo(from, to, message));
+		console.logInformation(manager.FormatPrivateMessageLog(from, to, message));
 	}
 }

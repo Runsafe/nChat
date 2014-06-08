@@ -26,6 +26,9 @@ public class UnMuteCommand extends ExecutableCommand
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
 		String unMutePlayerName = parameters.get("player");
 
+		if (unMutePlayerName == null)
+			return null;
+
 		if (unMutePlayerName.equalsIgnoreCase("server"))
 		{
 			if (player == null || player.hasPermission("nChat.commands.muteServer"))

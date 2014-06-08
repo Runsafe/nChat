@@ -5,6 +5,8 @@ import no.runsafe.framework.features.Commands;
 import no.runsafe.framework.features.Database;
 import no.runsafe.framework.features.Events;
 import no.runsafe.framework.features.FrameworkHooks;
+import no.runsafe.nchat.channel.ChannelManager;
+import no.runsafe.nchat.channel.GlobalChatChannel;
 import no.runsafe.nchat.filter.*;
 import no.runsafe.nchat.chat.*;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
@@ -32,13 +34,15 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(MuteDatabase.class);
 		addComponent(IgnoreDatabase.class);
 
-		// Anti-spam
+		// Filters
 		addComponent(DuplicationFilter.class);
 		addComponent(IPFilter.class);
 		addComponent(FloodFilter.class);
 		addComponent(BlacklistFilter.class);
 		addComponent(CapsFilter.class);
 		addComponent(SpamHandler.class);
+		addComponent(MuteFilter.class);
+		addComponent(IgnoreFilter.class);
 
 		// Chat engine
 		addComponent(MentionHighlighter.class);
@@ -50,6 +54,10 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(RegionHandler.class);
 		addComponent(PlayerTablistNameHandler.class);
 		addComponent(EmoteHandler.class);
+
+		// Channels
+		exportAPI(ChannelManager.class);
+		addComponent(GlobalChatChannel.class);
 
 		// Commands
 		addComponent(MuteCommand.class);

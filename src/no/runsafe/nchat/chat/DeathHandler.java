@@ -9,17 +9,19 @@ import no.runsafe.framework.api.filesystem.IPluginDataFile;
 import no.runsafe.framework.api.filesystem.IPluginFileManager;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
+import no.runsafe.nchat.channel.IChannelManager;
+import no.runsafe.nchat.channel.IChatChannel;
 
 import java.util.List;
 import java.util.Random;
 
 public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 {
-	public DeathHandler(IPluginFileManager fileManager, PlayerChatEngine chatEngine)
+	public DeathHandler(IPluginFileManager fileManager, IChannelManager manager)
 	{
-		this.chatEngine = chatEngine;
 		deathMessageFile = fileManager.getFile("death_messages.txt");
 		pvpDeathMessageFile = fileManager.getFile("pvp_death_messages.txt");
+		channel = manager.getChannelByName("global");
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 			}
 
 			message = message.replaceAll("#player", player.getPrettyName());
-			chatEngine.broadcastMessage(message);
+			channel.SendSystem(message);
 		}
 	}
 
@@ -67,5 +69,5 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 	private List<String> pvpMessages;
 	private List<String> ignoreWorlds;
 	private final Random random = new Random();
-	private final PlayerChatEngine chatEngine;
+	private final IChatChannel channel;
 }

@@ -7,6 +7,7 @@ import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.log.IDebug;
 import org.joda.time.DateTime;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,12 +19,14 @@ public class MuteDatabase extends Repository
 	}
 
 	@Override
+	@Nonnull
 	public String getTableName()
 	{
 		return "nchat_muted";
 	}
 
 	@Override
+	@Nonnull
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
 		ISchemaUpdate update = new SchemaUpdate();

@@ -7,5 +7,6 @@ public interface IChatChannel
 	boolean Join(IPlayer player);
 	boolean Leave(IPlayer player);
 	void Send(IPlayer player, String message);
+	void SendSystem(String message);
 	String getName();
 }
