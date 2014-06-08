@@ -2,6 +2,7 @@ package no.runsafe.nchat.events;
 
 import no.runsafe.framework.api.event.player.IPlayerChatEvent;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.nchat.channel.ChannelManager;
 import no.runsafe.nchat.chat.InternalChatEvent;
 
@@ -15,12 +16,10 @@ public class ChatEvent implements IPlayerChatEvent
 	@Override
 	public void OnPlayerChatEvent(RunsafePlayerChatEvent event)
 	{
-		// Don't go into recursion on our own internal events...
-		if (event instanceof InternalChatEvent)
-			return;
+		if (!event.isFake())
+			event.cancel(); // We don't want Minecraft handling this.
 
-		event.cancel(); // We don't want Minecraft handling this.
-		channelManager.getDefaultChannel(event.getPlayer()).Send(event.getPlayer(), event.getMessage());
+		channelManager.getDefaultChannel(event.getPlayer()).Send(event);
 	}
 
 	private final ChannelManager channelManager;

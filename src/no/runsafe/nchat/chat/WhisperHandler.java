@@ -8,6 +8,8 @@ import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.api.player.IPlayerVisibility;
 import no.runsafe.framework.text.ChatColour;
+import no.runsafe.nchat.channel.ChannelManager;
+import no.runsafe.nchat.channel.IChatChannel;
 import no.runsafe.nchat.filter.SpamHandler;
 
 import javax.annotation.Nullable;
@@ -17,61 +19,23 @@ public class WhisperHandler implements IConfigurationChanged
 {
 	private static final String SERVER = "@_SERVER!\0";
 
-	public WhisperHandler(IServer server, IConsole console, SpamHandler spamHandler, IgnoreHandler ignoreHandler)
+	public WhisperHandler(IServer server, IConsole console, SpamHandler spamHandler, IgnoreHandler ignoreHandler, ChannelManager manager)
 	{
 		this.server = server;
 		this.console = console;
 		this.spamHandler = spamHandler;
 		this.ignoreHandler = ignoreHandler;
+		this.manager = manager;
 		lastWhisperList = new HashMap<String, String>(0);
 	}
 
-	public void sendWhisper(ICommandExecutor sender, IPlayer toPlayer, String message)
+	public void sendWhisper(ICommandExecutor sender, IPlayer target, String message)
 	{
-		if (sender instanceof IPlayer)
-		{
-			IPlayer senderPlayer = (IPlayer) sender;
-
-			if (ignoreHandler.playerIsIgnoring(toPlayer, senderPlayer))
-			{
-				// The player being whispered is ignoring the sender.
-				senderPlayer.sendColouredMessage("&cThat player is ignoring you.");
-				return;
-			}
-
-			if (ignoreHandler.playerIsIgnoring(senderPlayer, toPlayer))
-			{
-				// The player is ignoring the person they are whispering.
-				senderPlayer.sendColouredMessage("&cYou are ignoring that player.");
-				return;
-			}
-
-			message = spamHandler.getFilteredMessage(senderPlayer, message);
-		}
-
-		if (message != null)
-		{
-			if (!(enableColorCodes || sender.hasPermission("runsafe.nchat.colors")))
-				message = ChatColour.Strip(message);
-
-			if (sender instanceof IPlayer)
-				sender.sendColouredMessage(
-					whisperToFormat.replace("#target", toPlayer.getPrettyName()).replace("#message", message)
-				);
-
-			String senderName = sender instanceof IPlayer ? ((IPlayer) sender).getPrettyName() : consoleWhisperName;
-
-			toPlayer.sendColouredMessage(
-				whisperFromFormat.replace("#source", senderName).replace("#message", message)
-			);
-
-			if (sender instanceof IPlayer)
-				setLastWhisperedBy(toPlayer, sender);
-			else
-				setLastWhisperedByServer(toPlayer);
-
-			console.logInformation("%s -> %s: %s", senderName, toPlayer.getPrettyName(), message);
-		}
+		InternalChatEvent event = new InternalChatEvent(sender instanceof IPlayer ? (IPlayer) sender : null, message);
+		IChatChannel channel = manager.getPrivateChannel(sender, target);
+		manager.setDefaultChannel(sender, channel);
+		channel.Send(event);
+		setLastWhisperedBy(target, sender);
 	}
 
 	public void sendWhisperToConsole(IPlayer sender, String message)
@@ -145,4 +109,5 @@ public class WhisperHandler implements IConfigurationChanged
 	private final SpamHandler spamHandler;
 	private final IgnoreHandler ignoreHandler;
 	private final IServer server;
+	private final ChannelManager manager;
 }

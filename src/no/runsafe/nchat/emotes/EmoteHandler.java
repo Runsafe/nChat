@@ -2,6 +2,7 @@ package no.runsafe.nchat.emotes;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.player.IPlayerCommandPreprocessEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.filesystem.IPluginDataFile;
@@ -9,6 +10,7 @@ import no.runsafe.framework.api.filesystem.IPluginFileManager;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
+import no.runsafe.nchat.chat.EmoteEvent;
 import no.runsafe.nchat.chat.PlayerChatEngine;
 import org.apache.commons.lang.StringUtils;
 
@@ -20,9 +22,8 @@ import java.util.regex.Pattern;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
-	public EmoteHandler(IPluginFileManager fileManager, PlayerChatEngine chatEngine, IServer server)
+	public EmoteHandler(IPluginFileManager fileManager, IServer server)
 	{
-		this.chatEngine = chatEngine;
 		this.server = server;
 		emoteFile = fileManager.getFile("emotes.txt");
 	}
@@ -47,38 +48,28 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		if (event.isCancelled())
 			return;
 
-		if (executeEmote(event.getPlayer(), event.getMessage()))
+		if (executeEmote(event.getPlayer(), event.getPlayer(), event.getMessage()))
 			event.cancel();
 	}
 
-	public boolean executeEmote(IPlayer player, CharSequence command)
+	public boolean executeEmote(ICommandExecutor executor, IPlayer player, CharSequence command)
 	{
 		Matcher matcher = emoteChecker.matcher(command);
 		if (matcher.matches())
 		{
 			EmoteDefinition emote = emotes.get(matcher.group(1));
 			IPlayer targetPlayer = matcher.groupCount() > 2 ? server.getPlayer(matcher.group(3)) : null;
-			broadcastEmote(emote, player, targetPlayer);
+			if (targetPlayer == null)
+				new EmoteEvent(player, command.toString(), null, emote.getSingleEmote()).Fire();
+			else if (targetPlayer instanceof IAmbiguousPlayer)
+				executor.sendColouredMessage(targetPlayer.toString());
+			else
+				new EmoteEvent(player, command.toString(), targetPlayer, emote.getTargetEmote()).Fire();
 			return true;
 		}
 		return false;
 	}
 
-	private void broadcastEmote(EmoteDefinition emote, IPlayer player, IPlayer target)
-	{
-		if (target instanceof IAmbiguousPlayer)
-		{
-			player.sendColouredMessage(target.toString());
-			return;
-		}
-
-		if (target != null)
-			chatEngine.playerSystemBroadcast(player, String.format(emote.getTargetEmote(), player.getPrettyName(), target.getPrettyName()));
-		else
-			chatEngine.playerSystemBroadcast(player, String.format(emote.getSingleEmote(), player.getPrettyName()));
-	}
-
-	private final PlayerChatEngine chatEngine;
 	private final IServer server;
 	private final IPluginDataFile emoteFile;
 	private final Map<String, EmoteDefinition> emotes = new HashMap<String, EmoteDefinition>(0);

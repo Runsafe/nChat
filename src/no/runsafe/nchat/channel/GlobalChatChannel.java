@@ -1,11 +1,11 @@
 package no.runsafe.nchat.channel;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.player.IPlayerJoinEvent;
 import no.runsafe.framework.api.event.player.IPlayerQuitEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
-import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerJoinEvent;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerQuitEvent;
 
@@ -18,13 +18,13 @@ public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEv
 	}
 
 	@Override
-	public boolean Join(IPlayer player)
+	public boolean Join(ICommandExecutor player)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean Leave(IPlayer player)
+	public boolean Leave(ICommandExecutor player)
 	{
 		return false;
 	}
@@ -33,7 +33,7 @@ public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEv
 	public void OnPlayerJoinEvent(RunsafePlayerJoinEvent event)
 	{
 		SendSystem(joinServerMessage.replace("#player", event.getPlayer().getPrettyName()));
-		if(!super.Join(event.getPlayer()))
+		if (!super.Join(event.getPlayer()))
 			throw new RuntimeException("Unable to join %s to global channel");
 		manager.setDefaultChannel(event.getPlayer(), this);
 	}
@@ -42,7 +42,7 @@ public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEv
 	public void OnPlayerQuit(RunsafePlayerQuitEvent event)
 	{
 		SendSystem(leaveServerMessage.replace("#player", event.getPlayer().getPrettyName()));
-		if(!super.Leave(event.getPlayer()))
+		if (!super.Leave(event.getPlayer()))
 			throw new RuntimeException("Unable to remove %s from global channel");
 	}
 

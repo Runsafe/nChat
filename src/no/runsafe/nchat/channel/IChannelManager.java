@@ -1,6 +1,6 @@
 package no.runsafe.nchat.channel;
 
-import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.nchat.filter.IChatFilter;
 import no.runsafe.nchat.filter.ISpamFilter;
 
@@ -10,29 +10,29 @@ public interface IChannelManager
 
 	void registerChatFilter(IChatFilter filter);
 
-	IChatChannel getPrivateChannel(IPlayer player1, IPlayer player2);
+	IChatChannel getPrivateChannel(ICommandExecutor player1, ICommandExecutor player2);
 
-	String filter(IPlayer player, String incoming);
+	String filter(ICommandExecutor player, String incoming);
 
-	String filter(IPlayer player, IPlayer member, String incoming);
+	String filter(ICommandExecutor player, ICommandExecutor member, String incoming);
 
-	String FormatPrivateMessageLog(IPlayer you, IPlayer player, String message);
+	String FormatPrivateMessageLog(ICommandExecutor you, ICommandExecutor player, String message);
 
-	String FormatPrivateMessageTo(IPlayer you, IPlayer player, String message);
+	String FormatPrivateMessageTo(ICommandExecutor you, ICommandExecutor player, String message);
 
-	String FormatPrivateMessageFrom(IPlayer you, IPlayer player, String message);
+	String FormatPrivateMessageFrom(ICommandExecutor you, ICommandExecutor player, String message);
 
-	String FormatMessage(IPlayer player, IChatChannel channel, String message);
+	String FormatMessage(ICommandExecutor player, IChatChannel channel, String message);
 
-	void addChannelToList(IPlayer player, IChatChannel channel);
+	void addChannelToList(ICommandExecutor player, IChatChannel channel);
 
-	void removeChannelFromList(IPlayer player, IChatChannel channel);
+	void removeChannelFromList(ICommandExecutor player, IChatChannel channel);
 
-	IChatChannel getChannelByIndex(IPlayer player, int index);
+	IChatChannel getChannelByIndex(ICommandExecutor player, int index);
 
-	void setDefaultChannel(IPlayer player, IChatChannel channel);
+	void setDefaultChannel(ICommandExecutor player, IChatChannel channel);
 
-	IChatChannel getDefaultChannel(IPlayer player);
+	IChatChannel getDefaultChannel(ICommandExecutor player);
 
 	void registerChannel(IChatChannel channel);
 

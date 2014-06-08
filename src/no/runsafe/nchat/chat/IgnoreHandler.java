@@ -71,9 +71,14 @@ public class IgnoreHandler implements IServerReady
 	 */
 	public boolean playerIsIgnoring(ICommandExecutor player, ICommandExecutor ignorePlayer)
 	{
-		String ignorePlayerName = ignorePlayer.getName();
-		return ignoreList.containsKey(ignorePlayerName) && ignoreList.get(ignorePlayerName).contains(player.getName());
+		return playerIsIgnoring(player.getName(), ignorePlayer.getName());
 	}
+
+	public boolean playerIsIgnoring(String playerName, String ignorePlayerName)
+	{
+		return ignoreList.containsKey(ignorePlayerName) && ignoreList.get(ignorePlayerName).contains(playerName);
+	}
+
 
 	/**
 	 * Returns a list of players who are ignoring a player.

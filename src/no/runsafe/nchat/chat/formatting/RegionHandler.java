@@ -10,16 +10,16 @@ import java.util.Map;
 
 public class RegionHandler implements IConfigurationChanged
 {
-	public RegionHandler(IRegionControl worldGuard)
+	public RegionHandler()//IRegionControl worldGuard)
 	{
-		this.worldGuard = worldGuard;
+		//this.worldGuard = worldGuard;
 	}
 
 	@Nullable
 	public String getRegionTag(IPlayer player)
 	{
 		String worldName = player.getWorldName();
-		List<String> regions = worldGuard.getRegionsAtLocation(player.getLocation());
+		List<String> regions = null;//worldGuard.getRegionsAtLocation(player.getLocation());
 
 		if (regions != null)
 		{
@@ -40,5 +40,5 @@ public class RegionHandler implements IConfigurationChanged
 	}
 
 	private Map<String, String> regionTags;
-	private final IRegionControl worldGuard;
+//	private final IRegionControl worldGuard;
 }

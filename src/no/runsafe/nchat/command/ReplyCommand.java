@@ -4,18 +4,16 @@ import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 
 import javax.annotation.Nullable;
 
 public class ReplyCommand extends PlayerCommand
 {
-	public ReplyCommand(WhisperHandler whisperHandler, MuteHandler muteHandler)
+	public ReplyCommand(WhisperHandler whisperHandler)
 	{
 		super("reply", "Respond to the last person to send you a private message", "runsafe.nchat.whisper", new TrailingArgument("message"));
 		this.whisperHandler = whisperHandler;
-		this.muteHandler = muteHandler;
 	}
 
 	@Nullable
@@ -38,13 +36,9 @@ public class ReplyCommand extends PlayerCommand
 		if (WhisperHandler.blockWhisper(executor, whisperer))
 			return String.format("&cThe player %s is currently offline.", whisperer.getPrettyName());
 
-		if (muteHandler.isPlayerMuted(executor))
-			return "&cYou are currently muted.";
-
 		whisperHandler.sendWhisper(executor, whisperer, parameters.get("message"));
 		return null;
 	}
 
 	private final WhisperHandler whisperHandler;
-	private final MuteHandler muteHandler;
 }

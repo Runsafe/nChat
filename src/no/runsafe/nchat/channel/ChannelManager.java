@@ -1,6 +1,7 @@
 package no.runsafe.nchat.channel;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
@@ -45,27 +46,21 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	}
 
 	@Override
-	public IChatChannel getPrivateChannel(IPlayer player1, IPlayer player2)
+	public IChatChannel getPrivateChannel(ICommandExecutor player1, ICommandExecutor player2)
 	{
-		int cmp = player1.getName().compareToIgnoreCase(player2.getName());
+		String player1Name = player1.getName();
+		String player2Name = player2.getName();
+		int cmp = player1Name.compareToIgnoreCase(player2Name);
 		if (cmp == 0)
 			return null;
 
-		if(ignoreHandler.playerIsIgnoring(player1, player2))
-		{
-			player1.sendMessage("You are being ignored.");
+		if (ignoreHandler.playerIsIgnoring(player1Name, player2Name))
 			return null;
-		}
 
-		if(ignoreHandler.playerIsIgnoring(player2, player1))
-		{
-			player1.sendMessage("You are ignoring that player.");
+		if (ignoreHandler.playerIsIgnoring(player2Name, player1Name))
 			return null;
-		}
 
-		String name =
-			"%" + (cmp < 0 ? player1.getName() : player2.getName()) +
-				"-" + (cmp > 0 ? player1.getName() : player2.getName());
+		String name = "%" + (cmp < 0 ? player1Name : player2Name) + "-" + (cmp > 0 ? player1Name : player2Name);
 		if (!channels.containsKey(name))
 			channels.put(name, new PrivateChannel(this, console, name, player1, player2));
 
@@ -73,69 +68,80 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	}
 
 	@Override
-	public String filter(IPlayer player, String incoming)
+	public String filter(ICommandExecutor player, String incoming)
 	{
+		if (!(player instanceof IPlayer))
+			return incoming;
+
 		String message = incoming;
 		for (ISpamFilter filter : inboundFilters)
 		{
 			if (message == null || message.isEmpty())
 				return null;
-			message = filter.processString(player, message);
+			message = filter.processString((IPlayer) player, message);
 		}
 		return message;
 	}
 
 	@Override
-	public String filter(IPlayer player, IPlayer member, String incoming)
+	public String filter(ICommandExecutor player, ICommandExecutor member, String incoming)
 	{
+		if (!(member instanceof IPlayer && player instanceof IPlayer))
+			return incoming;
+
 		String message = incoming;
 		for (IChatFilter filter : outboundFilters)
 		{
 			if (message == null || message.isEmpty())
 				return null;
-			message = filter.processString(player, member, message);
+			message = filter.processString((IPlayer) player, (IPlayer) member, message);
 		}
 		return message;
 	}
 
 	@Override
-	public String FormatPrivateMessageLog(IPlayer you, IPlayer player, String message)
+	public String FormatPrivateMessageLog(ICommandExecutor you, ICommandExecutor player, String message)
 	{
 		return messageLogFormat
-			.replace("#source", you.getPrettyName())
-			.replace("#target", player.getPrettyName())
+			.replace("#source", getName(you))
+			.replace("#target", getName(player))
 			.replace("#message", message);
 	}
 
 	@Override
-	public String FormatPrivateMessageTo(IPlayer you, IPlayer player, String message)
+	public String FormatPrivateMessageTo(ICommandExecutor you, ICommandExecutor player, String message)
 	{
 		return messageOutFormat
-			.replace("#source", you.getPrettyName())
-			.replace("#target", player.getPrettyName())
+			.replace("#source", getName(you))
+			.replace("#target", getName(player))
 			.replace("#message", message);
 	}
 
 	@Override
-	public String FormatPrivateMessageFrom(IPlayer you, IPlayer player, String message)
+	public String FormatPrivateMessageFrom(ICommandExecutor you, ICommandExecutor player, String message)
 	{
 		return messageInFormat
-			.replace("#source", you.getPrettyName())
-			.replace("#target", player.getPrettyName())
+			.replace("#source", getName(you))
+			.replace("#target", getName(player))
 			.replace("#message", message);
 	}
 
 	@Override
-	public String FormatMessage(IPlayer player, IChatChannel channel, String message)
+	public String FormatMessage(ICommandExecutor player, IChatChannel channel, String message)
 	{
 		return channelFormat
 			.replace("#tag", channel.getName())
-			.replace("#player", player.getPrettyName())
+			.replace("#player", getName(player))
 			.replace("#message", message);
 	}
 
+	private String getName(ICommandExecutor executor)
+	{
+		return executor instanceof IPlayer ? ((IPlayer) executor).getPrettyName() : executor.getName();
+	}
+
 	@Override
-	public void addChannelToList(IPlayer player, IChatChannel channel)
+	public void addChannelToList(ICommandExecutor player, IChatChannel channel)
 	{
 		if (!channelLists.containsKey(player.getName()))
 			channelLists.put(player.getName(), new ArrayList<IChatChannel>(1));
@@ -143,14 +149,14 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	}
 
 	@Override
-	public void removeChannelFromList(IPlayer player, IChatChannel channel)
+	public void removeChannelFromList(ICommandExecutor player, IChatChannel channel)
 	{
 		if (channelLists.containsKey(player.getName()) && channelLists.get(player.getName()).contains(channel))
 			channelLists.get(player.getName()).remove(channel);
 	}
 
 	@Override
-	public IChatChannel getChannelByIndex(IPlayer player, int index)
+	public IChatChannel getChannelByIndex(ICommandExecutor player, int index)
 	{
 		if (!channelLists.containsKey(player.getName()) || channelLists.get(player.getName()).size() <= index)
 			return null;
@@ -159,13 +165,13 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	}
 
 	@Override
-	public void setDefaultChannel(IPlayer player, IChatChannel channel)
+	public void setDefaultChannel(ICommandExecutor player, IChatChannel channel)
 	{
 		defaultChannel.put(player.getName(), channel);
 	}
 
 	@Override
-	public IChatChannel getDefaultChannel(IPlayer player)
+	public IChatChannel getDefaultChannel(ICommandExecutor player)
 	{
 		if (!defaultChannel.containsKey(player.getName()))
 			return null;

@@ -14,10 +14,9 @@ import javax.annotation.Nullable;
 
 public class PuppetCommand extends ExecutableCommand
 {
-	public PuppetCommand(ChannelManager channelManager, EmoteHandler emoteHandler)
+	public PuppetCommand(EmoteHandler emoteHandler)
 	{
 		super("puppet", "Make it look like someone said something", "runsafe.nchat.puppet", new Player().require(), new TrailingArgument("message"));
-		this.channelManager = channelManager;
 		this.emoteHandler = emoteHandler;
 	}
 
@@ -33,17 +32,15 @@ public class PuppetCommand extends ExecutableCommand
 		if (message != null)
 		{
 			if (message.startsWith("/"))
-				emoteHandler.executeEmote(targetPlayer, message);
+				emoteHandler.executeEmote(executor, targetPlayer, message);
 			else
 			{
 				InternalChatEvent event = new InternalChatEvent(targetPlayer, message);
 				event.Fire();
-				channelManager.getDefaultChannel(event.getPlayer()).Send(event.getPlayer(), event.getMessage());
 			}
 		}
 		return null;
 	}
 
 	private final EmoteHandler emoteHandler;
-	private final ChannelManager channelManager;
 }

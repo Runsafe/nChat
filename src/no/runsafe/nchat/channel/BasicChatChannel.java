@@ -1,7 +1,10 @@
 package no.runsafe.nchat.channel;
 
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
+import no.runsafe.nchat.chat.EmoteEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +19,7 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
-	public boolean Join(IPlayer player)
+	public boolean Join(ICommandExecutor player)
 	{
 		if (members.containsKey(player.getName()))
 			return true;
@@ -26,7 +29,7 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
-	public boolean Leave(IPlayer player)
+	public boolean Leave(ICommandExecutor player)
 	{
 		if (!members.containsKey(player.getName()))
 			return false;
@@ -36,21 +39,25 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
-	public void Send(IPlayer player, String message)
+	public void Send(RunsafePlayerChatEvent message)
 	{
-		if (!members.containsKey(player.getName()))
+		if (!members.containsKey(message.getPlayer().getName()))
 			return;
 
-		String incoming = manager.filter(player, message);
+		String incoming = manager.filter(message.getPlayer(), message.getMessage());
 		if (incoming != null && !incoming.isEmpty())
-			SendFiltered(player, incoming);
+		{
+			if (message instanceof EmoteEvent)
+				SendSystem(((EmoteEvent) message).getEmote());
+			SendFiltered(message.getPlayer(), message.getMessage());
+		}
 	}
 
 	@Override
 	public void SendSystem(String message)
 	{
 		console.logInformation(message);
-		for (IPlayer member : members.values())
+		for (ICommandExecutor member : members.values())
 			member.sendColouredMessage(message);
 	}
 
@@ -60,25 +67,25 @@ public class BasicChatChannel implements IChatChannel
 		return name;
 	}
 
-	protected void SendFiltered(IPlayer player, String message)
+	protected void SendFiltered(ICommandExecutor player, String message)
 	{
 		String filtered = manager.FormatMessage(player, this, message);
-		if(filtered == null)
+		if (filtered == null)
 			return;
 		console.logInformation(filtered);
-		for (IPlayer member : members.values())
+		for (ICommandExecutor member : members.values())
 			SendMessage(player, member, filtered);
 	}
 
-	protected void SendMessage(IPlayer source, IPlayer target, String message)
+	protected void SendMessage(ICommandExecutor source, ICommandExecutor target, String message)
 	{
 		String outgoing = manager.filter(source, target, message);
-		if(outgoing != null && !outgoing.isEmpty())
+		if (outgoing != null && !outgoing.isEmpty())
 			target.sendColouredMessage(outgoing);
 	}
 
 	protected final IConsole console;
 	protected final ChannelManager manager;
-	protected final Map<String, IPlayer> members = new HashMap<String, IPlayer>();
+	protected final Map<String, ICommandExecutor> members = new HashMap<String, ICommandExecutor>();
 	private final String name;
 }
