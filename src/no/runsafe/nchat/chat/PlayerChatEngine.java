@@ -4,7 +4,7 @@ import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.nchat.antispam.SpamHandler;
+import no.runsafe.nchat.filter.SpamHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.chat.formatting.IChatHighlighter;
 import no.runsafe.nchat.chat.formatting.MentionHighlighter;

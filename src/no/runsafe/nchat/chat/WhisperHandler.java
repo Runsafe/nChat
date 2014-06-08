@@ -8,7 +8,7 @@ import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.api.player.IPlayerVisibility;
 import no.runsafe.framework.text.ChatColour;
-import no.runsafe.nchat.antispam.SpamHandler;
+import no.runsafe.nchat.filter.SpamHandler;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

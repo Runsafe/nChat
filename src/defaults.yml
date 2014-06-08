@@ -46,6 +46,7 @@ chatMessage:
   leaveServer: '#player has left the server.'
   whisperTo: '&6You &7-> #target&f: #message'
   whisperFrom: '#source &7-> &6You&f: #message'
+  channel: '#tag #player: &f#message'
 chatFormatting:
   playerName: '#op#world#group #ban#player'
   playerChatMessage: '#player: &f#message'
@@ -53,3 +54,5 @@ chatFormatting:
   mentionHighlight: '&4>&d#player&4<&r'
   opTagFormat: '&f@'
   banTagFormat: '&m'
+channelTags:
+  admin: '&4@'

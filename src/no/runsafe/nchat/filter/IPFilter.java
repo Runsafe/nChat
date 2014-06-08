@@ -1,4 +1,4 @@
-package no.runsafe.nchat.antispam;
+package no.runsafe.nchat.filter;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;

@@ -5,7 +5,7 @@ import no.runsafe.framework.features.Commands;
 import no.runsafe.framework.features.Database;
 import no.runsafe.framework.features.Events;
 import no.runsafe.framework.features.FrameworkHooks;
-import no.runsafe.nchat.antispam.*;
+import no.runsafe.nchat.filter.*;
 import no.runsafe.nchat.chat.*;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.chat.formatting.MentionHighlighter;
