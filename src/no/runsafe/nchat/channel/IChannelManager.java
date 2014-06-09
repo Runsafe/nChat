@@ -1,9 +1,13 @@
 package no.runsafe.nchat.channel;
 
+import net.minecraft.server.v1_7_R2.ICommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.filter.IChatFilter;
 import no.runsafe.nchat.filter.ISpamFilter;
+
+import java.util.List;
 
 public interface IChannelManager
 {
@@ -38,4 +42,6 @@ public interface IChannelManager
 	void registerChannel(IChatChannel channel);
 
 	IChatChannel getChannelByName(String name);
+
+	List<IChatChannel> getChannels(String player);
 }

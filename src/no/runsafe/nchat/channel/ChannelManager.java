@@ -1,5 +1,7 @@
 package no.runsafe.nchat.channel;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.hook.IGlobalPluginAPI;
 import no.runsafe.framework.api.log.IConsole;
@@ -165,6 +167,14 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	public IChatChannel getChannelByName(String name)
 	{
 		return channels.containsKey(name) ? channels.get(name) : null;
+	}
+
+	@Override
+	public List<IChatChannel> getChannels(String player)
+	{
+		if (channelLists.containsKey(player))
+			return ImmutableList.copyOf(channelLists.get(player));
+		return Lists.newArrayList();
 	}
 
 	private final Map<String, IChatChannel> channels = new HashMap<String, IChatChannel>(1);
