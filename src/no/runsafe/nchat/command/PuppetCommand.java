@@ -38,8 +38,8 @@ public class PuppetCommand extends ExecutableCommand
 				emoteHandler.executeEmote(executor, targetPlayer, message);
 			else
 			{
-				InternalChatEvent event = new InternalChatEvent(targetPlayer, message);
-				targetChannel.Send(event);
+				InternalChatEvent event = new InternalChatEvent(targetPlayer, message, targetChannel);
+				event.Fire();
 			}
 		}
 		return null;
