@@ -78,7 +78,5 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 
 		// External
 		addComponent(PlayerDataProvider.class);
-
-		exportAPI(getComponent(IChannelManager.class));
 	}
 }
