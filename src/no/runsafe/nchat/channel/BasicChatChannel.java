@@ -23,6 +23,7 @@ public class BasicChatChannel implements IChatChannel
 		if (members.containsKey(player.getName()))
 			return true;
 
+		manager.addChannelToList(player, this);
 		members.put(player.getName(), player);
 		return true;
 	}
@@ -33,6 +34,7 @@ public class BasicChatChannel implements IChatChannel
 		if (!members.containsKey(player.getName()))
 			return false;
 
+		manager.removeChannelFromList(player, this);
 		members.remove(player.getName());
 		return true;
 	}

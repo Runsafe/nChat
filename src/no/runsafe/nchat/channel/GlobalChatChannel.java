@@ -32,16 +32,18 @@ public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEv
 	@Override
 	public void OnPlayerJoinEvent(RunsafePlayerJoinEvent event)
 	{
-		SendSystem(joinServerMessage.replace("#player", event.getPlayer().getPrettyName()));
 		if (!super.Join(event.getPlayer()))
 			throw new RuntimeException("Unable to join %s to global channel");
+		manager.addChannelToList(event.getPlayer(), this);
 		manager.setDefaultChannel(event.getPlayer(), this);
+		SendSystem(joinServerMessage.replace("#player", event.getPlayer().getPrettyName()));
 	}
 
 	@Override
 	public void OnPlayerQuit(RunsafePlayerQuitEvent event)
 	{
 		SendSystem(leaveServerMessage.replace("#player", event.getPlayer().getPrettyName()));
+		manager.removeChannelFromList(event.getPlayer(), this);
 		if (!super.Leave(event.getPlayer()))
 			throw new RuntimeException("Unable to remove %s from global channel");
 	}
