@@ -9,6 +9,7 @@ import no.runsafe.framework.api.filesystem.IPluginDataFile;
 import no.runsafe.framework.api.filesystem.IPluginFileManager;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
+import no.runsafe.nchat.channel.GlobalChatChannel;
 import no.runsafe.nchat.channel.IChannelManager;
 import no.runsafe.nchat.channel.IChatChannel;
 
@@ -21,7 +22,7 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 	{
 		deathMessageFile = fileManager.getFile("death_messages.txt");
 		pvpDeathMessageFile = fileManager.getFile("pvp_death_messages.txt");
-		channel = manager.getChannelByName("global");
+		channel = manager.getChannelByName(GlobalChatChannel.CHANNELNAME);
 	}
 
 	@Override

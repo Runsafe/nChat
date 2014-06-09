@@ -168,7 +168,7 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	public IChatChannel getDefaultChannel(ICommandExecutor player)
 	{
 		if (!defaultChannel.containsKey(player.getName()))
-			return null;
+			return getChannelByName(GlobalChatChannel.CHANNELNAME);
 		return defaultChannel.get(player.getName());
 	}
 
