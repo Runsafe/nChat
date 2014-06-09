@@ -18,6 +18,14 @@ import java.util.Map;
 
 public class ChannelManager implements IConfigurationChanged, IChannelManager
 {
+	public ChannelManager(List<ISpamFilter> inboundFilters, List<IChatFilter> outboundFilters, IgnoreHandler ignoreHandler, IConsole console)
+	{
+		this.inboundFilters = inboundFilters;
+		this.outboundFilters = outboundFilters;
+		this.ignoreHandler = ignoreHandler;
+		this.console = console;
+	}
+
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
@@ -40,7 +48,7 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	}
 
 	@Override
-	public IChatChannel getPrivateChannel(IConsole console, ICommandExecutor player1, ICommandExecutor player2)
+	public IChatChannel getPrivateChannel(ICommandExecutor player1, ICommandExecutor player2)
 	{
 		String player1Name = player1.getName();
 		String player2Name = player2.getName();
@@ -48,11 +56,11 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 		if (cmp == 0)
 			return null;
 
-//		if (ignoreHandler.playerIsIgnoring(player1Name, player2Name))
-//			return null;
+		if (ignoreHandler.playerIsIgnoring(player1Name, player2Name))
+			return null;
 
-//		if (ignoreHandler.playerIsIgnoring(player2Name, player1Name))
-//			return null;
+		if (ignoreHandler.playerIsIgnoring(player2Name, player1Name))
+			return null;
 
 		String name = "%" + (cmp < 0 ? player1Name : player2Name) + "-" + (cmp > 0 ? player1Name : player2Name);
 		if (!channels.containsKey(name))
@@ -187,10 +195,12 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	}
 
 	private final Map<String, IChatChannel> channels = new HashMap<String, IChatChannel>(1);
-	private final List<ISpamFilter> inboundFilters = new ArrayList<ISpamFilter>();
-	private final List<IChatFilter> outboundFilters = new ArrayList<IChatFilter>();
+	private final List<ISpamFilter> inboundFilters;
+	private final List<IChatFilter> outboundFilters;
 	private final Map<String, List<IChatChannel>> channelLists = new HashMap<String, List<IChatChannel>>();
 	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>();
+	private final IgnoreHandler ignoreHandler;
+	private final IConsole console;
 	private String channelFormat;
 	private String messageOutFormat;
 	private String messageInFormat;

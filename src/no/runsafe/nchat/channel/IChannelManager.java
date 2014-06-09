@@ -11,7 +11,7 @@ public interface IChannelManager
 
 	void registerChatFilter(IChatFilter filter);
 
-	IChatChannel getPrivateChannel(IConsole console, ICommandExecutor player1, ICommandExecutor player2);
+	IChatChannel getPrivateChannel(ICommandExecutor player1, ICommandExecutor player2);
 
 	String filter(ICommandExecutor player, String incoming);
 

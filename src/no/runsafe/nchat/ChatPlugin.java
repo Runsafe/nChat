@@ -57,7 +57,7 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(EmoteHandler.class);
 
 		// Channels
-		exportAPI(ChannelManager.class);
+		addComponent(ChannelManager.class);
 		addComponent(GlobalChatChannel.class);
 
 		// Commands
@@ -79,11 +79,6 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		// External
 		addComponent(PlayerDataProvider.class);
 
-		// Register internal filters with the channel manager
-		IChannelManager manager = getComponent(IChannelManager.class);
-		for(IChatFilter filter : getComponents(IChatFilter.class))
-			manager.registerChatFilter(filter);
-		for(ISpamFilter filter : getComponents(ISpamFilter.class))
-			manager.registerSpamFilter(filter);
+		exportAPI(getComponent(IChannelManager.class));
 	}
 }
