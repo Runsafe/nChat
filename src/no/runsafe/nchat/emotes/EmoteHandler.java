@@ -11,7 +11,6 @@ import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
 import no.runsafe.nchat.chat.EmoteEvent;
-import no.runsafe.nchat.chat.PlayerChatEngine;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
