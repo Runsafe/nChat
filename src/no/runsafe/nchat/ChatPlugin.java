@@ -50,7 +50,6 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(MentionHighlighter.class);
 		addComponent(ChatFormatter.class);
 		addComponent(IgnoreHandler.class);
-		addComponent(PlayerChatEngine.class);
 		addComponent(MuteHandler.class);
 		addComponent(WhisperHandler.class);
 		addComponent(RegionHandler.class);
