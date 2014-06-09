@@ -133,10 +133,10 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public IChatChannel getChannelByIndex(ICommandExecutor player, int index)
 	{
-		if (!channelLists.containsKey(player.getName()) || channelLists.get(player.getName()).size() <= index)
+		if (!channelLists.containsKey(player.getName()) || channelLists.get(player.getName()).size() < index)
 			return null;
 
-		return channelLists.get(player.getName()).get(index);
+		return channelLists.get(player.getName()).get(index - 1);
 	}
 
 	@Override
