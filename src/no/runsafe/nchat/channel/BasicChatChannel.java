@@ -5,6 +5,8 @@ import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
 import no.runsafe.nchat.chat.EmoteEvent;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,9 +65,17 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
+	@Nonnull
 	public String getName()
 	{
 		return name;
+	}
+
+	@Nullable
+	@Override
+	public String getCustomTag()
+	{
+		return null;
 	}
 
 	protected void SendFiltered(ICommandExecutor player, String message)

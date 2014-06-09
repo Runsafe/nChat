@@ -84,7 +84,10 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 
 	private String getChannelTag(IChatChannel channel)
 	{
-		String tag = channel.getName();
+		String tag = channel.getCustomTag();
+		if(tag != null)
+			return tag;
+		tag = channel.getName();
 		return channelTags.containsKey(tag) ? channelTags.get(tag) : tag;
 	}
 
