@@ -8,9 +8,10 @@ import no.runsafe.framework.features.FrameworkHooks;
 import no.runsafe.nchat.channel.ChannelManager;
 import no.runsafe.nchat.channel.ChannelSelector;
 import no.runsafe.nchat.channel.GlobalChatChannel;
-import no.runsafe.nchat.channel.IChannelManager;
-import no.runsafe.nchat.filter.*;
-import no.runsafe.nchat.chat.*;
+import no.runsafe.nchat.chat.DeathHandler;
+import no.runsafe.nchat.chat.IgnoreHandler;
+import no.runsafe.nchat.chat.MuteHandler;
+import no.runsafe.nchat.chat.WhisperHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.chat.formatting.MentionHighlighter;
 import no.runsafe.nchat.chat.formatting.RegionHandler;
@@ -19,6 +20,7 @@ import no.runsafe.nchat.database.IgnoreDatabase;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.emotes.EmoteHandler;
 import no.runsafe.nchat.events.*;
+import no.runsafe.nchat.filter.*;
 import no.runsafe.nchat.tablist.PlayerTablistNameHandler;
 
 public class ChatPlugin extends RunsafeConfigurablePlugin
