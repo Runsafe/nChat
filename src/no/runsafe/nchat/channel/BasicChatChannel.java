@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class BasicChatChannel implements IChatChannel
 {
-	public BasicChatChannel(IConsole console, ChannelManager manager, String name)
+	public BasicChatChannel(IConsole console, IChannelManager manager, String name)
 	{
 		this.console = console;
 		this.manager = manager;
@@ -86,7 +86,7 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	protected final IConsole console;
-	protected final ChannelManager manager;
+	protected final IChannelManager manager;
 	protected final Map<String, ICommandExecutor> members = new HashMap<String, ICommandExecutor>();
 	private final String name;
 }

@@ -11,7 +11,7 @@ import no.runsafe.framework.minecraft.event.player.RunsafePlayerQuitEvent;
 
 public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEvent, IPlayerQuitEvent, IConfigurationChanged
 {
-	public GlobalChatChannel(ChannelManager manager, IConsole console)
+	public GlobalChatChannel(IChannelManager manager, IConsole console)
 	{
 		super(console, manager, CHANNELNAME);
 		manager.registerChannel(this);

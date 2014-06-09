@@ -6,7 +6,7 @@ import no.runsafe.framework.api.player.IPlayer;
 
 public class PrivateChannel extends BasicChatChannel
 {
-	public PrivateChannel(ChannelManager manager, IConsole console, String name, ICommandExecutor player1, ICommandExecutor player2)
+	public PrivateChannel(IChannelManager manager, IConsole console, String name, ICommandExecutor player1, ICommandExecutor player2)
 	{
 		super(console, manager, name);
 		members.put(player1.getName(), player1);
