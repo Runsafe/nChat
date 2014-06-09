@@ -20,8 +20,8 @@ public class WhisperHandler
 
 	public void sendWhisper(ICommandExecutor sender, ICommandExecutor target, String message)
 	{
-		InternalChatEvent event = new InternalChatEvent(sender instanceof IPlayer ? (IPlayer) sender : null, message);
 		IChatChannel channel = manager.getPrivateChannel(sender, target);
+		InternalChatEvent event = new InternalChatEvent(sender instanceof IPlayer ? (IPlayer) sender : null, message);
 		manager.setDefaultChannel(sender, channel);
 		channel.Send(event);
 		setLastWhisperedBy(target, sender);
