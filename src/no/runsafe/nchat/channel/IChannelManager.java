@@ -1,6 +1,7 @@
 package no.runsafe.nchat.channel;
 
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.nchat.filter.IChatFilter;
 import no.runsafe.nchat.filter.ISpamFilter;
 
@@ -10,7 +11,7 @@ public interface IChannelManager
 
 	void registerChatFilter(IChatFilter filter);
 
-	IChatChannel getPrivateChannel(ICommandExecutor player1, ICommandExecutor player2);
+	IChatChannel getPrivateChannel(IConsole console, ICommandExecutor player1, ICommandExecutor player2);
 
 	String filter(ICommandExecutor player, String incoming);
 

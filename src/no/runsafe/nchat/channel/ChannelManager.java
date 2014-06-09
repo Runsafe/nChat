@@ -18,11 +18,6 @@ import java.util.Map;
 
 public class ChannelManager implements IConfigurationChanged, IChannelManager
 {
-	public ChannelManager(IConsole console)
-	{
-		this.console = console;
-	}
-
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
@@ -45,7 +40,7 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	}
 
 	@Override
-	public IChatChannel getPrivateChannel(ICommandExecutor player1, ICommandExecutor player2)
+	public IChatChannel getPrivateChannel(IConsole console, ICommandExecutor player1, ICommandExecutor player2)
 	{
 		String player1Name = player1.getName();
 		String player2Name = player2.getName();
@@ -196,7 +191,6 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	private final List<IChatFilter> outboundFilters = new ArrayList<IChatFilter>();
 	private final Map<String, List<IChatChannel>> channelLists = new HashMap<String, List<IChatChannel>>();
 	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>();
-	private final IConsole console;
 	private String channelFormat;
 	private String messageOutFormat;
 	private String messageInFormat;
