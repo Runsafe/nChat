@@ -40,7 +40,7 @@ public class BasicChatChannel implements IChatChannel
 	@Override
 	public void Send(RunsafePlayerChatEvent message)
 	{
-		if (!members.containsKey(message.getPlayer().getName()))
+		if (!members.containsKey(message.getPlayer().getName()) || message.isFake())
 			return;
 
 		String incoming = manager.filter(message.getPlayer(), message.getMessage());
