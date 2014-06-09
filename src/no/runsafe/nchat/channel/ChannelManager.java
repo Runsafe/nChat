@@ -2,9 +2,11 @@ package no.runsafe.nchat.channel;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.nchat.ChatPlugin;
 import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.filter.IChatFilter;
 import no.runsafe.nchat.filter.ISpamFilter;
@@ -16,12 +18,9 @@ import java.util.Map;
 
 public class ChannelManager implements IConfigurationChanged, IChannelManager
 {
-	public ChannelManager(List<ISpamFilter> inboundFilters, List<IChatFilter> outboundFilters, IConsole console, IgnoreHandler ignoreHandler)
+	public ChannelManager(IConsole console)
 	{
 		this.console = console;
-		this.ignoreHandler = ignoreHandler;
-		this.outboundFilters = new ArrayList<IChatFilter>(outboundFilters);
-		this.inboundFilters = new ArrayList<ISpamFilter>(inboundFilters);
 	}
 
 	@Override
@@ -54,11 +53,11 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 		if (cmp == 0)
 			return null;
 
-		if (ignoreHandler.playerIsIgnoring(player1Name, player2Name))
-			return null;
+//		if (ignoreHandler.playerIsIgnoring(player1Name, player2Name))
+//			return null;
 
-		if (ignoreHandler.playerIsIgnoring(player2Name, player1Name))
-			return null;
+//		if (ignoreHandler.playerIsIgnoring(player2Name, player1Name))
+//			return null;
 
 		String name = "%" + (cmp < 0 ? player1Name : player2Name) + "-" + (cmp > 0 ? player1Name : player2Name);
 		if (!channels.containsKey(name))
@@ -193,12 +192,11 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager
 	}
 
 	private final Map<String, IChatChannel> channels = new HashMap<String, IChatChannel>(1);
-	private final List<ISpamFilter> inboundFilters;
-	private final List<IChatFilter> outboundFilters;
+	private final List<ISpamFilter> inboundFilters = new ArrayList<ISpamFilter>();
+	private final List<IChatFilter> outboundFilters = new ArrayList<IChatFilter>();
 	private final Map<String, List<IChatChannel>> channelLists = new HashMap<String, List<IChatChannel>>();
 	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>();
 	private final IConsole console;
-	private final IgnoreHandler ignoreHandler;
 	private String channelFormat;
 	private String messageOutFormat;
 	private String messageInFormat;

@@ -7,6 +7,7 @@ import no.runsafe.framework.features.Events;
 import no.runsafe.framework.features.FrameworkHooks;
 import no.runsafe.nchat.channel.ChannelManager;
 import no.runsafe.nchat.channel.GlobalChatChannel;
+import no.runsafe.nchat.channel.IChannelManager;
 import no.runsafe.nchat.filter.*;
 import no.runsafe.nchat.chat.*;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
@@ -77,5 +78,12 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 
 		// External
 		addComponent(PlayerDataProvider.class);
+
+		// Register internal filters with the channel manager
+		IChannelManager manager = getComponent(IChannelManager.class);
+		for(IChatFilter filter : getComponents(IChatFilter.class))
+			manager.registerChatFilter(filter);
+		for(ISpamFilter filter : getComponents(ISpamFilter.class))
+			manager.registerSpamFilter(filter);
 	}
 }
