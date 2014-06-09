@@ -1,12 +1,11 @@
 package no.runsafe.nchat.channel;
 
-import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.command.ICommandExecutor;
-import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IGlobalPluginAPI;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.IgnoreHandler;
+import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.filter.IChatFilter;
 import no.runsafe.nchat.filter.ISpamFilter;
 
@@ -15,23 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChannelManager implements IConfigurationChanged, IChannelManager, IGlobalPluginAPI
+public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 {
-	public ChannelManager(List<ISpamFilter> inboundFilters, List<IChatFilter> outboundFilters, IgnoreHandler ignoreHandler, IConsole console)
+	public ChannelManager(List<ISpamFilter> inboundFilters, List<IChatFilter> outboundFilters, IgnoreHandler ignoreHandler, IConsole console, ChatFormatter chatFormatter)
 	{
 		this.inboundFilters = inboundFilters;
 		this.outboundFilters = outboundFilters;
 		this.ignoreHandler = ignoreHandler;
 		this.console = console;
-	}
-
-	@Override
-	public void OnConfigurationChanged(IConfiguration configuration)
-	{
-		channelFormat = configuration.getConfigValueAsString("chatMessage.channel");
-		messageInFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
-		messageOutFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
-		messageLogFormat = configuration.getConfigValueAsString("chatMessage.whisperLog");
+		this.chatFormatter = chatFormatter;
 	}
 
 	@Override
@@ -103,42 +94,25 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager, I
 	@Override
 	public String FormatPrivateMessageLog(ICommandExecutor you, ICommandExecutor player, String message)
 	{
-		return messageLogFormat
-			.replace("#source", getName(you))
-			.replace("#target", getName(player))
-			.replace("#message", message);
+		return chatFormatter.formatPrivateMessageLog(you, player, message);
 	}
 
 	@Override
 	public String FormatPrivateMessageTo(ICommandExecutor you, ICommandExecutor player, String message)
 	{
-		return messageOutFormat
-			.replace("#source", getName(you))
-			.replace("#target", getName(player))
-			.replace("#message", message);
+		return chatFormatter.formatPrivateMessageTo(you, player, message);
 	}
 
 	@Override
 	public String FormatPrivateMessageFrom(ICommandExecutor you, ICommandExecutor player, String message)
 	{
-		return messageInFormat
-			.replace("#source", getName(you))
-			.replace("#target", getName(player))
-			.replace("#message", message);
+		return chatFormatter.formatPrivateMessageFrom(you, player, message);
 	}
 
 	@Override
 	public String FormatMessage(ICommandExecutor player, IChatChannel channel, String message)
 	{
-		return channelFormat
-			.replace("#tag", channel.getName())
-			.replace("#player", getName(player))
-			.replace("#message", message);
-	}
-
-	private String getName(ICommandExecutor executor)
-	{
-		return executor instanceof IPlayer ? ((IPlayer) executor).getPrettyName() : executor.getName();
+		return chatFormatter.formatMessage(player, channel, message);
 	}
 
 	@Override
@@ -200,8 +174,5 @@ public class ChannelManager implements IConfigurationChanged, IChannelManager, I
 	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>();
 	private final IgnoreHandler ignoreHandler;
 	private final IConsole console;
-	private String channelFormat;
-	private String messageOutFormat;
-	private String messageInFormat;
-	private String messageLogFormat;
+	private final ChatFormatter chatFormatter;
 }

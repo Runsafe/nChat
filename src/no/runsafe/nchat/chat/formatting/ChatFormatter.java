@@ -1,12 +1,14 @@
 package no.runsafe.nchat.chat.formatting;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IPlayerNameDecorator;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.api.player.IPlayerPermissions;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import no.runsafe.framework.text.ChatColour;
+import no.runsafe.nchat.channel.IChatChannel;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -41,6 +43,43 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		replacements.put("#message", SPECIAL_CHARACTER.matcher(message.trim()).replaceAll("\\\\$1"));
 
 		return mapReplace(playerChatMessage, replacements);
+	}
+
+	public String formatPrivateMessageLog(ICommandExecutor you, ICommandExecutor player, String message)
+	{
+		return messageLogFormat
+			.replace("#source", getName(you))
+			.replace("#target", getName(player))
+			.replace("#message", message);
+	}
+
+	public String formatPrivateMessageTo(ICommandExecutor you, ICommandExecutor player, String message)
+	{
+		return messageOutFormat
+			.replace("#source", getName(you))
+			.replace("#target", getName(player))
+			.replace("#message", message);
+	}
+
+	public String formatPrivateMessageFrom(ICommandExecutor you, ICommandExecutor player, String message)
+	{
+		return messageInFormat
+			.replace("#source", getName(you))
+			.replace("#target", getName(player))
+			.replace("#message", message);
+	}
+
+	public String formatMessage(ICommandExecutor player, IChatChannel channel, String message)
+	{
+		return channelFormat
+			.replace("#tag", channel.getName())
+			.replace("#player", getName(player))
+			.replace("#message", message);
+	}
+
+	private String getName(ICommandExecutor executor)
+	{
+		return executor instanceof IPlayer ? ((IPlayer) executor).getPrettyName() : executor.getName();
 	}
 
 	private String getWorldPrefix(IPlayer player, String worldName)
@@ -113,6 +152,10 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		playerChatMessage = configuration.getConfigValueAsString("chatFormatting.playerChatMessage");
 		enableRegionPrefixes = configuration.getConfigValueAsBoolean("nChat.enableRegionPrefixes");
 		disableColorCodes = !configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
+		channelFormat = configuration.getConfigValueAsString("chatMessage.channel");
+		messageInFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
+		messageOutFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
+		messageLogFormat = configuration.getConfigValueAsString("chatMessage.whisperLog");
 	}
 
 	private Map<String, String> chatGroupPrefixes;
@@ -121,6 +164,10 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 	private String banTagFormat;
 	private String playerChatMessage;
 	private String playerNameFormat;
+	private String channelFormat;
+	private String messageOutFormat;
+	private String messageInFormat;
+	private String messageLogFormat;
 	private boolean disableColorCodes;
 	private boolean enableRegionPrefixes;
 
