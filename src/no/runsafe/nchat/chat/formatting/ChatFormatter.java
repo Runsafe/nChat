@@ -72,7 +72,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 	public String formatMessage(ICommandExecutor player, IChatChannel channel, String message)
 	{
 		return channelFormat
-			.replace("#tag", channel.getName())
+			.replace("#tag", getChannelTag(channel))
 			.replace("#player", getName(player))
 			.replace("#message", message);
 	}
@@ -80,6 +80,12 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 	private String getName(ICommandExecutor executor)
 	{
 		return executor instanceof IPlayer ? ((IPlayer) executor).getPrettyName() : executor.getName();
+	}
+
+	private String getChannelTag(IChatChannel channel)
+	{
+		String tag = channel.getName();
+		return channelTags.containsKey(tag) ? channelTags.get(tag) : tag;
 	}
 
 	private String getWorldPrefix(IPlayer player, String worldName)
@@ -156,10 +162,12 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		messageInFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
 		messageOutFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
 		messageLogFormat = configuration.getConfigValueAsString("chatMessage.whisperLog");
+		channelTags = configuration.getConfigValuesAsMap("channelTags");
 	}
 
 	private Map<String, String> chatGroupPrefixes;
 	private Map<String, String> worldPrefixes;
+	private Map<String, String> channelTags;
 	private String opTagFormat;
 	private String banTagFormat;
 	private String playerChatMessage;

@@ -56,4 +56,5 @@ chatFormatting:
   opTagFormat: '&f@'
   banTagFormat: '&m'
 channelTags:
-  admin: '&4@'
+  admin: '&4@ '
+  global: '> '
