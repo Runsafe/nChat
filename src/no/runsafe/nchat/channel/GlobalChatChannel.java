@@ -34,7 +34,6 @@ public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEv
 	{
 		if (!super.Join(event.getPlayer()))
 			throw new RuntimeException("Unable to join %s to global channel");
-		manager.addChannelToList(event.getPlayer(), this);
 		manager.setDefaultChannel(event.getPlayer(), this);
 		SendSystem(joinServerMessage.replace("#player", event.getPlayer().getPrettyName()));
 	}
