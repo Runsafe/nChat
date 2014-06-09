@@ -6,6 +6,7 @@ import no.runsafe.framework.features.Database;
 import no.runsafe.framework.features.Events;
 import no.runsafe.framework.features.FrameworkHooks;
 import no.runsafe.nchat.channel.ChannelManager;
+import no.runsafe.nchat.channel.ChannelSelector;
 import no.runsafe.nchat.channel.GlobalChatChannel;
 import no.runsafe.nchat.channel.IChannelManager;
 import no.runsafe.nchat.filter.*;
@@ -59,6 +60,7 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		// Channels
 		addComponent(ChannelManager.class);
 		addComponent(GlobalChatChannel.class);
+		addComponent(ChannelSelector.class);
 
 		// Commands
 		addComponent(MuteCommand.class);
