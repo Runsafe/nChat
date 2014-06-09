@@ -2,11 +2,10 @@ package no.runsafe.nchat.channel;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.command.ICommandExecutor;
-import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.hook.IGlobalPluginAPI;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.nchat.ChatPlugin;
 import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.filter.IChatFilter;
 import no.runsafe.nchat.filter.ISpamFilter;
@@ -16,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChannelManager implements IConfigurationChanged, IChannelManager
+public class ChannelManager implements IConfigurationChanged, IChannelManager, IGlobalPluginAPI
 {
 	public ChannelManager(List<ISpamFilter> inboundFilters, List<IChatFilter> outboundFilters, IgnoreHandler ignoreHandler, IConsole console)
 	{
