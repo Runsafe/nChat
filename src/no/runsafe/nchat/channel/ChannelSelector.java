@@ -23,6 +23,7 @@ public class ChannelSelector implements IPlayerCommandPreprocessEvent
 			IChatChannel channel = manager.getChannelByIndex(event.getPlayer(), Integer.parseInt(indexMatcher.group(1)));
 			if (channel == null)
 				return;
+			event.cancel();
 			manager.setDefaultChannel(event.getPlayer(), channel);
 			if (indexMatcher.groupCount() > 2)
 			{
