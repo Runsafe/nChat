@@ -145,6 +145,10 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	public void setDefaultChannel(ICommandExecutor player, IChatChannel channel)
 	{
 		defaultChannel.put(player.getName(), channel);
+		if (channel instanceof PrivateChannel)
+			player.sendMessage("Now talking in private channel.");
+		else
+			player.sendMessage("Now talking in channel " + channel.getName());
 	}
 
 	@Override
