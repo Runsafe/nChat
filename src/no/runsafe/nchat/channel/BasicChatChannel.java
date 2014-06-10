@@ -52,7 +52,8 @@ public class BasicChatChannel implements IChatChannel
 		{
 			if (message instanceof EmoteEvent)
 				SendSystem(((EmoteEvent) message).getEmote());
-			SendFiltered(message.getPlayer(), message.getMessage());
+			else
+				SendFiltered(message.getPlayer(), message.getMessage());
 		}
 	}
 
