@@ -21,6 +21,8 @@ public class WhisperHandler
 	public void sendWhisper(ICommandExecutor sender, ICommandExecutor target, String message)
 	{
 		IChatChannel channel = manager.getPrivateChannel(sender, target);
+		if (channel == null)
+			return;
 		InternalChatEvent event = new InternalChatEvent(sender instanceof IPlayer ? (IPlayer) sender : null, message, null);
 		manager.setDefaultChannel(sender, channel);
 		channel.Send(event);
