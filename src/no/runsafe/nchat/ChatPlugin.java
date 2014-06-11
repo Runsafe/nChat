@@ -13,7 +13,7 @@ import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
-import no.runsafe.nchat.chat.formatting.MentionHighlighter;
+import no.runsafe.nchat.filter.MentionHighlighter;
 import no.runsafe.nchat.chat.formatting.RegionHandler;
 import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.IgnoreDatabase;
@@ -47,6 +47,7 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(SpamHandler.class);
 		addComponent(MuteFilter.class);
 		addComponent(IgnoreFilter.class);
+		addComponent(ColourFilter.class);
 
 		// Chat engine
 		addComponent(MentionHighlighter.class);
