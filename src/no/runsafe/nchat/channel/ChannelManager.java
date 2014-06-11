@@ -123,13 +123,19 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 		if (!channelLists.containsKey(player.getName()))
 			channelLists.put(player.getName(), new ArrayList<IChatChannel>(1));
 		channelLists.get(player.getName()).add(channel);
+		int index = channelLists.get(player.getName()).indexOf(channel) + 1;
+		player.sendColouredMessage("Joined channel %d. %s", index, channel.getName());
 	}
 
 	@Override
 	public void removeChannelFromList(ICommandExecutor player, IChatChannel channel)
 	{
 		if (channelLists.containsKey(player.getName()) && channelLists.get(player.getName()).contains(channel))
+		{
+			int index = channelLists.get(player.getName()).indexOf(channel) + 1;
 			channelLists.get(player.getName()).remove(channel);
+			player.sendColouredMessage("Left channel %d. %s", index, channel.getName());
+		}
 	}
 
 	@Override
