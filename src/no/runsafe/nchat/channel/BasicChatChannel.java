@@ -42,12 +42,12 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
-	public void Send(RunsafePlayerChatEvent message)
+	public void  Send(RunsafePlayerChatEvent message)
 	{
 		if (!message.isFake() && !members.containsKey(message.getPlayer().getName()))
 			return;
 
-		String incoming = manager.filter(message.getPlayer(), message.getMessage());
+		String incoming = message.isFake() ? message.getMessage() : manager.filter(message.getPlayer(), message.getMessage());
 		if (incoming != null && !incoming.isEmpty())
 		{
 			if (message instanceof EmoteEvent)
