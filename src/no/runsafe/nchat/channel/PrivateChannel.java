@@ -3,6 +3,7 @@ package no.runsafe.nchat.channel;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.RunsafeConsole;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import org.joda.time.DateTime;
 
@@ -62,7 +63,8 @@ public class PrivateChannel extends BasicChatChannel
 		}
 		SendMessage(from, to, manager.FormatPrivateMessageFrom(from, to, message));
 		SendMessage(to, from, manager.FormatPrivateMessageTo(from, to, message));
-		console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%", "%%"));
+		if (!(from instanceof RunsafeConsole || to instanceof RunsafeConsole))
+			console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%", "%%"));
 	}
 
 	private DateTime unblockedOnHiddenUntil;
