@@ -3,6 +3,7 @@ package no.runsafe.nchat.filter;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.text.ChatColour;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +26,7 @@ public class MentionHighlighter implements IChatFilter, IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		highlightChar = configuration.getConfigValueAsString("chatFormatting.mentionHighlightCharacter");
-		highlightFormat = configuration.getConfigValueAsString("chatFormatting.mentionHighlight");
+		highlightFormat = ChatColour.ToMinecraft(configuration.getConfigValueAsString("chatFormatting.mentionHighlight");
 	}
 
 	private String highlightChar;
