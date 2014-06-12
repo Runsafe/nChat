@@ -28,18 +28,18 @@ public class PrivateChannel extends BasicChatChannel
 	}
 
 	@Override
-	protected void SendFiltered(ICommandExecutor from, String message)
+	protected void SendFiltered(ICommandExecutor sender, String message)
 	{
 		if (unblockedOnHiddenUntil != null && unblockedOnHiddenUntil.isBeforeNow())
 			unblockedOnHiddenUntil = null;
 
+		ICommandExecutor from = null;
 		ICommandExecutor to = null;
 		for (ICommandExecutor member : members.values())
-			if (!member.getName().equals(from.getName()))
-			{
+			if (member.getName().equals(sender.getName()))
+				from = member;
+			else
 				to = member;
-				break;
-			}
 
 		if (to instanceof IPlayer)
 		{
