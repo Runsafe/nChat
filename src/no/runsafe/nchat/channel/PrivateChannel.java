@@ -38,14 +38,29 @@ public class PrivateChannel extends BasicChatChannel
 
 		if (to instanceof IPlayer)
 		{
-			if(!((IPlayer) to).isOnline() || (from instanceof IPlayer && ((IPlayer) from).shouldNotSee((IPlayer)to)))
+			IPlayer toPlayer = (IPlayer) to;
+			boolean appearOffline = !toPlayer.isOnline();
+			if (from instanceof IPlayer)
 			{
-				from.sendColouredMessage("&cThe player %s is currently offline.", ((IPlayer) to).getPrettyName());
+				IPlayer fromPlayer = (IPlayer) from;
+				boolean isToHidden = fromPlayer.shouldNotSee(toPlayer);
+				appearOffline |= isToHidden && blockOnHidden;
+
+				if (blockOnHidden && !appearOffline && toPlayer.shouldNotSee(fromPlayer))
+					blockOnHidden = false;
+				if (!blockOnHidden && !isToHidden && !toPlayer.shouldNotSee(fromPlayer))
+					blockOnHidden = true;
+			}
+			if (!toPlayer.isOnline() || (from instanceof IPlayer && ((IPlayer) from).shouldNotSee(toPlayer)))
+			{
+				from.sendColouredMessage("&cThe player %s is currently offline.", toPlayer.getPrettyName());
 				return;
 			}
 		}
 		SendMessage(from, to, manager.FormatPrivateMessageFrom(from, to, message));
 		SendMessage(to, from, manager.FormatPrivateMessageTo(from, to, message));
-		console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%","%%"));
+		console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%", "%%"));
 	}
+
+	private boolean blockOnHidden = true;
 }
