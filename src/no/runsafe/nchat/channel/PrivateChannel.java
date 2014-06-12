@@ -3,6 +3,7 @@ package no.runsafe.nchat.channel;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import org.joda.time.DateTime;
 
 public class PrivateChannel extends BasicChatChannel
@@ -40,7 +41,7 @@ public class PrivateChannel extends BasicChatChannel
 				break;
 			}
 
-		if (to instanceof IPlayer)
+		if (to instanceof IPlayer && !(from instanceof RunsafeFakePlayer || to instanceof RunsafeFakePlayer))
 		{
 			IPlayer toPlayer = (IPlayer) to;
 			boolean appearOffline = !toPlayer.isOnline();
