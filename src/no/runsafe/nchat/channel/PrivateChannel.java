@@ -51,7 +51,7 @@ public class PrivateChannel extends BasicChatChannel
 				if (!blockOnHidden && !isToHidden && !toPlayer.shouldNotSee(fromPlayer))
 					blockOnHidden = true;
 			}
-			if (!toPlayer.isOnline() || (from instanceof IPlayer && ((IPlayer) from).shouldNotSee(toPlayer)))
+			if (appearOffline)
 			{
 				from.sendColouredMessage("&cThe player %s is currently offline.", toPlayer.getPrettyName());
 				return;
