@@ -5,6 +5,9 @@ author: Kruithne
 depend: [RunsafeWorldGuardBridge]
 description: Allows advanced chat features
 commands:
+  say:
+    description: Make the server say some words of wisdom
+    usage: /say message
   mute:
     description: Mutes a player or the entire server
     usage: /mute server or <playername>

@@ -72,6 +72,7 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(ReplyCommand.class);
 		addComponent(DeathHandler.class);
 		addComponent(IgnoreCommand.class);
+		addComponent(SayCommand.class);
 
 		// Events
 		addComponent(JoinEvent.class);
