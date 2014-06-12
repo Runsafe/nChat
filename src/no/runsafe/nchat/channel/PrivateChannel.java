@@ -64,7 +64,7 @@ public class PrivateChannel extends BasicChatChannel
 		SendMessage(from, to, manager.FormatPrivateMessageFrom(from, to, message));
 		SendMessage(to, from, manager.FormatPrivateMessageTo(from, to, message));
 		if (!(from instanceof RunsafeConsole || to instanceof RunsafeConsole))
-			console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%", "%%"));
+			console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%", "%%")+" ");
 	}
 
 	private DateTime unblockedOnHiddenUntil;
