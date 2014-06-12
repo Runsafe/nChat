@@ -3,6 +3,7 @@ package no.runsafe.nchat.chat;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import no.runsafe.nchat.channel.ChannelManager;
 import no.runsafe.nchat.channel.IChatChannel;
 
@@ -23,7 +24,11 @@ public class WhisperHandler
 		IChatChannel channel = manager.getPrivateChannel(sender, target);
 		if (channel == null)
 			return;
-		InternalChatEvent event = new InternalChatEvent(sender instanceof IPlayer ? (IPlayer) sender : null, message, null);
+		InternalChatEvent event = new InternalChatEvent(
+			sender instanceof IPlayer ? (IPlayer) sender : new RunsafeFakePlayer(sender.getName()),
+			message,
+			channel
+		);
 		manager.setDefaultChannel(sender, channel);
 		channel.Send(event);
 		setLastWhisperedBy(target, sender);
