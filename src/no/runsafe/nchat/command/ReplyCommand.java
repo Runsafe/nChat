@@ -1,6 +1,5 @@
 package no.runsafe.nchat.command;
 
-import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
