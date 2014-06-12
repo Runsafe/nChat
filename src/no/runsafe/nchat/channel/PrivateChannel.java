@@ -3,6 +3,7 @@ package no.runsafe.nchat.channel;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import org.joda.time.DateTime;
 
 public class PrivateChannel extends BasicChatChannel
 {
@@ -28,6 +29,9 @@ public class PrivateChannel extends BasicChatChannel
 	@Override
 	protected void SendFiltered(ICommandExecutor from, String message)
 	{
+		if (unblockedOnHiddenUntil != null && unblockedOnHiddenUntil.isBeforeNow())
+			unblockedOnHiddenUntil = null;
+
 		ICommandExecutor to = null;
 		for (ICommandExecutor member : members.values())
 			if (!member.getName().equals(from.getName()))
@@ -44,12 +48,10 @@ public class PrivateChannel extends BasicChatChannel
 			{
 				IPlayer fromPlayer = (IPlayer) from;
 				boolean isToHidden = fromPlayer.shouldNotSee(toPlayer);
-				appearOffline |= isToHidden && blockOnHidden;
+				appearOffline |= isToHidden && unblockedOnHiddenUntil == null;
 
-				if (blockOnHidden && !appearOffline && toPlayer.shouldNotSee(fromPlayer))
-					blockOnHidden = false;
-				if (!blockOnHidden && !isToHidden && !toPlayer.shouldNotSee(fromPlayer))
-					blockOnHidden = true;
+				if (!appearOffline && toPlayer.shouldNotSee(fromPlayer))
+					unblockedOnHiddenUntil = DateTime.now().plusMinutes(2);
 			}
 			if (appearOffline)
 			{
@@ -62,5 +64,5 @@ public class PrivateChannel extends BasicChatChannel
 		console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%", "%%"));
 	}
 
-	private boolean blockOnHidden = true;
+	private DateTime unblockedOnHiddenUntil;
 }
