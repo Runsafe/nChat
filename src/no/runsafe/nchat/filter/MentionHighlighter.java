@@ -26,7 +26,7 @@ public class MentionHighlighter implements IChatFilter, IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		highlightChar = configuration.getConfigValueAsString("chatFormatting.mentionHighlightCharacter");
-		highlightFormat = ChatColour.ToMinecraft(configuration.getConfigValueAsString("chatFormatting.mentionHighlight");
+		highlightFormat = ChatColour.ToMinecraft(configuration.getConfigValueAsString("chatFormatting.mentionHighlight"));
 	}
 
 	private String highlightChar;
