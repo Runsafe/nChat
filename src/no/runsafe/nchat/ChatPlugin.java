@@ -44,7 +44,6 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(FloodFilter.class);
 		addComponent(BlacklistFilter.class);
 		addComponent(CapsFilter.class);
-		addComponent(SpamHandler.class);
 		addComponent(MuteFilter.class);
 		addComponent(IgnoreFilter.class);
 		addComponent(ColourFilter.class);
