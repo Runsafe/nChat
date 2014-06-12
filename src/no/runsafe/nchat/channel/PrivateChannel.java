@@ -40,7 +40,7 @@ public class PrivateChannel extends BasicChatChannel
 		{
 			if(!((IPlayer) to).isOnline() || (from instanceof IPlayer && ((IPlayer) from).shouldNotSee((IPlayer)to)))
 			{
-				from.sendMessage(String.format("&cThe player %s is currently offline.", ((IPlayer) to).getPrettyName()));
+				from.sendColouredMessage("&cThe player %s is currently offline.", ((IPlayer) to).getPrettyName());
 				return;
 			}
 		}
