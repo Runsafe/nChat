@@ -60,7 +60,7 @@ public class BasicChatChannel implements IChatChannel
 	@Override
 	public void SendSystem(String message)
 	{
-		console.logInformation(message.replace("\\","\\\\"));
+		console.logInformation(message+" ");
 		for (ICommandExecutor member : members.values())
 			member.sendColouredMessage(message);
 	}
