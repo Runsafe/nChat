@@ -41,11 +41,11 @@ public class PrivateChannel extends BasicChatChannel
 				break;
 			}
 
-		if (to instanceof IPlayer && !(from instanceof RunsafeFakePlayer || to instanceof RunsafeFakePlayer))
+		if (to instanceof IPlayer)
 		{
 			IPlayer toPlayer = (IPlayer) to;
 			boolean appearOffline = !toPlayer.isOnline();
-			if (from instanceof IPlayer)
+			if (from instanceof IPlayer && !(from instanceof RunsafeFakePlayer || to instanceof RunsafeFakePlayer))
 			{
 				IPlayer fromPlayer = (IPlayer) from;
 				boolean isToHidden = fromPlayer.shouldNotSee(toPlayer);
