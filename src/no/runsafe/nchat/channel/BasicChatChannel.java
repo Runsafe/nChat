@@ -85,7 +85,7 @@ public class BasicChatChannel implements IChatChannel
 		if (filtered == null)
 			return;
 		manager.processResponderHooks(this, player, message);
-		console.logInformation(filtered);
+		console.logInformation(filtered.replace("%","%%"));
 		for (ICommandExecutor member : members.values())
 			SendMessage(player, member, filtered);
 	}

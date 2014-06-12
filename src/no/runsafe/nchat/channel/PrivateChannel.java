@@ -46,6 +46,6 @@ public class PrivateChannel extends BasicChatChannel
 		}
 		SendMessage(from, to, manager.FormatPrivateMessageFrom(from, to, message));
 		SendMessage(to, from, manager.FormatPrivateMessageTo(from, to, message));
-		console.logInformation(manager.FormatPrivateMessageLog(from, to, message));
+		console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%","%%"));
 	}
 }
