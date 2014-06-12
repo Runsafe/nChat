@@ -14,9 +14,8 @@ public class WhisperHandler
 {
 	public WhisperHandler(IServer server, ChannelManager manager)
 	{
-		this.server = server;
 		this.manager = manager;
-		lastWhisperList = new HashMap<String, String>(0);
+		lastWhisperList = new HashMap<String, IChatChannel>(0);
 	}
 
 	public void sendWhisper(ICommandExecutor sender, ICommandExecutor target, String message)
@@ -24,6 +23,13 @@ public class WhisperHandler
 		IChatChannel channel = manager.getPrivateChannel(sender, target);
 		if (channel == null)
 			return;
+
+		sendWhisper(sender, channel, message);
+		setLastWhisperedBy(target, channel);
+	}
+
+	public void sendWhisper(ICommandExecutor sender, IChatChannel channel, String message)
+	{
 		InternalChatEvent event = new InternalChatEvent(
 			sender instanceof IPlayer ? (IPlayer) sender : new RunsafeFakePlayer(sender.getName()),
 			message,
@@ -31,12 +37,11 @@ public class WhisperHandler
 		);
 		manager.setDefaultChannel(sender, channel);
 		channel.Send(event);
-		setLastWhisperedBy(target, sender);
 	}
 
-	private void setLastWhisperedBy(ICommandExecutor player, ICommandExecutor whisperer)
+	private void setLastWhisperedBy(ICommandExecutor player, IChatChannel channel)
 	{
-		lastWhisperList.put(player.getName(), whisperer.getName());
+		lastWhisperList.put(player.getName(), channel);
 	}
 
 	public void deleteLastWhisperedBy(ICommandExecutor player)
@@ -46,20 +51,13 @@ public class WhisperHandler
 	}
 
 	@Nullable
-	public IPlayer getLastWhisperedBy(ICommandExecutor player)
+	public IChatChannel getLastWhisperedBy(String playerName)
 	{
-		String playerName = player.getName();
-
 		if (lastWhisperList.containsKey(playerName))
-		{
-			IPlayer whisperer = server.getPlayer(lastWhisperList.get(playerName));
-			if (whisperer != null)
-				return whisperer;
-		}
+			return lastWhisperList.get(playerName);
 		return null;
 	}
 
-	private final HashMap<String, String> lastWhisperList;
-	private final IServer server;
+	private final HashMap<String, IChatChannel> lastWhisperList;
 	private final ChannelManager manager;
 }

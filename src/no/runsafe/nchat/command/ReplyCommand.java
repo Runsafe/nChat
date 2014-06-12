@@ -5,6 +5,7 @@ import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.TrailingArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.nchat.channel.IChatChannel;
 import no.runsafe.nchat.chat.WhisperHandler;
 
 import javax.annotation.Nullable;
@@ -21,11 +22,11 @@ public class ReplyCommand extends PlayerCommand
 	@Override
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
-		ICommandExecutor whisperer = whisperHandler.getLastWhisperedBy(executor);
-		if (whisperer == null)
+		IChatChannel channel = whisperHandler.getLastWhisperedBy(executor.getName());
+		if (channel == null)
 			return "&cYou have nothing to reply to.";
 
-		whisperHandler.sendWhisper(executor, whisperer, parameters.get("message"));
+		whisperHandler.sendWhisper(executor, channel, parameters.get("message"));
 		return null;
 	}
 
