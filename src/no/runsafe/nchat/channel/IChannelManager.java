@@ -44,4 +44,9 @@ public interface IChannelManager
 	IChatChannel getChannelByName(String name);
 
 	List<IChatChannel> getChannels(String player);
+
+	void processResponderHooks(IChatChannel channel, ICommandExecutor player, String message);
+
+	void registerResponderHook(IChatResponder hook);
 }
+

@@ -187,9 +187,23 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 		return Lists.newArrayList();
 	}
 
+	@Override
+	public void processResponderHooks(IChatChannel channel, ICommandExecutor player, String message)
+	{
+		for(IChatResponder hook : chatResponders)
+			hook.processChatMessage(channel, player, message);
+	}
+
+	@Override
+	public void registerResponderHook(IChatResponder hook)
+	{
+		chatResponders.add(hook);
+	}
+
 	private final Map<String, IChatChannel> channels = new HashMap<String, IChatChannel>(1);
 	private final List<ISpamFilter> inboundFilters;
 	private final List<IChatFilter> outboundFilters;
+	private final List<IChatResponder> chatResponders = new ArrayList<IChatResponder>();
 	private final Map<String, List<IChatChannel>> channelLists = new HashMap<String, List<IChatChannel>>();
 	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>();
 	private final IgnoreHandler ignoreHandler;

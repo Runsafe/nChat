@@ -42,7 +42,7 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
-	public void  Send(RunsafePlayerChatEvent message)
+	public void Send(RunsafePlayerChatEvent message)
 	{
 		if (!message.isFake() && !members.containsKey(message.getPlayer().getName()))
 			return;
@@ -84,6 +84,7 @@ public class BasicChatChannel implements IChatChannel
 		String filtered = manager.FormatMessage(player, this, message);
 		if (filtered == null)
 			return;
+		manager.processResponderHooks(this, player, message);
 		console.logInformation(filtered);
 		for (ICommandExecutor member : members.values())
 			SendMessage(player, member, filtered);
