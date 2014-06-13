@@ -231,7 +231,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	private final List<IChatResponder> chatResponders = new ArrayList<IChatResponder>();
 	private final Map<String, List<IChatChannel>> channelLists = new HashMap<String, List<IChatChannel>>(1);
 	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>(0);
-	private final Map<String, List<String> privateChannels = new HashMap<String, List<String>>(0);
+	private final Map<String, List<String>> privateChannels = new HashMap<String, List<String>>(0);
 	private final IgnoreHandler ignoreHandler;
 	private final IConsole console;
 	private final ChatFormatter chatFormatter;
