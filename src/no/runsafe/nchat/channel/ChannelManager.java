@@ -56,9 +56,34 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 
 		String name = "%" + (cmp < 0 ? player1Name : player2Name) + "-" + (cmp > 0 ? player1Name : player2Name);
 		if (!channels.containsKey(name))
-			channels.put(name, new PrivateChannel(this, console, name, player1, player2));
-
+		{
+			IChatChannel channel = new PrivateChannel(this, console, name, player1, player2);
+			channels.put(name, channel);
+			registerPrivateChannel(player1, name);
+			registerPrivateChannel(player2, name);
+		}
 		return channels.get(name);
+	}
+
+	private void registerPrivateChannel(ICommandExecutor player, String channel)
+	{
+		if (!privateChannels.containsKey(player.getName()))
+			privateChannels.put(player.getName(), new ArrayList<String>(1));
+		privateChannels.get(player.getName()).add(channel);
+	}
+
+	@Override
+	public void closePrivateChannels(ICommandExecutor player)
+	{
+		if (privateChannels.containsKey(player.getName()))
+		{
+			for (String channel : privateChannels.get(player.getName()))
+			{
+				if (channels.containsKey(channel))
+					channels.remove(channel);
+			}
+			privateChannels.remove(player.getName());
+		}
 	}
 
 	@Override
@@ -204,8 +229,9 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	private final List<ISpamFilter> inboundFilters;
 	private final List<IChatFilter> outboundFilters;
 	private final List<IChatResponder> chatResponders = new ArrayList<IChatResponder>();
-	private final Map<String, List<IChatChannel>> channelLists = new HashMap<String, List<IChatChannel>>();
-	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>();
+	private final Map<String, List<IChatChannel>> channelLists = new HashMap<String, List<IChatChannel>>(1);
+	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>(0);
+	private final Map<String, List<String> privateChannels = new HashMap<String, List<String>>(0);
 	private final IgnoreHandler ignoreHandler;
 	private final IConsole console;
 	private final ChatFormatter chatFormatter;

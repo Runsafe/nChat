@@ -48,5 +48,7 @@ public interface IChannelManager
 	void processResponderHooks(IChatChannel channel, ICommandExecutor player, String message);
 
 	void registerResponderHook(IChatResponder hook);
+
+	void closePrivateChannels(ICommandExecutor player);
 }
 
