@@ -42,6 +42,13 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
+	public void Clear()
+	{
+		for (ICommandExecutor member : members.values())
+			Leave(member);
+	}
+
+	@Override
 	public void Send(RunsafePlayerChatEvent message)
 	{
 		if (!message.isFake() && !members.containsKey(message.getPlayer().getName()))
@@ -60,7 +67,7 @@ public class BasicChatChannel implements IChatChannel
 	@Override
 	public void SendSystem(String message)
 	{
-		console.logInformation(message+" ");
+		console.logInformation(message + " ");
 		for (ICommandExecutor member : members.values())
 			member.sendColouredMessage(message);
 	}
@@ -85,7 +92,7 @@ public class BasicChatChannel implements IChatChannel
 		if (filtered == null)
 			return;
 		manager.processResponderHooks(this, player, message);
-		console.logInformation(filtered.replace("%","%%")+" ");
+		console.logInformation(filtered.replace("%", "%%") + " ");
 		for (ICommandExecutor member : members.values())
 			SendMessage(player, member, filtered);
 	}

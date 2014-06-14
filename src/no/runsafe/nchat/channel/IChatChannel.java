@@ -12,6 +12,8 @@ public interface IChatChannel
 
 	boolean Leave(ICommandExecutor player);
 
+	void Clear();
+
 	void Send(RunsafePlayerChatEvent event);
 
 	void SendSystem(String message);
