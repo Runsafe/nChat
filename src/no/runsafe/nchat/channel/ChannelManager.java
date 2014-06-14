@@ -199,6 +199,13 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	}
 
 	@Override
+	public void unregisterChannel(IChatChannel channel)
+	{
+		if (channels.containsKey(channel.getName()))
+			channels.remove(channel.getName());
+	}
+
+	@Override
 	public IChatChannel getChannelByName(String name)
 	{
 		return channels.containsKey(name) ? channels.get(name) : null;

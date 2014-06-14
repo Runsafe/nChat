@@ -41,6 +41,8 @@ public interface IChannelManager
 
 	void registerChannel(IChatChannel channel);
 
+	void unregisterChannel(IChatChannel channel);
+
 	IChatChannel getChannelByName(String name);
 
 	List<IChatChannel> getChannels(String player);
