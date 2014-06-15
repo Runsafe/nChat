@@ -23,7 +23,7 @@ public class SayCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		String message = parameters.getValue("message");
-		IChatChannel channel = manager.getChannelByName(GlobalChatChannel.CHANNELNAME);
+		IChatChannel channel = manager.getChannelByName(GlobalChatChannel.CHANNEL_NAME);
 		channel.SendSystem(manager.FormatMessage(console, channel, message));
 		return null;
 	}

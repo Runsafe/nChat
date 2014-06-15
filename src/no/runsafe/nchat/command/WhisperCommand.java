@@ -14,7 +14,7 @@ public class WhisperCommand extends ExecutableCommand
 {
 	public WhisperCommand(WhisperHandler whisperHandler)
 	{
-		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new Player().onlineOnly().require(), new TrailingArgument("message"));
+		super("whisper", "Send a private message to another player", "runsafe.nchat.whisper", new Player().onlineOnly().require(), new TrailingArgument("message").require());
 		this.whisperHandler = whisperHandler;
 	}
 
@@ -22,7 +22,7 @@ public class WhisperCommand extends ExecutableCommand
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		whisperHandler.sendWhisper(executor, (IPlayer) parameters.getValue("player"), parameters.get("message"));
+		whisperHandler.sendWhisper(executor, (IPlayer) parameters.getValue("player"), (String) parameters.getRequired("message"));
 		return null;
 	}
 

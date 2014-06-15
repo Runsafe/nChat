@@ -13,7 +13,7 @@ public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEv
 {
 	public GlobalChatChannel(IChannelManager manager, IConsole console)
 	{
-		super(console, manager, CHANNELNAME);
+		super(console, manager, CHANNEL_NAME);
 		manager.registerChannel(this);
 	}
 
@@ -62,5 +62,5 @@ public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEv
 
 	private String joinServerMessage;
 	private String leaveServerMessage;
-	public static final String CHANNELNAME = "global";
+	public static final String CHANNEL_NAME = "global";
 }

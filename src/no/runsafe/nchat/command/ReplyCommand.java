@@ -13,7 +13,7 @@ public class ReplyCommand extends PlayerCommand
 {
 	public ReplyCommand(WhisperHandler whisperHandler)
 	{
-		super("reply", "Respond to the last person to send you a private message", "runsafe.nchat.whisper", new TrailingArgument("message"));
+		super("reply", "Respond to the last person to send you a private message", "runsafe.nchat.whisper", new TrailingArgument("message").require());
 		this.whisperHandler = whisperHandler;
 	}
 
@@ -25,7 +25,7 @@ public class ReplyCommand extends PlayerCommand
 		if (channel == null)
 			return "&cYou have nothing to reply to.";
 
-		whisperHandler.sendWhisper(executor, channel, parameters.get("message"));
+		whisperHandler.sendWhisper(executor, channel, (String) parameters.getRequired("message"));
 		return null;
 	}
 

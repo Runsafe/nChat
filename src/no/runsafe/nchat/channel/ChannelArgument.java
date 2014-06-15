@@ -1,9 +1,7 @@
 package no.runsafe.nchat.channel;
 
-import net.minecraft.server.v1_7_R2.ChatMessage;
 import no.runsafe.framework.api.command.argument.CommandArgumentSpecification;
 import no.runsafe.framework.api.command.argument.IContextualTabComplete;
-import no.runsafe.framework.api.command.argument.ITabComplete;
 import no.runsafe.framework.api.player.IPlayer;
 
 import java.util.ArrayList;

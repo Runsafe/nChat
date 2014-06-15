@@ -2,7 +2,6 @@ package no.runsafe.nchat.events;
 
 import no.runsafe.framework.api.event.player.IPlayerChatEvent;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
-import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.nchat.channel.ChannelManager;
 import no.runsafe.nchat.channel.IChatChannel;
 import no.runsafe.nchat.chat.InternalChatEvent;

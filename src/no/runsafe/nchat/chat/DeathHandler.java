@@ -22,7 +22,7 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 	{
 		deathMessageFile = fileManager.getFile("death_messages.txt");
 		pvpDeathMessageFile = fileManager.getFile("pvp_death_messages.txt");
-		channel = manager.getChannelByName(GlobalChatChannel.CHANNELNAME);
+		channel = manager.getChannelByName(GlobalChatChannel.CHANNEL_NAME);
 	}
 
 	@Override

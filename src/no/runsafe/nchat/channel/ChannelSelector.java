@@ -32,6 +32,6 @@ public class ChannelSelector implements IPlayerCommandPreprocessEvent
 		}
 	}
 
-	private IChannelManager manager;
-	private static Pattern INDEX_SELECTOR = Pattern.compile("^/(\\d{1,2})( (.*)|)");
+	private final IChannelManager manager;
+	private static final Pattern INDEX_SELECTOR = Pattern.compile("^/(\\d{1,2})( (.*)|)");
 }

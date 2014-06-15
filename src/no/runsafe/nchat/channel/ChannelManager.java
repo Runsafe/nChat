@@ -177,7 +177,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	public void setDefaultChannel(ICommandExecutor player, IChatChannel channel)
 	{
 		defaultChannel.put(player.getName(), channel);
-		if (!channel.getName().equals(GlobalChatChannel.CHANNELNAME))
+		if (!channel.getName().equals(GlobalChatChannel.CHANNEL_NAME))
 			channelTimeouts.put(player.getName(), DateTime.now().plusMinutes(2));
 		if (channel instanceof PrivateChannel)
 			player.sendMessage("Now talking in private channel.");
@@ -199,7 +199,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 			}
 		}
 		if (!defaultChannel.containsKey(player.getName()))
-			return getChannelByName(GlobalChatChannel.CHANNELNAME);
+			return getChannelByName(GlobalChatChannel.CHANNEL_NAME);
 		return defaultChannel.get(player.getName());
 	}
 

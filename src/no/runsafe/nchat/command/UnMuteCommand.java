@@ -24,11 +24,7 @@ public class UnMuteCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
-		String unMutePlayerName = parameters.get("player");
-
-		if (unMutePlayerName == null)
-			return null;
-
+		String unMutePlayerName = parameters.getRequired("player");
 		if (unMutePlayerName.equalsIgnoreCase("server"))
 		{
 			if (player == null || player.hasPermission("nChat.commands.muteServer"))
