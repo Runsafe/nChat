@@ -10,6 +10,7 @@ import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.filter.IChatFilter;
 import no.runsafe.nchat.filter.ISpamFilter;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -176,6 +177,8 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	public void setDefaultChannel(ICommandExecutor player, IChatChannel channel)
 	{
 		defaultChannel.put(player.getName(), channel);
+		if (!channel.getName().equals(GlobalChatChannel.CHANNELNAME))
+			channelTimeouts.put(player.getName(), DateTime.now().plusMinutes(2));
 		if (channel instanceof PrivateChannel)
 			player.sendMessage("Now talking in private channel.");
 		else
@@ -185,6 +188,16 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public IChatChannel getDefaultChannel(ICommandExecutor player)
 	{
+		if (channelTimeouts.containsKey(player.getName()))
+		{
+			if (channelTimeouts.get(player.getName()).isAfterNow())
+				channelTimeouts.put(player.getName(), DateTime.now().plusMinutes(2));
+			else
+			{
+				channelTimeouts.remove(player.getName());
+				defaultChannel.remove(player.getName());
+			}
+		}
 		if (!defaultChannel.containsKey(player.getName()))
 			return getChannelByName(GlobalChatChannel.CHANNELNAME);
 		return defaultChannel.get(player.getName());
@@ -242,4 +255,5 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	private final IgnoreHandler ignoreHandler;
 	private final IConsole console;
 	private final ChatFormatter chatFormatter;
+	private final Map<String, DateTime> channelTimeouts = new HashMap<String, DateTime>(0);
 }
