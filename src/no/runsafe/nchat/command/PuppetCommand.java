@@ -27,20 +27,19 @@ public class PuppetCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		IPlayer targetPlayer = parameters.getValue("player");
-		IChatChannel targetChannel = parameters.getValue("channel");
-		if (targetPlayer == null || targetChannel == null)
+		if (targetPlayer == null)
 			return null;
+		IChatChannel targetChannel = parameters.getValue("channel");
+		if (targetChannel == null)
+			return "Unknown channel!";
 
-		String message = parameters.get("message");
-		if (message != null)
+		String message = parameters.getRequired("message");
+		if (message.startsWith("/"))
+			emoteHandler.executeEmote(executor, targetPlayer, message);
+		else
 		{
-			if (message.startsWith("/"))
-				emoteHandler.executeEmote(executor, targetPlayer, message);
-			else
-			{
-				InternalChatEvent event = new InternalChatEvent(targetPlayer, message, targetChannel);
-				event.Fire();
-			}
+			InternalChatEvent event = new InternalChatEvent(targetPlayer, message, targetChannel);
+			event.Fire();
 		}
 		return null;
 	}
