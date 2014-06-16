@@ -101,7 +101,7 @@ public class BasicChatChannel implements IChatChannel
 	{
 		String outgoing = manager.filter(source, target, message);
 		if (outgoing != null && !outgoing.isEmpty())
-			target.sendColouredMessage(outgoing);
+			target.sendColouredMessage(outgoing.replace("%", "%%"));
 	}
 
 	protected final IConsole console;
