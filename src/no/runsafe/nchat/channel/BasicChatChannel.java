@@ -65,8 +65,9 @@ public class BasicChatChannel implements IChatChannel
 	}
 
 	@Override
-	public void SendSystem(String message)
+	public void SendSystem(String incoming)
 	{
+		String message = manager.FormatSystem(this, incoming);
 		console.logInformation(message + " ");
 		for (ICommandExecutor member : members.values())
 			member.sendColouredMessage(message);

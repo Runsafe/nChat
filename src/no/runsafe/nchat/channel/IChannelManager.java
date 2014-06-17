@@ -26,6 +26,8 @@ public interface IChannelManager
 
 	String FormatMessage(ICommandExecutor player, IChatChannel channel, String message);
 
+	String FormatSystem(IChatChannel channel, String incoming);
+
 	void addChannelToList(ICommandExecutor player, IChatChannel channel);
 
 	void removeChannelFromList(ICommandExecutor player, IChatChannel channel);

@@ -144,6 +144,12 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	}
 
 	@Override
+	public String FormatSystem(IChatChannel channel, String message)
+	{
+		return chatFormatter.formatSystem(channel, message);
+	}
+
+	@Override
 	public void addChannelToList(ICommandExecutor player, IChatChannel channel)
 	{
 		if (!channelLists.containsKey(player.getName()))

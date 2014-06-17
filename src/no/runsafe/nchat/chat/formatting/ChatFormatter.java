@@ -77,6 +77,13 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 			.replace("#message", message);
 	}
 
+	public String formatSystem(IChatChannel channel, String message)
+	{
+		return systemFormat
+			.replace("#tag", getChannelTag(channel))
+			.replace("#message", message);
+	}
+
 	private String getName(ICommandExecutor executor)
 	{
 		return executor instanceof IPlayer ? ((IPlayer) executor).getPrettyName() : executor.getName();
@@ -162,6 +169,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		enableRegionPrefixes = configuration.getConfigValueAsBoolean("nChat.enableRegionPrefixes");
 		disableColorCodes = !configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
 		channelFormat = configuration.getConfigValueAsString("chatMessage.channel");
+		systemFormat = configuration.getConfigValueAsString("chatMessage.system");
 		messageInFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
 		messageOutFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
 		messageLogFormat = configuration.getConfigValueAsString("chatMessage.whisperLog");
@@ -176,6 +184,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 	private String playerChatMessage;
 	private String playerNameFormat;
 	private String channelFormat;
+	private String systemFormat;
 	private String messageOutFormat;
 	private String messageInFormat;
 	private String messageLogFormat;
