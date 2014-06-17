@@ -35,7 +35,7 @@ public class PuppetCommand extends ExecutableCommand
 
 		String message = parameters.getRequired("message");
 		if (message.startsWith("/"))
-			emoteHandler.executeEmote(executor, targetPlayer, message);
+			emoteHandler.executeEmote(targetChannel, executor, targetPlayer, message);
 		else
 		{
 			InternalChatEvent event = new InternalChatEvent(targetPlayer, message, targetChannel);

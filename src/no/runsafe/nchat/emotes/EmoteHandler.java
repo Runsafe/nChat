@@ -10,6 +10,7 @@ import no.runsafe.framework.api.filesystem.IPluginFileManager;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
+import no.runsafe.nchat.channel.IChatChannel;
 import no.runsafe.nchat.chat.EmoteEvent;
 import org.apache.commons.lang.StringUtils;
 
@@ -47,11 +48,11 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		if (event.isCancelled())
 			return;
 
-		if (executeEmote(event.getPlayer(), event.getPlayer(), event.getMessage()))
+		if (executeEmote(null, event.getPlayer(), event.getPlayer(), event.getMessage()))
 			event.cancel();
 	}
 
-	public boolean executeEmote(ICommandExecutor executor, IPlayer player, CharSequence command)
+	public boolean executeEmote(IChatChannel channel, ICommandExecutor executor, IPlayer player, CharSequence command)
 	{
 		Matcher matcher = emoteChecker.matcher(command);
 		if (matcher.matches())
@@ -59,11 +60,11 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 			EmoteDefinition emote = emotes.get(matcher.group(1));
 			IPlayer targetPlayer = matcher.groupCount() > 2 ? server.getPlayer(matcher.group(3)) : null;
 			if (targetPlayer == null)
-				new EmoteEvent(player, command.toString(), null, emote.getSingleEmote()).Fire();
+				new EmoteEvent(channel, player, command.toString(), null, emote.getSingleEmote()).Fire();
 			else if (targetPlayer instanceof IAmbiguousPlayer)
 				executor.sendColouredMessage(targetPlayer.toString());
 			else
-				new EmoteEvent(player, command.toString(), targetPlayer, emote.getTargetEmote()).Fire();
+				new EmoteEvent(channel, player, command.toString(), targetPlayer, emote.getTargetEmote()).Fire();
 			return true;
 		}
 		return false;
