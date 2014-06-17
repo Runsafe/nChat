@@ -9,6 +9,7 @@ import no.runsafe.framework.api.player.IPlayerPermissions;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import no.runsafe.framework.text.ChatColour;
 import no.runsafe.nchat.channel.IChatChannel;
+import no.runsafe.nchat.channel.PrivateChannel;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -79,7 +80,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 
 	public String formatSystem(IChatChannel channel, String message)
 	{
-		return systemFormat
+		return (channel instanceof PrivateChannel ? privateSystemFormat : systemFormat)
 			.replace("#tag", getChannelTag(channel))
 			.replace("#message", message);
 	}
@@ -170,6 +171,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		disableColorCodes = !configuration.getConfigValueAsBoolean("nChat.enableColorCodes");
 		channelFormat = configuration.getConfigValueAsString("chatMessage.channel");
 		systemFormat = configuration.getConfigValueAsString("chatMessage.system");
+		privateSystemFormat = configuration.getConfigValueAsString("chatMessage.privateSystem");
 		messageInFormat = configuration.getConfigValueAsString("chatMessage.whisperFrom");
 		messageOutFormat = configuration.getConfigValueAsString("chatMessage.whisperTo");
 		messageLogFormat = configuration.getConfigValueAsString("chatMessage.whisperLog");
@@ -185,6 +187,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 	private String playerNameFormat;
 	private String channelFormat;
 	private String systemFormat;
+	private String privateSystemFormat;
 	private String messageOutFormat;
 	private String messageInFormat;
 	private String messageLogFormat;

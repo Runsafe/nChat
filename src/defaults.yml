@@ -49,6 +49,7 @@ chatMessage:
   whisperFrom: '#source &7-> &6You&f: #message'
   channel: '#tag #player: &f#message'
   system: '#tag&r #message'
+  privateSystem: '<>#message'
 chatFormatting:
   playerName: '#op#world#group #ban#player'
   playerChatMessage: '#player: &f#message'

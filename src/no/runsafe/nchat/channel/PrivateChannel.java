@@ -7,6 +7,8 @@ import no.runsafe.framework.minecraft.RunsafeConsole;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
 import org.joda.time.DateTime;
 
+import javax.annotation.Nullable;
+
 public class PrivateChannel extends BasicChatChannel
 {
 	public PrivateChannel(IChannelManager manager, IConsole console, String name, ICommandExecutor player1, ICommandExecutor player2)
