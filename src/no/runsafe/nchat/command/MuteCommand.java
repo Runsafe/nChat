@@ -26,21 +26,8 @@ public class MuteCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
-		String mutePlayerName = parameters.getRequired("player");
+		IPlayer mutePlayer = parameters.getRequired("player");
 		org.joda.time.Period duration = parameters.getValue("duration");
-
-		if (mutePlayerName.equalsIgnoreCase("server"))
-		{
-			if (player != null && !player.hasPermission("runsafe.nchat.mute.server"))
-				return "&cYou do not have permission to do that";
-
-			muteHandler.muteServer();
-			return "&bGlobal chat has been muted, you monster.";
-		}
-		IPlayer mutePlayer = parameters.getValue("player");
-
-		if (mutePlayer == null)
-			return "&cThat player does not exist.";
 
 		if (player != null && mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^

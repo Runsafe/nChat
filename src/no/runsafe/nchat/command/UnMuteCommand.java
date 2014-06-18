@@ -24,26 +24,9 @@ public class UnMuteCommand extends ExecutableCommand
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
-		String unMutePlayerName = parameters.getRequired("player");
-		if (unMutePlayerName.equalsIgnoreCase("server"))
-		{
-			if (player == null || player.hasPermission("nChat.commands.muteServer"))
-			{
-				muteHandler.unMuteServer();
-				return "&bGlobal chat has been un-muted! Praise the sun.";
-			}
-			else
-			{
-				return "&cYou do not have permission to do that.";
-			}
-		}
+		IPlayer unMutePlayer = parameters.getRequired("player");
 		if (player != null && !player.hasPermission("nChat.commands.mutePlayer"))
 			return "&cYou do not have permission to do that.";
-
-		IPlayer unMutePlayer = parameters.getValue("player");
-
-		if (unMutePlayer == null)
-			return "&cTry to pick a player who exists.";
 
 		if (player != null && unMutePlayer.hasPermission("nChat.muteExempt"))
 			return "&cThat player is exempt from being un-muted, silly as it sounds."; // Unless you are the console ^w^

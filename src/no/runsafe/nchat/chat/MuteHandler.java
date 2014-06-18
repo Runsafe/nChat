@@ -67,16 +67,6 @@ public class MuteHandler implements IConfigurationChanged
 		muteDatabase.unMutePlayer(playerName);
 	}
 
-	public void muteServer()
-	{
-		serverMute = true;
-	}
-
-	public void unMuteServer()
-	{
-		serverMute = false;
-	}
-
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
