@@ -51,5 +51,7 @@ public interface IChannelManager
 	void registerResponderHook(IChatResponder hook);
 
 	void closePrivateChannels(ICommandExecutor player);
+
+	void registerLocationTagManip(ILocationTagManipulator manipulator);
 }
 

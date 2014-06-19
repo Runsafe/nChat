@@ -2,7 +2,6 @@ name: nChat
 main: no.runsafe.nchat.ChatPlugin
 version: 1.0.@BUILD@
 author: Kruithne
-depend: [RunsafeWorldGuardBridge]
 description: Allows advanced chat features
 commands:
   say:

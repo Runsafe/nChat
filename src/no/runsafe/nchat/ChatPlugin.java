@@ -13,7 +13,6 @@ import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
-import no.runsafe.nchat.chat.formatting.RegionHandler;
 import no.runsafe.nchat.command.*;
 import no.runsafe.nchat.database.IgnoreDatabase;
 import no.runsafe.nchat.database.MuteDatabase;
@@ -53,7 +52,6 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 		addComponent(IgnoreHandler.class);
 		addComponent(MuteHandler.class);
 		addComponent(WhisperHandler.class);
-		addComponent(RegionHandler.class);
 		addComponent(PlayerTablistNameHandler.class);
 		addComponent(EmoteHandler.class);
 

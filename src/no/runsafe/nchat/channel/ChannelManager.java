@@ -251,6 +251,12 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 		chatResponders.add(hook);
 	}
 
+	@Override
+	public void registerLocationTagManip(ILocationTagManipulator manipulator)
+	{
+		chatFormatter.registerLocationTagManip(manipulator);
+	}
+
 	private final Map<String, IChatChannel> channels = new HashMap<String, IChatChannel>(1);
 	private final List<ISpamFilter> inboundFilters;
 	private final List<IChatFilter> outboundFilters;

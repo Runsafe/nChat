@@ -2,7 +2,6 @@
 
 nChat:
   enableColorCodes: true
-  enableRegionPrefixes: true
 antiSpam:
   enableDuplicationFilter: true
   duplicationFilterCooldown: 5
@@ -39,8 +38,6 @@ worldPrefixes:
   world_the_end: '&9[E]'
   console: '&3[?]'
   dead: '&7[X]'
-regionPrefixes:
-  gameroom-pvp_arena: '&c[PvP]'
 chatMessage:
   joinServer: '#player has joined the server.'
   leaveServer: '#player has left the server.'
