@@ -11,6 +11,9 @@ antiSpam:
   floodFilterPeriod: 5
   enableCapsFilter: true
   capsFilterPercent: 90
+  maxEmotes: 2
+  maxEmotesPeriod: 10
+  maxEmotesMessage: Please refrain from spamming emotes.
 hideDeaths:
   - pvparena
 console:

@@ -13,7 +13,9 @@ import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreproces
 import no.runsafe.nchat.channel.IChatChannel;
 import no.runsafe.nchat.chat.EmoteEvent;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,9 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
+		maxEmotes = configuration.getConfigValueAsInt("antiSpam.maxEmotes");
+		maxEmotesPeriod = configuration.getConfigValueAsInt("antiSpam.maxEmotesPeriod");
+		maxEmotesMessage = configuration.getConfigValueAsString("antiSpam.maxEmotesMessage");
 		emotes.clear(); // Clear existing emotes.
 
 		List<String> definitions = emoteFile.getLines(); // Grab all emotes from the file.
@@ -60,18 +65,52 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 			EmoteDefinition emote = emotes.get(matcher.group(1));
 			IPlayer targetPlayer = matcher.groupCount() > 2 ? server.getPlayer(matcher.group(3)) : null;
 			if (targetPlayer == null)
-				new EmoteEvent(channel, player, command.toString(), null, emote.getSingleEmote()).Fire();
+				rateLimitEmote(new EmoteEvent(channel, player, command.toString(), null, emote.getSingleEmote()));
 			else if (targetPlayer instanceof IAmbiguousPlayer)
 				executor.sendColouredMessage(targetPlayer.toString());
 			else
-				new EmoteEvent(channel, player, command.toString(), targetPlayer, emote.getTargetEmote()).Fire();
+				rateLimitEmote(new EmoteEvent(channel, player, command.toString(), targetPlayer, emote.getTargetEmote()));
 			return true;
 		}
 		return false;
 	}
 
+	private void rateLimitEmote(EmoteEvent emote)
+	{
+		String player = emote.getPlayer().getName();
+		if (maxEmotes > 0 && maxEmotesPeriod > 0)
+		{
+			if (!limiter.containsKey(player))
+			{
+				limiter.put(player, new ArrayList<DateTime>(1));
+				limiter.get(player).add(DateTime.now());
+			}
+			else
+			{
+				List<DateTime> expired = new ArrayList<DateTime>(0);
+				for(DateTime time : limiter.get(player))
+				{
+					if (time.plusSeconds(maxEmotesPeriod).isBeforeNow())
+						expired.add(time);
+				}
+				limiter.get(player).removeAll(expired);
+				if (limiter.get(player).size() >= maxEmotes)
+				{
+					emote.getPlayer().sendColouredMessage(maxEmotesMessage);
+					return;
+				}
+				limiter.get(player).add(DateTime.now());
+			}
+		}
+		emote.Fire();
+	}
+
 	private final IServer server;
 	private final IPluginDataFile emoteFile;
 	private final Map<String, EmoteDefinition> emotes = new HashMap<String, EmoteDefinition>(0);
+	private final Map<String, List<DateTime>> limiter = new HashMap<String, List<DateTime>>(0);
+	private int maxEmotes;
+	private int maxEmotesPeriod;
+	private String maxEmotesMessage;
 	private Pattern emoteChecker;
 }
