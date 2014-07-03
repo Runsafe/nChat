@@ -31,7 +31,7 @@ public class Pipe implements Runnable
 		}
 	}
 
-	public final LinkedBlockingQueue<String> chatTunnel = new LinkedBlockingQueue<String>(0);
+	public final LinkedBlockingQueue<String> chatTunnel = new LinkedBlockingQueue<String>();
 	private final Socket client;
 	private DataOutputStream stream;
 }
