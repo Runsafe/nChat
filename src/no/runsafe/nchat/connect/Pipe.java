@@ -27,7 +27,7 @@ public class Pipe implements Runnable
 
 				String message = chatTunnel.take(); // Grab message.
 				console.logInformation("SENDING TO PIPE: " + message);
-				stream.write(message);
+				stream.println(message);
 			}
 		}
 		catch (Exception e)
