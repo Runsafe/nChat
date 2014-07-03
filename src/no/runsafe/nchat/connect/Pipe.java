@@ -1,6 +1,7 @@
 package no.runsafe.nchat.connect;
 
 import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.text.ChatColour;
 
 import java.io.DataOutputStream;
 import java.io.PrintWriter;
@@ -25,7 +26,7 @@ public class Pipe implements Runnable
 				if (stream == null)
 					stream = new PrintWriter(client.getOutputStream(), true);
 
-				String message = chatTunnel.take(); // Grab message.
+				String message = ChatColour.ToMinecraft(chatTunnel.take()); // Grab message.
 				stream.println(message);
 			}
 		}
