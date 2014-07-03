@@ -15,6 +15,7 @@ public class PipeEngine implements Runnable
 		try
 		{
 			server = new ServerSocket(19242);
+			console.logInformation("nChat Connect listening on port 19242");
 		}
 		catch (IOException e)
 		{
