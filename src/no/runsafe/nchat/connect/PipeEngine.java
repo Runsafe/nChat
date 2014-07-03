@@ -30,18 +30,18 @@ public class PipeEngine implements Runnable
 		if (server == null)
 			return;
 
-		try
+		while (true)
 		{
-			while (true)
+			try
 			{
 				Socket socket = server.accept();
 				console.logInformation("Chat connection spawned for " + socket.getInetAddress().getHostName());
 				new Thread(new Pipe(socket)).start();
 			}
-		}
-		catch (IOException e)
-		{
-			// Cancel.
+			catch (IOException e)
+			{
+				// Cancel.
+			}
 		}
 	}
 
