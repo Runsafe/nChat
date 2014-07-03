@@ -14,6 +14,7 @@ import no.runsafe.nchat.chat.MuteHandler;
 import no.runsafe.nchat.chat.WhisperHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.command.*;
+import no.runsafe.nchat.connect.PipeHandler;
 import no.runsafe.nchat.database.IgnoreDatabase;
 import no.runsafe.nchat.database.MuteDatabase;
 import no.runsafe.nchat.emotes.EmoteHandler;
@@ -79,5 +80,8 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 
 		// External
 		addComponent(PlayerDataProvider.class);
+
+		// Connect (Huckleberry)
+		addComponent(PipeHandler.class);
 	}
 }
