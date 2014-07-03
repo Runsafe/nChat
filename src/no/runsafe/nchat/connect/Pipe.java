@@ -1,14 +1,17 @@
 package no.runsafe.nchat.connect;
 
+import no.runsafe.framework.api.log.IConsole;
+
 import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Pipe implements Runnable
 {
-	public Pipe(Socket client)
+	public Pipe(Socket client, IConsole console)
 	{
 		this.client = client;
+		this.console = console;
 	}
 
 	@Override
@@ -22,6 +25,7 @@ public class Pipe implements Runnable
 					stream = new DataOutputStream(client.getOutputStream());
 
 				String message = chatTunnel.take(); // Grab message.
+				console.logInformation("SENDING TO PIPE: " + message);
 				stream.writeUTF(message);
 			}
 		}
@@ -33,5 +37,6 @@ public class Pipe implements Runnable
 
 	public final LinkedBlockingQueue<String> chatTunnel = new LinkedBlockingQueue<String>();
 	private final Socket client;
+	private final IConsole console;
 	private DataOutputStream stream;
 }
