@@ -1,7 +1,7 @@
 package no.runsafe.nchat.connect;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.nchat.channel.ChannelManager;
@@ -9,10 +9,10 @@ import org.picocontainer.Startable;
 
 public class PipeHandler implements Startable, IConfigurationChanged
 {
-	public PipeHandler(ChannelManager manager, IConsole console, IServer server)
+	public PipeHandler(ChannelManager manager, IConsole console, IOutput output)
 	{
 		PipeHandler.manager = manager;
-		PipeHandler.server = server;
+		PipeHandler.output = output;
 		this.console = console;
 	}
 
@@ -37,8 +37,7 @@ public class PipeHandler implements Startable, IConfigurationChanged
 
 	public static void takeMessage(String message)
 	{
-		//manager.getChannelByName("global").SendSystem(message);
-		server.broadcastMessage(message);
+		output.broadcastColoured(message);
 	}
 
 	@Override
@@ -50,6 +49,6 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	public static String prefix;
 	public static ChannelManager manager;
 	private IConsole console;
-	private static IServer server;
+	private static IOutput output;
 	private static PipeEngine engine;
 }
