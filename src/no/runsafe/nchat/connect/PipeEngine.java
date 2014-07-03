@@ -36,7 +36,7 @@ public class PipeEngine implements Runnable
 			{
 				Socket socket = server.accept();
 				console.logInformation("Chat connection spawned for " + socket.getInetAddress().getHostName());
-				Pipe pipe = new Pipe(socket, console);
+				Pipe pipe = new Pipe(socket);
 				pipes.add(pipe);
 				new Thread(pipe).start();
 			}

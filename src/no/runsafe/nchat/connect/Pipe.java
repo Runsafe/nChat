@@ -1,19 +1,16 @@
 package no.runsafe.nchat.connect;
 
-import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.text.ChatColour;
 
-import java.io.DataOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Pipe implements Runnable
 {
-	public Pipe(Socket client, IConsole console)
+	public Pipe(Socket client)
 	{
 		this.client = client;
-		this.console = console;
 	}
 
 	@Override
@@ -26,7 +23,7 @@ public class Pipe implements Runnable
 				if (stream == null)
 					stream = new PrintWriter(client.getOutputStream(), true);
 
-				String message = ChatColour.ToMinecraft(chatTunnel.take()); // Grab message.
+				String message = ChatColour.ToMinecraft(PipeHandler.prefix + chatTunnel.take()); // Grab message.
 				stream.println(message);
 			}
 		}
@@ -38,6 +35,5 @@ public class Pipe implements Runnable
 
 	public final LinkedBlockingQueue<String> chatTunnel = new LinkedBlockingQueue<String>();
 	private final Socket client;
-	private final IConsole console;
 	private PrintWriter stream;
 }

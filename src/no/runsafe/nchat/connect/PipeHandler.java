@@ -1,10 +1,12 @@
 package no.runsafe.nchat.connect;
 
+import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.nchat.channel.ChannelManager;
 import org.picocontainer.Startable;
 
-public class PipeHandler implements Startable
+public class PipeHandler implements Startable, IConfigurationChanged
 {
 	public PipeHandler(ChannelManager manager, IConsole console)
 	{
@@ -31,6 +33,13 @@ public class PipeHandler implements Startable
 			engine.sendMessage(message);
 	}
 
+	@Override
+	public void OnConfigurationChanged(IConfiguration configuration)
+	{
+		prefix = configuration.getConfigValueAsString("nChat.connect.prefix");
+	}
+
+	public static String prefix;
 	public static ChannelManager manager;
 	private IConsole console;
 	private static PipeEngine engine;
