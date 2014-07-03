@@ -12,6 +12,7 @@ public class PipeEngine implements Runnable
 {
 	public PipeEngine(IConsole console)
 	{
+		this.console = console;
 		try
 		{
 			server = new ServerSocket(19242);
@@ -34,6 +35,7 @@ public class PipeEngine implements Runnable
 			while (true)
 			{
 				Socket socket = server.accept();
+				console.logInformation("Chat connection spawned for " + socket.getInetAddress().getHostName());
 				new Thread(new Pipe(socket)).start();
 			}
 		}
@@ -60,4 +62,5 @@ public class PipeEngine implements Runnable
 
 	private final List<Pipe> pipes = new ArrayList<Pipe>(0);
 	private ServerSocket server;
+	private final IConsole console;
 }
