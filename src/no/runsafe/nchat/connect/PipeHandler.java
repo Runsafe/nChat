@@ -2,15 +2,27 @@ package no.runsafe.nchat.connect;
 
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.nchat.channel.ChannelManager;
+import org.picocontainer.Startable;
 
-public class PipeHandler
+public class PipeHandler implements Startable
 {
 	public PipeHandler(ChannelManager manager, IConsole console)
 	{
 		PipeHandler.manager = manager;
-		engine = new PipeEngine(console);
+		this.console = console;
+	}
 
+	@Override
+	public void start()
+	{
+		engine = new PipeEngine(console);
 		(new Thread(engine)).start();
+	}
+
+	@Override
+	public void stop()
+	{
+		// Do nothing?
 	}
 
 	public static void handleMessage(String message, String channel)
@@ -20,5 +32,6 @@ public class PipeHandler
 	}
 
 	public static ChannelManager manager;
+	private IConsole console;
 	private static PipeEngine engine;
 }
