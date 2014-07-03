@@ -36,7 +36,7 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
-		prefix = configuration.getConfigValueAsString("nChat.connect.prefix");
+		prefix = configuration.getConfigValueAsString("connect.prefix");
 	}
 
 	public static String prefix;
