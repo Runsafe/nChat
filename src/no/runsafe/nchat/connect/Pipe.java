@@ -26,7 +26,6 @@ public class Pipe implements Runnable
 					stream = new PrintWriter(client.getOutputStream(), true);
 
 				String message = chatTunnel.take(); // Grab message.
-				console.logInformation("SENDING TO PIPE: " + message);
 				stream.println(message);
 			}
 		}
