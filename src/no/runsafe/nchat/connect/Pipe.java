@@ -18,6 +18,7 @@ public class Pipe implements Runnable
 	{
 		try
 		{
+			new Thread(new PipeIn(client)).start();
 			while (true)
 			{
 				if (stream == null)

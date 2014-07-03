@@ -1,6 +1,7 @@
 package no.runsafe.nchat.connect;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.nchat.channel.ChannelManager;
@@ -31,6 +32,11 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	{
 		if (channel.equals("global") && engine != null)
 			engine.sendMessage(message);
+	}
+
+	public static void takeMessage(String message)
+	{
+		manager.getChannelByName("global").SendSystem(message);
 	}
 
 	@Override
