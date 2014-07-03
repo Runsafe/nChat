@@ -9,9 +9,10 @@ import org.picocontainer.Startable;
 
 public class PipeHandler implements Startable, IConfigurationChanged
 {
-	public PipeHandler(ChannelManager manager, IConsole console)
+	public PipeHandler(ChannelManager manager, IConsole console, IServer server)
 	{
 		PipeHandler.manager = manager;
+		PipeHandler.server = server;
 		this.console = console;
 	}
 
@@ -36,7 +37,8 @@ public class PipeHandler implements Startable, IConfigurationChanged
 
 	public static void takeMessage(String message)
 	{
-		manager.getChannelByName("global").SendSystem(message);
+		//manager.getChannelByName("global").SendSystem(message);
+		server.broadcastMessage(message);
 	}
 
 	@Override
@@ -48,5 +50,6 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	public static String prefix;
 	public static ChannelManager manager;
 	private IConsole console;
+	private static IServer server;
 	private static PipeEngine engine;
 }

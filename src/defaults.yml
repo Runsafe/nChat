@@ -61,4 +61,4 @@ channelTags:
   admin: '&4@ '
   global: '> '
 connect:
-  prefix: '&2[RS]'
+  prefix: '&3[RS]'

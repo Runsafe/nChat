@@ -24,7 +24,7 @@ public class Pipe implements Runnable
 				if (stream == null)
 					stream = new PrintWriter(client.getOutputStream(), true);
 
-				String message = ChatColour.ToMinecraft(PipeHandler.prefix + chatTunnel.take()); // Grab message.
+				String message = ChatColour.ToMinecraft(PipeHandler.prefix + ' ' + chatTunnel.take()); // Grab message.
 				stream.println(message);
 			}
 		}
