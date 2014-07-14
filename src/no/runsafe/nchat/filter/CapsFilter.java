@@ -4,26 +4,19 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CapsFilter implements ISpamFilter, IConfigurationChanged
 {
-	public CapsFilter()
-	{
-		caps = Pattern.compile("[A-Z]");
-	}
-
 	@Override
 	public String processString(IPlayer player, String message)
 	{
 		if (isEnabled)
 		{
-			Matcher matcher = caps.matcher(message);
-			int count = 0;
-			while (matcher.find()) count++;
+			String check = IGNORE.matcher(message).replaceAll("");
+			String capsed = NONCAPS.matcher(check).replaceAll("");
 
-			if (count * 100 / WHITESPACE.matcher(message).replaceAll("").length() >= percent)
+			if (capsed.length() * 100 / check.length() >= percent)
 				return message.toLowerCase();
 		}
 		return message;
@@ -38,6 +31,6 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 
 	private boolean isEnabled;
 	private int percent;
-	private final Pattern caps;
-	private static final Pattern WHITESPACE = Pattern.compile("\\s*");
+	private static final Pattern IGNORE = Pattern.compile("[\\s.,-/]+");
+	private static final Pattern NONCAPS = Pattern.compile("[^A-Z]+");
 }
