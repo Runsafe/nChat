@@ -60,3 +60,5 @@ chatFormatting:
 channelTags:
   admin: '&4@ '
   global: '> '
+connect:
+  prefix: '&3[RS]'

@@ -4,6 +4,7 @@ import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
 import no.runsafe.nchat.chat.EmoteEvent;
+import no.runsafe.nchat.connect.PipeHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -69,6 +70,7 @@ public class BasicChatChannel implements IChatChannel
 	{
 		String message = manager.FormatSystem(this, incoming);
 		console.logInformation(message + " ");
+		PipeHandler.handleMessage(message, name);
 		for (ICommandExecutor member : members.values())
 			member.sendColouredMessage(message);
 	}
@@ -94,6 +96,7 @@ public class BasicChatChannel implements IChatChannel
 			return;
 		manager.processResponderHooks(this, player, message);
 		console.logInformation(filtered.replace("%", "%%") + " ");
+		PipeHandler.handleMessage(filtered, name);
 		for (ICommandExecutor member : members.values())
 			SendMessage(player, member, filtered);
 	}
