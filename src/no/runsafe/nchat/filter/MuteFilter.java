@@ -16,7 +16,14 @@ public class MuteFilter implements ISpamFilter
 	@Override
 	public String processString(IPlayer player, String message)
 	{
-		return handler.isPlayerMuted(player) ? null : message;
+		if (handler.isPlayerMuted(player))
+		{
+			if (handler.isShadowMuted(player))
+				player.sendColouredMessage(message);
+
+			return null;
+		}
+		return message;
 	}
 
 	private final MuteHandler handler;

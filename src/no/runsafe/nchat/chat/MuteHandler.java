@@ -33,16 +33,29 @@ public class MuteHandler implements IConfigurationChanged
 
 	private boolean isPlayerMuted(String playerName)
 	{
-		if (mutedPlayers.containsKey(playerName) && mutedPlayers.get(playerName).isBeforeNow())
+		if (mutedPlayers.containsKey(playerName) && mutedPlayers.get(playerName).getMuteTime().isBeforeNow())
 			unMutePlayer(playerName);
+
 		return serverMute || mutedPlayers.containsKey(playerName);
+	}
+
+	public boolean isShadowMuted(ICommandExecutor player)
+	{
+		return isPlayerMuted(player) && mutedPlayers.get(player.getName()).isShadow();
 	}
 
 	public void tempMutePlayer(ICommandExecutor player, Period expire)
 	{
+		tempMutePlayer(player, expire, false);
+	}
+
+	public void tempMutePlayer(ICommandExecutor player, Period expire, boolean shadow)
+	{
 		DateTime limit = DateTime.now().plus(expire);
-		mutedPlayers.put(player.getName(), limit);
-		muteDatabase.tempMutePlayer(player.getName(), limit);
+		String playerName = player.getName();
+
+		mutedPlayers.put(playerName, new MuteEntry(playerName, limit, shadow));
+		muteDatabase.tempMutePlayer(playerName, limit, shadow);
 	}
 
 	public void mutePlayer(ICommandExecutor player)
@@ -52,8 +65,13 @@ public class MuteHandler implements IConfigurationChanged
 
 	public void mutePlayer(String playerName)
 	{
-		mutedPlayers.put(playerName, MuteDatabase.END_OF_TIME);
-		muteDatabase.mutePlayer(playerName);
+		mutePlayer(playerName, false);
+	}
+
+	public void mutePlayer(String playerName, boolean shadow)
+	{
+		mutedPlayers.put(playerName, new MuteEntry(playerName, MuteDatabase.END_OF_TIME, shadow));
+		muteDatabase.mutePlayer(playerName, shadow);
 	}
 
 	public void unMutePlayer(ICommandExecutor player)
@@ -74,7 +92,7 @@ public class MuteHandler implements IConfigurationChanged
 		loadMuteList();
 	}
 
-	private final Map<String, DateTime> mutedPlayers = new ConcurrentHashMap<String, DateTime>(0);
+	private final Map<String, MuteEntry> mutedPlayers = new ConcurrentHashMap<String, MuteEntry>(0);
 	private final MuteDatabase muteDatabase;
 	private final IConsole console;
 	private boolean serverMute;

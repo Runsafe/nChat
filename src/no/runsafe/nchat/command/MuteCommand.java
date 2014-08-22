@@ -2,6 +2,7 @@ package no.runsafe.nchat.command;
 
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.BooleanArgument;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.Period;
 import no.runsafe.framework.api.command.argument.Player;
@@ -16,7 +17,7 @@ public class MuteCommand extends ExecutableCommand
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
-			new Player().require(), new Period()
+			new Player().require(), new BooleanArgument("shadow"), new Period()
 		);
 		this.console = console;
 		this.muteHandler = muteHandler;
@@ -32,12 +33,16 @@ public class MuteCommand extends ExecutableCommand
 		if (player != null && mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^
 
-		console.logInformation(String.format("%s muted %s", executor.getName(), mutePlayer.getName()));
+		boolean isShadow = parameters.getRequired("shadow");
+		String isShadowText = isShadow ? "shadow-" : "";
+		console.logInformation(String.format("%s %smuted %s", executor.getName(), isShadowText, mutePlayer.getName()));
+
 		if (duration != null)
-			muteHandler.tempMutePlayer(mutePlayer, duration);
+			muteHandler.tempMutePlayer(mutePlayer, duration, isShadow);
 		else
-			muteHandler.mutePlayer(mutePlayer);
-		return String.format("&bMuted %s.", mutePlayer.getPrettyName());
+			muteHandler.mutePlayer(mutePlayer.getName(), isShadow);
+
+		return String.format("&bYou %smuted %s.", isShadowText, mutePlayer.getPrettyName());
 	}
 
 	private final IConsole console;
