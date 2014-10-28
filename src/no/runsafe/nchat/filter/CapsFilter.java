@@ -31,6 +31,6 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 
 	private boolean isEnabled;
 	private int percent;
-	private static final Pattern IGNORE = Pattern.compile("[\\s.,-/]+");
+	private static final Pattern IGNORE = Pattern.compile("[^A-Za-z]+");
 	private static final Pattern NONCAPS = Pattern.compile("[^A-Z]+");
 }
