@@ -33,7 +33,7 @@ public class MuteCommand extends ExecutableCommand
 		if (player != null && mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^
 
-		boolean isShadow = (Boolean) parameters.getRequired("shadow");
+		boolean isShadow = parameters.getRequired("shadow");
 		String isShadowText = isShadow ? "shadow-" : "";
 		console.logInformation(String.format("%s %smuted %s", executor.getName(), isShadowText, mutePlayer.getName()));
 
