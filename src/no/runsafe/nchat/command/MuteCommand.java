@@ -5,20 +5,19 @@ import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.Period;
 import no.runsafe.framework.api.command.argument.Player;
-import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 
 
 public class MuteCommand extends ExecutableCommand
 {
-	public MuteCommand(IConsole console, MuteHandler muteHandler)
+	public MuteCommand(MuteHandler muteHandler)
 	{
 		super(
 			"mute", "Suppress chat messages from a player", "runsafe.nchat.mute",
 			new Player().require(), new Period()
 		);
-		this.console = console;
+
 		this.muteHandler = muteHandler;
 	}
 
@@ -40,6 +39,5 @@ public class MuteCommand extends ExecutableCommand
 		return String.format("&bYou muted %s.", mutePlayer.getPrettyName());
 	}
 
-	private final IConsole console;
 	private final MuteHandler muteHandler;
 }
