@@ -35,7 +35,7 @@ public class MuteDatabase extends Repository
 			"CREATE TABLE `nchat_muted` (" +
 				"`player` VARCHAR(255) NULL," +
 				"PRIMARY KEY (`player`)" +
-				')'
+			')'
 		);
 		update.addQueries("ALTER TABLE `nchat_muted` ADD COLUMN temp_mute datetime NULL");
 		return update;
