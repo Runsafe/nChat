@@ -1,10 +1,12 @@
 package no.runsafe.nchat.database;
 
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.log.IDebug;
+import no.runsafe.framework.api.player.IPlayer;
 import org.joda.time.DateTime;
 
 import javax.annotation.Nonnull;
@@ -13,9 +15,10 @@ import java.util.Map;
 
 public class MuteDatabase extends Repository
 {
-	public MuteDatabase(IDebug console)
+	public MuteDatabase(IDebug console, IServer server)
 	{
 		debugger = console;
+		this.server = server;
 	}
 
 	@Override
@@ -41,35 +44,36 @@ public class MuteDatabase extends Repository
 		return update;
 	}
 
-	public Map<String, DateTime> getMuteList()
+	public Map<IPlayer, DateTime> getMuteList()
 	{
-		Map<String, DateTime> mutes = new HashMap<String, DateTime>(0);
+		Map<IPlayer, DateTime> mutes = new HashMap<>(0);
 		for (IRow row : database.query("SELECT player, temp_mute FROM nchat_muted"))
 		{
 			DateTime expiry = row.DateTime("temp_mute");
 			if (row.String("player") != null)
-				mutes.put(row.String("player"), expiry == null ? END_OF_TIME : expiry);
+				mutes.put(server.getPlayer(row.String("player")), expiry == null ? END_OF_TIME : expiry);
 		}
 		return mutes;
 	}
 
-	public void mutePlayer(String playerName)
+	public void mutePlayer(IPlayer player)
 	{
-		debugger.debugFine("Updating mute database with " + playerName);
-		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", playerName);
+		debugger.debugFine("Updating mute database with " + player.getName());
+		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", player.getName());
 	}
 
-	public void tempMutePlayer(String playerName, DateTime expire)
+	public void tempMutePlayer(IPlayer player, DateTime expire)
 	{
-		database.update("INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)", playerName, expire);
+		database.update("INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)", player.getName(), expire);
 	}
 
-	public void unMutePlayer(String playerName)
+	public void unMutePlayer(IPlayer player)
 	{
-		debugger.debugFine("Updating mute database with removal of " + playerName);
-		database.execute("DELETE FROM nchat_muted WHERE player = ?", playerName);
+		debugger.debugFine("Updating mute database with removal of " + player.getName());
+		database.execute("DELETE FROM nchat_muted WHERE player = ?", player.getName());
 	}
 
 	private final IDebug debugger;
+	private final IServer server;
 	public static final DateTime END_OF_TIME = new DateTime(Long.MAX_VALUE);
 }

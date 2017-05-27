@@ -1,9 +1,9 @@
 package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.database.MuteDatabase;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -26,45 +26,30 @@ public class MuteHandler implements IConfigurationChanged
 		console.logInformation("Loaded %d mutes from database.", mutedPlayers.size());
 	}
 
-	public boolean isPlayerMuted(ICommandExecutor player)
+	public boolean isPlayerMuted(IPlayer player)
 	{
-		return isPlayerMuted(player.getName()) && !player.hasPermission("runsafe.nchat.mute.exempt");
+		if (mutedPlayers.containsKey(player) && mutedPlayers.get(player).isBeforeNow())
+			unMutePlayer(player);
+		return (serverMute || mutedPlayers.containsKey(player)) && !player.hasPermission("runsafe.nchat.mute.exempt");
 	}
 
-	private boolean isPlayerMuted(String playerName)
-	{
-		if (mutedPlayers.containsKey(playerName) && mutedPlayers.get(playerName).isBeforeNow())
-			unMutePlayer(playerName);
-		return serverMute || mutedPlayers.containsKey(playerName);
-	}
-
-	public void tempMutePlayer(ICommandExecutor player, Period expire)
+	public void tempMutePlayer(IPlayer player, Period expire)
 	{
 		DateTime limit = DateTime.now().plus(expire);
-		mutedPlayers.put(player.getName(), limit);
-		muteDatabase.tempMutePlayer(player.getName(), limit);
+		mutedPlayers.put(player, limit);
+		muteDatabase.tempMutePlayer(player, limit);
 	}
 
-	public void mutePlayer(ICommandExecutor player)
+	public void mutePlayer(IPlayer player)
 	{
-		mutePlayer(player.getName());
+		mutedPlayers.put(player, MuteDatabase.END_OF_TIME);
+		muteDatabase.mutePlayer(player);
 	}
 
-	public void mutePlayer(String playerName)
+	public void unMutePlayer(IPlayer player)
 	{
-		mutedPlayers.put(playerName, MuteDatabase.END_OF_TIME);
-		muteDatabase.mutePlayer(playerName);
-	}
-
-	public void unMutePlayer(ICommandExecutor player)
-	{
-		unMutePlayer(player.getName());
-	}
-
-	public void unMutePlayer(String playerName)
-	{
-		mutedPlayers.remove(playerName);
-		muteDatabase.unMutePlayer(playerName);
+		mutedPlayers.remove(player);
+		muteDatabase.unMutePlayer(player);
 	}
 
 	@Override
@@ -74,7 +59,7 @@ public class MuteHandler implements IConfigurationChanged
 		loadMuteList();
 	}
 
-	private final Map<String, DateTime> mutedPlayers = new ConcurrentHashMap<String, DateTime>(0);
+	private final Map<IPlayer, DateTime> mutedPlayers = new ConcurrentHashMap<>(0);
 	private final MuteDatabase muteDatabase;
 	private final IConsole console;
 	private boolean serverMute;

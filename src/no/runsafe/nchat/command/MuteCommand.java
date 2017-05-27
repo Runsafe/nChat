@@ -34,7 +34,7 @@ public class MuteCommand extends ExecutableCommand
 		if (duration != null)
 			muteHandler.tempMutePlayer(mutePlayer, duration);
 		else
-			muteHandler.mutePlayer(mutePlayer.getName());
+			muteHandler.mutePlayer(mutePlayer);
 
 		return String.format("&bYou muted %s.", mutePlayer.getPrettyName());
 	}
