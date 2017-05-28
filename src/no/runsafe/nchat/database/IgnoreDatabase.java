@@ -39,6 +39,10 @@ public class IgnoreDatabase extends Repository
 			')'
 		);
 		update.addQueries("DELETE FROM `nchat_ignore` WHERE player like `ignore`");
+
+		update.addQueries(String.format("ALTER TABLE `%s` MODIFY COLUMN player VARCHAR(36)", getTableName()));
+		update.addQueries(String.format("ALTER TABLE `%s` MODIFY COLUMN ignore VARCHAR(36)", getTableName()));
+
 		return update;
 	}
 
