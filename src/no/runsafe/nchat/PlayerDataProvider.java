@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PlayerDataProvider implements IPlayerDataProvider
 {
@@ -25,11 +26,15 @@ public class PlayerDataProvider implements IPlayerDataProvider
 
 		data.put("nchat.isMuted", muteHandler.isPlayerMuted(player) ? "True" : "False");
 
-		List<String> ignoringPlayers = ignoreHandler.getPlayersIgnoring(player);
-		data.put("nchat.ignoredBy", ignoringPlayers.isEmpty() ? "Nobody" : StringUtils.join(ignoringPlayers, ", "));
+		List<IPlayer> ignoringPlayers = ignoreHandler.getPlayersIgnoring(player);
+		data.put("nchat.ignoredBy", ignoringPlayers.isEmpty() ? "Nobody" : StringUtils.join(
+			ignoringPlayers.stream().map(IPlayer::getName).collect(Collectors.toList()), ", "
+		));
 
-		List<String> ignoredPlayers = ignoreHandler.getIgnoredPlayers(player);
-		data.put("nchat.ignoring", ignoredPlayers.isEmpty() ? "Nobody" : StringUtils.join(ignoredPlayers, ", "));
+		List<IPlayer> ignoredPlayers = ignoreHandler.getIgnoredPlayers(player);
+		data.put("nchat.ignoring", ignoredPlayers.isEmpty() ? "Nobody" : StringUtils.join(
+			ignoredPlayers.stream().map(IPlayer::getName).collect(Collectors.toList()), ", "
+		));
 
 		return data;
 	}

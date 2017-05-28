@@ -1,7 +1,7 @@
 package no.runsafe.nchat.chat;
 
-import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.IServerReady;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.database.IgnoreDatabase;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class IgnoreHandler implements IServerReady
 	public IgnoreHandler(IgnoreDatabase database)
 	{
 		this.database = database;
-		ignoreList = new HashMap<String, List<String>>(0);
+		ignoreList = new HashMap<>(0);
 	}
 
 	@Override
@@ -29,15 +29,14 @@ public class IgnoreHandler implements IServerReady
 	 * @param player       The player who will ignore.
 	 * @param ignorePlayer The player to be ignored.
 	 */
-	public void ignorePlayer(ICommandExecutor player, ICommandExecutor ignorePlayer)
+	public void ignorePlayer(IPlayer player, IPlayer ignorePlayer)
 	{
 		database.ignorePlayer(player, ignorePlayer);
-		String ignorePlayerName = ignorePlayer.getName();
 
-		if (!ignoreList.containsKey(ignorePlayerName))
-			ignoreList.put(ignorePlayerName, new ArrayList<String>(1));
+		if (!ignoreList.containsKey(ignorePlayer))
+			ignoreList.put(ignorePlayer, new ArrayList<>(1));
 
-		ignoreList.get(ignorePlayerName).add(player.getName());
+		ignoreList.get(ignorePlayer).add(player);
 	}
 
 	/**
@@ -46,19 +45,18 @@ public class IgnoreHandler implements IServerReady
 	 * @param player       The player to perform the removal.
 	 * @param ignorePlayer The player to be removed.
 	 */
-	public void removeIgnorePlayer(ICommandExecutor player, ICommandExecutor ignorePlayer)
+	public void removeIgnorePlayer(IPlayer player, IPlayer ignorePlayer)
 	{
 		database.removeIgnorePlayer(player, ignorePlayer);
-		String ignorePlayerName = ignorePlayer.getName();
 
-		if (ignoreList.containsKey(ignorePlayerName))
+		if (ignoreList.containsKey(ignorePlayer))
 		{
-			List<String> playersIgnoring = ignoreList.get(ignorePlayerName);
-			playersIgnoring.remove(player.getName());
+			List<IPlayer> playersIgnoring = ignoreList.get(ignorePlayer);
+			playersIgnoring.remove(player);
 
 			// Check if we still have anyone ignoring the player, no need to keep empty lists.
 			if (playersIgnoring.isEmpty())
-				ignoreList.remove(ignorePlayerName);
+				ignoreList.remove(ignorePlayer);
 		}
 	}
 
@@ -69,16 +67,10 @@ public class IgnoreHandler implements IServerReady
 	 * @param ignorePlayer The player who is being ignored.
 	 * @return True if the player is being ignored.
 	 */
-	public boolean playerIsIgnoring(ICommandExecutor player, ICommandExecutor ignorePlayer)
+	public boolean playerIsIgnoring(IPlayer player, IPlayer ignorePlayer)
 	{
-		return playerIsIgnoring(player.getName(), ignorePlayer.getName());
+		return ignoreList.containsKey(ignorePlayer) && ignoreList.get(ignorePlayer).contains(player);
 	}
-
-	public boolean playerIsIgnoring(String playerName, String ignorePlayerName)
-	{
-		return ignoreList.containsKey(ignorePlayerName) && ignoreList.get(ignorePlayerName).contains(playerName);
-	}
-
 
 	/**
 	 * Returns a list of players who are ignoring a player.
@@ -86,13 +78,12 @@ public class IgnoreHandler implements IServerReady
 	 * @param ignorePlayer The player to query for.
 	 * @return A list of player names.
 	 */
-	public List<String> getPlayersIgnoring(ICommandExecutor ignorePlayer)
+	public List<IPlayer> getPlayersIgnoring(IPlayer ignorePlayer)
 	{
-		String ignoreName = ignorePlayer.getName();
-		if (ignoreList.containsKey(ignoreName))
-			return ignoreList.get(ignoreName);
+		if (ignoreList.containsKey(ignorePlayer))
+			return ignoreList.get(ignorePlayer);
 
-		return new ArrayList<String>(0);
+		return new ArrayList<>(0);
 	}
 
 	/**
@@ -101,17 +92,17 @@ public class IgnoreHandler implements IServerReady
 	 * @param player The player who's list to return.
 	 * @return A list of players being ignored.
 	 */
-	public List<String> getIgnoredPlayers(ICommandExecutor player)
+	public List<IPlayer> getIgnoredPlayers(IPlayer player)
 	{
-		List<String> ignoredPlayers = new ArrayList<String>(0);
+		List<IPlayer> ignoredPlayers = new ArrayList<>(0);
 
-		for (Map.Entry<String, List<String>> node : ignoreList.entrySet())
-			if (node.getValue().contains(player.getName()))
+		for (Map.Entry<IPlayer, List<IPlayer>> node : ignoreList.entrySet())
+			if (node.getValue().contains(player))
 				ignoredPlayers.add(node.getKey());
 
 		return ignoredPlayers;
 	}
 
 	private final IgnoreDatabase database;
-	private final HashMap<String, List<String>> ignoreList;
+	private final HashMap<IPlayer, List<IPlayer>> ignoreList;
 }

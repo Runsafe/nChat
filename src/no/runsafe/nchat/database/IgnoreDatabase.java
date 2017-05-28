@@ -1,7 +1,9 @@
 package no.runsafe.nchat.database;
 
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.database.*;
+import no.runsafe.framework.api.player.IPlayer;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -11,6 +13,11 @@ import java.util.List;
 
 public class IgnoreDatabase extends Repository
 {
+	public IgnoreDatabase(IServer server)
+	{
+		this.server = server;
+	}
+
 	@Override
 	@Nonnull
 	public String getTableName()
@@ -35,29 +42,31 @@ public class IgnoreDatabase extends Repository
 		return update;
 	}
 
-	public HashMap<String, List<String>> getIgnoreList()
+	public HashMap<IPlayer, List<IPlayer>> getIgnoreList()
 	{
-		HashMap<String, List<String>> ignoreList = new LinkedHashMap<String, List<String>>(1);
+		HashMap<IPlayer, List<IPlayer>> ignoreList = new LinkedHashMap<>(1);
 		ISet result = database.query("SELECT `player`, `ignore` FROM nchat_ignore");
 		for (IRow row : result)
 		{
-			String ignoredPlayer = row.String("ignore");
+			IPlayer ignoredPlayer = server.getPlayer(row.String("ignore"));
 			if (!ignoreList.containsKey(ignoredPlayer))
-				ignoreList.put(ignoredPlayer, new ArrayList<String>(1));
+				ignoreList.put(ignoredPlayer, new ArrayList<>(1));
 
-			ignoreList.get(ignoredPlayer).add(row.String("player"));
+			ignoreList.get(ignoredPlayer).add(server.getPlayer(row.String("player")));
 		}
 
 		return ignoreList;
 	}
 
-	public void ignorePlayer(ICommandExecutor player, ICommandExecutor ignore)
+	public void ignorePlayer(IPlayer player, IPlayer ignore)
 	{
 		database.update("INSERT IGNORE INTO nchat_ignore (`player`, `ignore`) VALUES(?, ?)", player.getName(), ignore.getName());
 	}
 
-	public void removeIgnorePlayer(ICommandExecutor player, ICommandExecutor ignore)
+	public void removeIgnorePlayer(IPlayer player, IPlayer ignore)
 	{
 		database.update("DELETE FROM nchat_ignore WHERE `player` = ? AND `ignore` = ?", player.getName(), ignore.getName());
 	}
+
+	private final IServer server;
 }
