@@ -18,15 +18,15 @@ public class IgnoreDatabase extends Repository
 		this.server = server;
 	}
 
-	@Override
 	@Nonnull
+	@Override
 	public String getTableName()
 	{
 		return "nchat_ignore";
 	}
 
-	@Override
 	@Nonnull
+	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
 		ISchemaUpdate update = new SchemaUpdate();

@@ -21,15 +21,15 @@ public class MuteDatabase extends Repository
 		this.server = server;
 	}
 
-	@Override
 	@Nonnull
+	@Override
 	public String getTableName()
 	{
 		return "nchat_muted";
 	}
 
-	@Override
 	@Nonnull
+	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
 		ISchemaUpdate update = new SchemaUpdate();
