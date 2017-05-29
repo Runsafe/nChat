@@ -43,6 +43,8 @@ public class MuteDatabase extends Repository
 		update.addQueries("ALTER TABLE `nchat_muted` ADD COLUMN temp_mute datetime NULL");
 		update.addQueries("ALTER TABLE `nchat_muted` ADD COLUMN `shadow` TINYINT(1) NOT NULL DEFAULT '0' AFTER `temp_mute`");
 
+		update.addQueries(String.format("ALTER TABLE `%s` DROP COLUMN `shadow`", getTableName()));
+
 		return update;
 	}
 
