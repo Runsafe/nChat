@@ -1,12 +1,12 @@
 package no.runsafe.nchat.database;
 
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.server.IPlayerProvider;
 import org.joda.time.DateTime;
 
 import javax.annotation.Nonnull;
@@ -15,10 +15,10 @@ import java.util.Map;
 
 public class MuteDatabase extends Repository
 {
-	public MuteDatabase(IDebug console, IServer server)
+	public MuteDatabase(IDebug console, IPlayerProvider playerProvider)
 	{
 		debugger = console;
-		this.server = server;
+		this.playerProvider = playerProvider;
 	}
 
 	@Nonnull
@@ -55,7 +55,7 @@ public class MuteDatabase extends Repository
 		{
 			DateTime expiry = row.DateTime("temp_mute");
 			if (row.String("player") != null)
-				mutes.put(server.getPlayer(row.String("player")), expiry == null ? END_OF_TIME : expiry);
+				mutes.put(playerProvider.getPlayer(row.String("player")), expiry == null ? END_OF_TIME : expiry);
 		}
 		return mutes;
 	}
@@ -78,6 +78,6 @@ public class MuteDatabase extends Repository
 	}
 
 	private final IDebug debugger;
-	private final IServer server;
+	private final IPlayerProvider playerProvider;
 	public static final DateTime END_OF_TIME = new DateTime(Long.MAX_VALUE);
 }
