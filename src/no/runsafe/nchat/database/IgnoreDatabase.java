@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class IgnoreDatabase extends Repository
 {
@@ -41,7 +42,19 @@ public class IgnoreDatabase extends Repository
 		update.addQueries("DELETE FROM `nchat_ignore` WHERE player like `ignore`");
 
 		update.addQueries(
-			String.format("ALTER TABLE `%s` MODIFY COLUMN `player` VARCHAR(36), MODIFY COLUMN `ignore` VARCHAR(36)", getTableName())
+			String.format("ALTER TABLE `%s` MODIFY COLUMN `player` VARCHAR(36), MODIFY COLUMN `ignore` VARCHAR(36)", getTableName()),
+			String.format( // Ignored player names -> Unique IDs
+				"UPDATE IGNORE `%s` SET `ignore` = " +
+					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`ignore`), `ignore`) " +
+					"WHERE length(`ignore`) != 36",
+				getTableName(), getTableName()
+			),
+			String.format( // Ignoring player names -> Unique IDs
+				"UPDATE IGNORE `%s` SET `player` = " +
+					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`player`), `player`) " +
+					"WHERE length(`player`) != 36",
+				getTableName(), getTableName()
+			)
 		);
 
 		return update;
@@ -53,11 +66,11 @@ public class IgnoreDatabase extends Repository
 		ISet result = database.query("SELECT `player`, `ignore` FROM nchat_ignore");
 		for (IRow row : result)
 		{
-			IPlayer ignoredPlayer = server.getPlayer(row.String("ignore"));
+			IPlayer ignoredPlayer = server.getPlayer(UUID.fromString(row.String("ignore")));
 			if (!ignoreList.containsKey(ignoredPlayer))
 				ignoreList.put(ignoredPlayer, new ArrayList<>(1));
 
-			ignoreList.get(ignoredPlayer).add(server.getPlayer(row.String("player")));
+			ignoreList.get(ignoredPlayer).add(server.getPlayer(UUID.fromString(row.String("player"))));
 		}
 
 		return ignoreList;
@@ -65,12 +78,12 @@ public class IgnoreDatabase extends Repository
 
 	public void ignorePlayer(IPlayer player, IPlayer ignore)
 	{
-		database.update("INSERT IGNORE INTO nchat_ignore (`player`, `ignore`) VALUES(?, ?)", player.getName(), ignore.getName());
+		database.update("INSERT IGNORE INTO nchat_ignore (`player`, `ignore`) VALUES(?, ?)", player, ignore);
 	}
 
 	public void removeIgnorePlayer(IPlayer player, IPlayer ignore)
 	{
-		database.update("DELETE FROM nchat_ignore WHERE `player` = ? AND `ignore` = ?", player.getName(), ignore.getName());
+		database.update("DELETE FROM nchat_ignore WHERE `player` = ? AND `ignore` = ?", player, ignore);
 	}
 
 	private final IServer server;
