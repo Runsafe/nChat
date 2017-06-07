@@ -1,7 +1,6 @@
 package no.runsafe.nchat.database;
 
 import no.runsafe.framework.api.IServer;
-import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.database.*;
 import no.runsafe.framework.api.player.IPlayer;
 
