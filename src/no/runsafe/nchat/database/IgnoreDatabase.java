@@ -1,8 +1,8 @@
 package no.runsafe.nchat.database;
 
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.database.*;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.server.IPlayerProvider;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ import java.util.UUID;
 
 public class IgnoreDatabase extends Repository
 {
-	public IgnoreDatabase(IServer server)
+	public IgnoreDatabase(IPlayerProvider playerProvider)
 	{
-		this.server = server;
+		this.playerProvider = playerProvider;
 	}
 
 	@Nonnull
@@ -65,11 +65,11 @@ public class IgnoreDatabase extends Repository
 		ISet result = database.query("SELECT `player`, `ignore` FROM nchat_ignore");
 		for (IRow row : result)
 		{
-			IPlayer ignoredPlayer = server.getPlayer(UUID.fromString(row.String("ignore")));
+			IPlayer ignoredPlayer = playerProvider.getPlayer(UUID.fromString(row.String("ignore")));
 			if (!ignoreList.containsKey(ignoredPlayer))
 				ignoreList.put(ignoredPlayer, new ArrayList<>(1));
 
-			ignoreList.get(ignoredPlayer).add(server.getPlayer(UUID.fromString(row.String("player"))));
+			ignoreList.get(ignoredPlayer).add(playerProvider.getPlayer(UUID.fromString(row.String("player"))));
 		}
 
 		return ignoreList;
@@ -85,5 +85,5 @@ public class IgnoreDatabase extends Repository
 		database.update("DELETE FROM nchat_ignore WHERE `player` = ? AND `ignore` = ?", player, ignore);
 	}
 
-	private final IServer server;
+	private final IPlayerProvider playerProvider;
 }
