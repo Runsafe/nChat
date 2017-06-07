@@ -22,7 +22,7 @@ public class PlayerDataProvider implements IPlayerDataProvider
 	@Override
 	public Map<String, String> GetPlayerData(IPlayer player)
 	{
-		Map<String, String> data = new HashMap<String, String>(3);
+		Map<String, String> data = new HashMap<>(3);
 
 		data.put("nchat.isMuted", muteHandler.isPlayerMuted(player) ? "True" : "False");
 

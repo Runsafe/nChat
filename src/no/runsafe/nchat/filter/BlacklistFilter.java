@@ -109,7 +109,7 @@ public class BlacklistFilter implements ISpamFilter, IConfigurationChanged
 		}
 	}
 
-	private final Collection<String> blacklist = new ArrayList<String>(0);
+	private final Collection<String> blacklist = new ArrayList<>(0);
 	private final File filePath;
 	private final IConsole output;
 }

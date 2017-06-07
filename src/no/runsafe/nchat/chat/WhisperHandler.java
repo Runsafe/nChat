@@ -15,7 +15,7 @@ public class WhisperHandler
 	public WhisperHandler(IServer server, ChannelManager manager)
 	{
 		this.manager = manager;
-		lastWhisperList = new HashMap<String, IChatChannel>(0);
+		lastWhisperList = new HashMap<>(0);
 	}
 
 	public void sendWhisper(ICommandExecutor sender, ICommandExecutor target, String message)

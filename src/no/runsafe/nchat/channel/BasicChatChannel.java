@@ -110,6 +110,6 @@ public class BasicChatChannel implements IChatChannel
 
 	protected final IConsole console;
 	protected final IChannelManager manager;
-	protected final Map<String, ICommandExecutor> members = new HashMap<String, ICommandExecutor>();
+	protected final Map<String, ICommandExecutor> members = new HashMap<>();
 	private final String name;
 }
