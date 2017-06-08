@@ -49,14 +49,11 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 		if (cmp == 0)
 			return null;
 
-		if (player1 instanceof IPlayer && player2 instanceof IPlayer)
-		{
-			if (ignoreHandler.playerIsIgnoring((IPlayer) player1, (IPlayer) player2))
-				return null;
-
-			if (ignoreHandler.playerIsIgnoring((IPlayer) player2, (IPlayer) player1))
-				return null;
-		}
+		if ((player1 instanceof IPlayer && player2 instanceof IPlayer)
+			&& (ignoreHandler.playerIsIgnoring((IPlayer) player1, (IPlayer) player2)
+			|| ignoreHandler.playerIsIgnoring((IPlayer) player2, (IPlayer) player1))
+		)
+			return null;
 
 		String name = "%" + (cmp < 0 ? player1Name : player2Name) + "-" + (cmp > 0 ? player1Name : player2Name);
 		if (!channels.containsKey(name))
