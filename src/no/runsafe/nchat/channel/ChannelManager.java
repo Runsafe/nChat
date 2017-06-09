@@ -44,10 +44,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public IChatChannel getPrivateChannel(ICommandExecutor player1, ICommandExecutor player2)
 	{
-		String player1Name = player1.getName();
-		String player2Name = player2.getName();
-		int cmp = player1Name.compareToIgnoreCase(player2Name);
-		if (cmp == 0)
+		if (player1.equals(player2))
 			return null;
 
 		if (player1 instanceof IPlayer && player2 instanceof IPlayer)
