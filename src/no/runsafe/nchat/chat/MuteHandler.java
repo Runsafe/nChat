@@ -4,6 +4,7 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.internal.wrapper.player.BukkitPlayer;
 import no.runsafe.nchat.database.MuteDatabase;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -28,6 +29,10 @@ public class MuteHandler implements IConfigurationChanged
 
 	public boolean isPlayerMuted(IPlayer player)
 	{
+		// Check for fake players
+		if (((BukkitPlayer) player).getRaw() == null)
+			return false;
+
 		if (mutedPlayers.containsKey(player) && mutedPlayers.get(player).isBeforeNow())
 			unMutePlayer(player);
 		return (serverMute || mutedPlayers.containsKey(player)) && !player.hasPermission("runsafe.nchat.mute.exempt");

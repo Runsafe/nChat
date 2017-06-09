@@ -6,6 +6,7 @@ import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.hook.IGlobalPluginAPI;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.internal.wrapper.player.BukkitPlayer;
 import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.filter.IChatFilter;
@@ -88,7 +89,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public String filter(ICommandExecutor player, String incoming)
 	{
-		if (!(player instanceof IPlayer))
+		if (!(player instanceof IPlayer) || ((BukkitPlayer) player).getRaw() == null)
 			return incoming;
 
 		String message = incoming;
