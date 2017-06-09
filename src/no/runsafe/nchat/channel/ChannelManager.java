@@ -6,6 +6,7 @@ import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.hook.IGlobalPluginAPI;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.internal.wrapper.player.BukkitPlayer;
 import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.filter.IChatFilter;
@@ -43,17 +44,14 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public IChatChannel getPrivateChannel(ICommandExecutor player1, ICommandExecutor player2)
 	{
-		String player1Name = player1.getName();
-		String player2Name = player2.getName();
-		int cmp = player1Name.compareToIgnoreCase(player2Name);
-		if (cmp == 0)
+		if (player1.equals(player2))
 			return null;
 
 		if (player1 instanceof IPlayer && player2 instanceof IPlayer)
 			if (ignoreHandler.eitherPlayerIsIgnoring((IPlayer) player1, (IPlayer) player2))
 				return null;
 
-		String name = "%" + (cmp < 0 ? player1Name : player2Name) + "-" + (cmp > 0 ? player1Name : player2Name);
+		String name = "%" + (player1.hashCode()) + (player2.hashCode());
 		if (!channels.containsKey(name))
 		{
 			IChatChannel channel = new PrivateChannel(this, console, name, player1, player2);
@@ -88,7 +86,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public String filter(ICommandExecutor player, String incoming)
 	{
-		if (!(player instanceof IPlayer))
+		if (!(player instanceof IPlayer) || ((BukkitPlayer) player).getRaw() == null)
 			return incoming;
 
 		String message = incoming;
