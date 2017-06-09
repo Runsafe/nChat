@@ -5,28 +5,32 @@ import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.log.IDebug;
+import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.server.IPlayerProvider;
 import org.joda.time.DateTime;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class MuteDatabase extends Repository
 {
-	public MuteDatabase(IDebug console)
+	public MuteDatabase(IDebug console, IPlayerProvider playerProvider)
 	{
 		debugger = console;
+		this.playerProvider = playerProvider;
 	}
 
-	@Override
 	@Nonnull
+	@Override
 	public String getTableName()
 	{
 		return "nchat_muted";
 	}
 
-	@Override
 	@Nonnull
+	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
 		ISchemaUpdate update = new SchemaUpdate();
@@ -35,41 +39,55 @@ public class MuteDatabase extends Repository
 			"CREATE TABLE `nchat_muted` (" +
 				"`player` VARCHAR(255) NULL," +
 				"PRIMARY KEY (`player`)" +
-				')'
+			')'
 		);
 		update.addQueries("ALTER TABLE `nchat_muted` ADD COLUMN temp_mute datetime NULL");
+		update.addQueries("ALTER TABLE `nchat_muted` ADD COLUMN `shadow` TINYINT(1) NOT NULL DEFAULT '0' AFTER `temp_mute`");
+
+		update.addQueries(
+			String.format("ALTER TABLE `%s` DROP COLUMN `shadow`", getTableName()),
+			String.format( // Muted player names -> Unique IDs
+				"UPDATE IGNORE `%s` SET `player` = " +
+					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`player`), `player`) " +
+					"WHERE length(`player`) != 36",
+				getTableName(), getTableName()
+			)
+		);
+
 		return update;
 	}
 
-	public Map<String, DateTime> getMuteList()
+	public Map<IPlayer, DateTime> getMuteList()
 	{
-		Map<String, DateTime> mutes = new HashMap<String, DateTime>(0);
+		Map<IPlayer, DateTime> mutes = new HashMap<>(0);
 		for (IRow row : database.query("SELECT player, temp_mute FROM nchat_muted"))
 		{
 			DateTime expiry = row.DateTime("temp_mute");
-			if (row.String("player") != null)
-				mutes.put(row.String("player"), expiry == null ? END_OF_TIME : expiry);
+			String player = row.String("player");
+			if (player != null && player.length() == 36)
+				mutes.put(playerProvider.getPlayer(UUID.fromString(player)), expiry == null ? END_OF_TIME : expiry);
 		}
 		return mutes;
 	}
 
-	public void mutePlayer(String playerName)
+	public void mutePlayer(IPlayer player)
 	{
-		debugger.debugFine("Updating mute database with " + playerName);
-		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", playerName);
+		debugger.debugFine("Updating mute database with " + player.getName());
+		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", player);
 	}
 
-	public void tempMutePlayer(String playerName, DateTime expire)
+	public void tempMutePlayer(IPlayer player, DateTime expire)
 	{
-		database.update("INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)", playerName, expire);
+		database.update("INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)", player, expire);
 	}
 
-	public void unMutePlayer(String playerName)
+	public void unMutePlayer(IPlayer player)
 	{
-		debugger.debugFine("Updating mute database with removal of " + playerName);
-		database.execute("DELETE FROM nchat_muted WHERE player = ?", playerName);
+		debugger.debugFine("Updating mute database with removal of " + player.getName());
+		database.execute("DELETE FROM nchat_muted WHERE player = ?", player);
 	}
 
 	private final IDebug debugger;
+	private final IPlayerProvider playerProvider;
 	public static final DateTime END_OF_TIME = new DateTime(Long.MAX_VALUE);
 }

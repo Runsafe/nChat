@@ -34,7 +34,7 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 			}
 			else
 			{
-				cooldowns.put(playerName, new ArrayList<String>(1));
+				cooldowns.put(playerName, new ArrayList<>(1));
 			}
 
 			cooldowns.get(playerName).add(message.toLowerCase());
@@ -62,6 +62,6 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 
 	private boolean isEnabled;
 	private int cooldown;
-	private final ConcurrentHashMap<String, List<String>> cooldowns = new ConcurrentHashMap<String, List<String>>();
+	private final ConcurrentHashMap<String, List<String>> cooldowns = new ConcurrentHashMap<>();
 	private final IScheduler scheduler;
 }

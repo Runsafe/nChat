@@ -1,7 +1,6 @@
 package no.runsafe.nchat.emotes;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.event.player.IPlayerCommandPreprocessEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
@@ -9,6 +8,7 @@ import no.runsafe.framework.api.filesystem.IPluginDataFile;
 import no.runsafe.framework.api.filesystem.IPluginFileManager;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.server.IPlayerProvider;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreprocessEvent;
 import no.runsafe.nchat.channel.IChatChannel;
 import no.runsafe.nchat.chat.EmoteEvent;
@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
-	public EmoteHandler(IPluginFileManager fileManager, IServer server)
+	public EmoteHandler(IPluginFileManager fileManager, IPlayerProvider playerProvider)
 	{
-		this.server = server;
+		this.playerProvider = playerProvider;
 		emoteFile = fileManager.getFile("emotes.txt");
 	}
 
@@ -63,7 +63,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		if (matcher.matches())
 		{
 			EmoteDefinition emote = emotes.get(matcher.group(1));
-			IPlayer targetPlayer = matcher.groupCount() > 2 ? server.getPlayer(matcher.group(3)) : null;
+			IPlayer targetPlayer = matcher.groupCount() > 2 ? playerProvider.getPlayer(matcher.group(3)) : null;
 			if (targetPlayer == null)
 				rateLimitEmote(new EmoteEvent(channel, player, command.toString(), null, emote.getSingleEmote()));
 			else if (targetPlayer instanceof IAmbiguousPlayer)
@@ -105,7 +105,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		emote.Fire();
 	}
 
-	private final IServer server;
+	private final IPlayerProvider playerProvider;
 	private final IPluginDataFile emoteFile;
 	private final Map<String, EmoteDefinition> emotes = new HashMap<String, EmoteDefinition>(0);
 	private final Map<String, List<DateTime>> limiter = new HashMap<String, List<DateTime>>(0);

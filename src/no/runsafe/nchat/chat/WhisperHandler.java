@@ -1,6 +1,5 @@
 package no.runsafe.nchat.chat;
 
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
@@ -12,10 +11,10 @@ import java.util.HashMap;
 
 public class WhisperHandler
 {
-	public WhisperHandler(IServer server, ChannelManager manager)
+	public WhisperHandler(ChannelManager manager)
 	{
 		this.manager = manager;
-		lastWhisperList = new HashMap<String, IChatChannel>(0);
+		lastWhisperList = new HashMap<>(0);
 	}
 
 	public void sendWhisper(ICommandExecutor sender, ICommandExecutor target, String message)

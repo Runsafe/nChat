@@ -49,11 +49,9 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 		if (cmp == 0)
 			return null;
 
-		if (ignoreHandler.playerIsIgnoring(player1Name, player2Name))
-			return null;
-
-		if (ignoreHandler.playerIsIgnoring(player2Name, player1Name))
-			return null;
+		if (player1 instanceof IPlayer && player2 instanceof IPlayer)
+			if (ignoreHandler.eitherPlayerIsIgnoring((IPlayer) player1, (IPlayer) player2))
+				return null;
 
 		String name = "%" + (cmp < 0 ? player1Name : player2Name) + "-" + (cmp > 0 ? player1Name : player2Name);
 		if (!channels.containsKey(name))
@@ -69,7 +67,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	private void registerPrivateChannel(ICommandExecutor player, String channel)
 	{
 		if (!privateChannels.containsKey(player.getName()))
-			privateChannels.put(player.getName(), new ArrayList<String>(1));
+			privateChannels.put(player.getName(), new ArrayList<>(1));
 		privateChannels.get(player.getName()).add(channel);
 	}
 
@@ -153,7 +151,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	public void addChannelToList(ICommandExecutor player, IChatChannel channel)
 	{
 		if (!channelLists.containsKey(player.getName()))
-			channelLists.put(player.getName(), new ArrayList<IChatChannel>(1));
+			channelLists.put(player.getName(), new ArrayList<>(1));
 		channelLists.get(player.getName()).add(channel);
 		int index = channelLists.get(player.getName()).indexOf(channel) + 1;
 		player.sendColouredMessage("Joined channel %d. %s", index, channel.getName());
@@ -257,15 +255,15 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 		chatFormatter.registerLocationTagManip(manipulator);
 	}
 
-	private final Map<String, IChatChannel> channels = new HashMap<String, IChatChannel>(1);
+	private final Map<String, IChatChannel> channels = new HashMap<>(1);
 	private final List<ISpamFilter> inboundFilters;
 	private final List<IChatFilter> outboundFilters;
-	private final List<IChatResponder> chatResponders = new ArrayList<IChatResponder>();
-	private final Map<String, List<IChatChannel>> channelLists = new HashMap<String, List<IChatChannel>>(1);
-	private final Map<String, IChatChannel> defaultChannel = new HashMap<String, IChatChannel>(0);
-	private final Map<String, List<String>> privateChannels = new HashMap<String, List<String>>(0);
+	private final List<IChatResponder> chatResponders = new ArrayList<>();
+	private final Map<String, List<IChatChannel>> channelLists = new HashMap<>(1);
+	private final Map<String, IChatChannel> defaultChannel = new HashMap<>(0);
+	private final Map<String, List<String>> privateChannels = new HashMap<>(0);
 	private final IgnoreHandler ignoreHandler;
 	private final IConsole console;
 	private final ChatFormatter chatFormatter;
-	private final Map<String, DateTime> channelTimeouts = new HashMap<String, DateTime>(0);
+	private final Map<String, DateTime> channelTimeouts = new HashMap<>(0);
 }

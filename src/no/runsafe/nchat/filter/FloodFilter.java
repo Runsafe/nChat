@@ -62,6 +62,6 @@ public class FloodFilter implements ISpamFilter, IConfigurationChanged
 	private boolean isEnabled;
 	private int threshold;
 	private int period;
-	private final ConcurrentHashMap<String, Integer> floodChecks = new ConcurrentHashMap<String, Integer>();
+	private final ConcurrentHashMap<String, Integer> floodChecks = new ConcurrentHashMap<>();
 	private final IScheduler scheduler;
 }

@@ -40,7 +40,7 @@ public class ChannelArgument extends CommandArgumentSpecification<IChatChannel> 
 		List<IChatChannel> channels = manager.getChannels(predecessors[0]);
 		if (channels == null)
 			return null;
-		List<String> values = new ArrayList<String>(channels.size());
+		List<String> values = new ArrayList<>(channels.size());
 		for(IChatChannel channel : channels)
 			values.add(channel.getName());
 		return values;
