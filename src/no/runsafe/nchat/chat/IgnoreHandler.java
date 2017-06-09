@@ -73,6 +73,18 @@ public class IgnoreHandler implements IServerReady
 	}
 
 	/**
+	 * Checks to see if either player is ignoring eachother.
+	 *
+	 * @param playerOne The first player argument.
+	 * @param playerTwo The second player argument.
+	 * @return True if either player is ignoring the other.
+	 */
+	public boolean eitherPlayerIsIgnoring (IPlayer playerOne, IPlayer playerTwo)
+	{
+		return playerIsIgnoring(playerOne, playerTwo) || playerIsIgnoring(playerTwo, playerOne);
+	}
+
+	/**
 	 * Returns a list of players who are ignoring a player.
 	 *
 	 * @param ignorePlayer The player to query for.
