@@ -51,7 +51,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 			if (ignoreHandler.eitherPlayerIsIgnoring((IPlayer) player1, (IPlayer) player2))
 				return null;
 
-		String name = "%" + (player1.hashCode()) + (player2.hashCode());
+		String name = "%" + (player1.hashCode() + player2.hashCode());
 		if (!channels.containsKey(name))
 		{
 			IChatChannel channel = new PrivateChannel(this, console, name, player1, player2);
