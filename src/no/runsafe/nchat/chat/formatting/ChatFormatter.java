@@ -114,7 +114,8 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 	public String formatPlayerName(IPlayer player, String name)
 	{
 		String formatName = playerNameFormat;
-		if (formatName == null) return null;
+		if (formatName == null || name == null)
+			return null;
 
 		String worldName = player.isOnline() && !player.isVanished() && player.getWorld() != null ? player.getWorldName() : "console";
 
