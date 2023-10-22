@@ -62,3 +62,4 @@ channelTags:
   global: '> '
 connect:
   prefix: '&3[RS]'
+chatBridgePort: 19242
