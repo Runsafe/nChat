@@ -19,6 +19,7 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	@Override
 	public void start()
 	{
+		if (!enabled) return;
 		engine = new PipeEngine(console);
 		(new Thread(engine)).start();
 	}
@@ -44,10 +45,12 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		prefix = configuration.getConfigValueAsString("connect.prefix");
+		enabled = configuration.getConfigValueAsBoolean("enableChatBridge");
 	}
 
 	public static String prefix;
 	public static ChannelManager manager;
+	private boolean enabled = false;
 	private IConsole console;
 	private static IOutput output;
 	private static PipeEngine engine;
