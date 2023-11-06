@@ -2,6 +2,7 @@ package no.runsafe.nchat.channel;
 
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
 import no.runsafe.nchat.chat.EmoteEvent;
 import no.runsafe.nchat.connect.PipeHandler;
@@ -72,7 +73,25 @@ public class BasicChatChannel implements IChatChannel
 		console.logInformation(message + " ");
 		PipeHandler.handleMessage(message, name);
 		for (ICommandExecutor member : members.values())
+		{
 			member.sendColouredMessage(message);
+		}
+	}
+
+	@Override
+	public void SendSystemFiltered(String incoming, IPlayer context)
+	{
+		String message = manager.FormatSystem(this, incoming);
+		console.logInformation(message + " ");
+		PipeHandler.handleMessage(message, name);
+		for (ICommandExecutor member : members.values())
+		{
+			if ((member instanceof IPlayer) && ((IPlayer)member).shouldNotSee(context))
+			{
+				continue;
+			}
+			member.sendColouredMessage(message);
+		}
 	}
 
 	@Override

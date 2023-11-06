@@ -1,6 +1,7 @@
 package no.runsafe.nchat.channel;
 
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerChatEvent;
 
 import javax.annotation.Nonnull;
@@ -17,6 +18,8 @@ public interface IChatChannel
 	void Send(RunsafePlayerChatEvent event);
 
 	void SendSystem(String message);
+
+	void SendSystemFiltered(String message, IPlayer context);
 
 	@Nonnull
 	String getName();
