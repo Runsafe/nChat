@@ -62,7 +62,7 @@ public class PipeEngine implements Runnable
 		}
 	}
 
-	private final List<Pipe> pipes = new ArrayList<Pipe>(0);
+	private final List<Pipe> pipes = new ArrayList<>(0);
 	private ServerSocket server;
 	private final IConsole console;
 }

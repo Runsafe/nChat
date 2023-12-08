@@ -19,35 +19,25 @@ public class FloodFilter implements ISpamFilter, IConfigurationChanged
 	@Override
 	public String processString(IPlayer player, String message)
 	{
-		if (isEnabled)
+		if (!isEnabled)
+			return message;
+
+		final String playerName = player.getName();
+		if (!floodChecks.containsKey(playerName))
 		{
-			final String playerName = player.getName();
-			if (floodChecks.containsKey(playerName))
-			{
-				int currentAmount = floodChecks.get(playerName);
-				if (currentAmount >= threshold)
-				{
-					player.sendColouredMessage("&cYou are talking too fast, slow down.");
-					return null;
-				}
-				else
-				{
-					floodChecks.put(playerName, currentAmount + 1);
-				}
-			}
-			else
-			{
-				floodChecks.put(playerName, 1);
-				scheduler.startAsyncTask(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						floodChecks.remove(playerName);
-					}
-				}, period);
-			}
+			floodChecks.put(playerName, 1);
+			scheduler.startAsyncTask(() -> floodChecks.remove(playerName), period);
+			return message;
 		}
+
+		int currentAmount = floodChecks.get(playerName);
+		if (currentAmount >= threshold)
+		{
+			player.sendColouredMessage("&cYou are talking too fast, slow down.");
+			return null;
+		}
+
+		floodChecks.put(playerName, currentAmount + 1);
 		return message;
 	}
 

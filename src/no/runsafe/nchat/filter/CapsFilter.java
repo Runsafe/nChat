@@ -11,14 +11,15 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 	@Override
 	public String processString(IPlayer player, String message)
 	{
-		if (isEnabled)
-		{
-			String check = IGNORE.matcher(message).replaceAll("");
-			String capsed = NONCAPS.matcher(check).replaceAll("");
+		if (!isEnabled)
+			return message;
 
-			if (check.length() > 0 && capsed.length() * 100 / check.length() >= percent)
-				return message.toLowerCase();
-		}
+		String check = IGNORE.matcher(message).replaceAll("");
+		String capsed = NONCAPS.matcher(check).replaceAll("");
+
+		if (!check.isEmpty() && capsed.length() * 100 / check.length() >= percent)
+			return message.toLowerCase();
+
 		return message;
 	}
 

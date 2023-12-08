@@ -49,17 +49,14 @@ public class GlobalChatChannel extends BasicChatChannel implements IPlayerJoinEv
 		if (event.isFake())
 		{
 			SendSystem(leaveServerMessage.replace("#player", event.getPlayer().getPrettyName()));
+			return;
 		}
-		else
-		{
-			SendSystemFiltered(leaveServerMessage.replace("#player", event.getPlayer().getPrettyName()), event.getPlayer());
-		}
-		if(!event.isFake())
-		{
-			manager.removeChannelFromList(event.getPlayer(), this);
-			if (!super.Leave(event.getPlayer()))
-				throw new RuntimeException("Unable to remove %s from global channel");
-		}
+
+		SendSystemFiltered(leaveServerMessage.replace("#player", event.getPlayer().getPrettyName()), event.getPlayer());
+
+		manager.removeChannelFromList(event.getPlayer(), this);
+		if (!super.Leave(event.getPlayer()))
+			throw new RuntimeException("Unable to remove %s from global channel");
 	}
 
 	@Override

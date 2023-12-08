@@ -37,26 +37,26 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
 		event.setDeathMessage(""); // Set the Minecraft death message to blank to silence output
-		if (!messages.isEmpty() && canBroadcastHere(event.getEntity().getWorld())) // We have no messages!
+		if (messages.isEmpty() || !canBroadcastHere(event.getEntity().getWorld())) // We have no messages!
+			return;
+
+		String message;
+		IPlayer player = event.getEntity();
+
+		IEntity killer = player.getKiller();
+		if (killer != null)
 		{
-			String message;
-			IPlayer player = event.getEntity();
-
-			IEntity killer = player.getKiller();
-			if (killer instanceof IPlayer)
-			{
-				IPlayer killerPlayer = (IPlayer) killer;
-				message = pvpMessages.get(random.nextInt(pvpMessages.size()));
-				message = message.replaceAll("#killer", killerPlayer.getPrettyName());
-			}
-			else
-			{
-				message = messages.get(random.nextInt(messages.size()));
-			}
-
-			message = message.replaceAll("#player", player.getPrettyName());
-			channel.SendSystem(message);
+			IPlayer killerPlayer = (IPlayer) killer;
+			message = pvpMessages.get(random.nextInt(pvpMessages.size()));
+			message = message.replaceAll("#killer", killerPlayer.getPrettyName());
 		}
+		else
+		{
+			message = messages.get(random.nextInt(messages.size()));
+		}
+
+		message = message.replaceAll("#player", player.getPrettyName());
+		channel.SendSystem(message);
 	}
 
 	private boolean canBroadcastHere(IWorld world)

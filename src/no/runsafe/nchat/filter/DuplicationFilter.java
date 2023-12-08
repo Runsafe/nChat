@@ -21,35 +21,32 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 	@Override
 	public String processString(IPlayer player, final String message)
 	{
-		if (isEnabled)
+		if (!isEnabled)
+			return message;
+
+		final String playerName = player.getName();
+		if (cooldowns.containsKey(playerName))
 		{
-			final String playerName = player.getName();
-			if (cooldowns.containsKey(playerName))
+			if (cooldowns.get(playerName).contains(message.toLowerCase()))
 			{
-				if (cooldowns.get(playerName).contains(message.toLowerCase()))
-				{
-					player.sendColouredMessage("&cYou cannot send the same message that quickly.");
-					return null;
-				}
+				player.sendColouredMessage("&cYou cannot send the same message that quickly.");
+				return null;
 			}
-			else
-			{
-				cooldowns.put(playerName, new ArrayList<>(1));
-			}
-
-			cooldowns.get(playerName).add(message.toLowerCase());
-
-			scheduler.startAsyncTask(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					cooldowns.get(playerName).remove(message.toLowerCase());
-					if (cooldowns.get(playerName).isEmpty())
-						cooldowns.remove(playerName);
-				}
-			}, cooldown);
 		}
+		else
+		{
+			cooldowns.put(playerName, new ArrayList<>(1));
+		}
+
+		cooldowns.get(playerName).add(message.toLowerCase());
+
+		scheduler.startAsyncTask(() ->
+		{
+			cooldowns.get(playerName).remove(message.toLowerCase());
+			if (cooldowns.get(playerName).isEmpty())
+				cooldowns.remove(playerName);
+		}, cooldown);
+
 		return message;
 	}
 

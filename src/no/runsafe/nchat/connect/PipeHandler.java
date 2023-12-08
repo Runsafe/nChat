@@ -51,7 +51,7 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	public static String prefix;
 	public static ChannelManager manager;
 	private boolean enabled = false;
-	private IConsole console;
+	private final IConsole console;
 	private static IOutput output;
 	private static PipeEngine engine;
 }

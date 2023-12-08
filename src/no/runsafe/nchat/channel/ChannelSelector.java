@@ -18,17 +18,17 @@ public class ChannelSelector implements IPlayerCommandPreprocessEvent
 	public void OnBeforePlayerCommand(RunsafePlayerCommandPreprocessEvent event)
 	{
 		Matcher indexMatcher = INDEX_SELECTOR.matcher(event.getMessage());
-		if (indexMatcher.matches())
+		if (!indexMatcher.matches())
+			return;
+
+		IChatChannel channel = manager.getChannelByIndex(event.getPlayer(), Integer.parseInt(indexMatcher.group(1)));
+		if (channel == null)
+			return;
+		event.cancel();
+		manager.setDefaultChannel(event.getPlayer(), channel);
+		if (indexMatcher.groupCount() > 2)
 		{
-			IChatChannel channel = manager.getChannelByIndex(event.getPlayer(), Integer.parseInt(indexMatcher.group(1)));
-			if (channel == null)
-				return;
-			event.cancel();
-			manager.setDefaultChannel(event.getPlayer(), channel);
-			if (indexMatcher.groupCount() > 2)
-			{
-				new InternalRealChatEvent(event.getPlayer(), indexMatcher.group(3)).Fire();
-			}
+			new InternalRealChatEvent(event.getPlayer(), indexMatcher.group(3)).Fire();
 		}
 	}
 

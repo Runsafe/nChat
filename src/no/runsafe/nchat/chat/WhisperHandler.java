@@ -45,8 +45,7 @@ public class WhisperHandler
 
 	public void deleteLastWhisperedBy(ICommandExecutor player)
 	{
-		if (lastWhisperList.containsKey(player.getName()))
-			lastWhisperList.remove(player.getName());
+		lastWhisperList.remove(player.getName());
 	}
 
 	@Nullable

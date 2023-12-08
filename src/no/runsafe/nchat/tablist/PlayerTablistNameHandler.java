@@ -24,7 +24,7 @@ public class PlayerTablistNameHandler implements IPlayerCustomEvent, IConfigurat
 		if (playerName == null)
 			return null;
 
-		String prefix = prefixes.containsKey(firstGroup) ? prefixes.get(firstGroup) : "";
+		String prefix = prefixes.getOrDefault(firstGroup, "");
 		int nameLength = MAX_NAME_LENGTH - prefix.length();
 		String displayName = playerName.length() > nameLength ? playerName.substring(0, nameLength) : playerName;
 		return prefix + displayName;
