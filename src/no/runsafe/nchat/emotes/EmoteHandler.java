@@ -62,6 +62,9 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		Matcher matcher = emoteChecker.matcher(command);
 		if (matcher.matches())
 		{
+			if (!executor.hasPermission("runsafe.nchat.emotes"))
+				return true; // Cancel event so command the emote is hiding doesn't go through.
+
 			EmoteDefinition emote = emotes.get(matcher.group(1));
 			IPlayer targetPlayer = matcher.groupCount() > 2 ? playerProvider.getPlayer(matcher.group(3)) : null;
 			if (targetPlayer == null)
