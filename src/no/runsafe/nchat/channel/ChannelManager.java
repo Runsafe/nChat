@@ -34,7 +34,12 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI, IConfi
 	@Override
 	public void OnConfigurationChanged(IConfiguration config)
 	{
-		channelTimeoutSeconds = config.getConfigValueAsInt("channelTimeoutSeconds");
+		timeoutSeconds = config.getConfigValueAsInt("channel.timeoutSeconds");
+
+		joinMessage = config.getConfigValueAsString("channel.message.join");
+		leaveMessage = config.getConfigValueAsString("channel.message.leave");
+		privateMessage = config.getConfigValueAsString("channel.message.private");
+		switchMessage = config.getConfigValueAsString("channel.message.switch");
 	}
 
 	@Override
@@ -159,7 +164,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI, IConfi
 			channelLists.put(player.getName(), new ArrayList<>(1));
 		channelLists.get(player.getName()).add(channel);
 		int index = channelLists.get(player.getName()).indexOf(channel) + 1;
-		player.sendColouredMessage("Joined channel %d. %s", index, channel.getName());
+		player.sendColouredMessage(joinMessage, index, channel.getName());
 	}
 
 	@Override
@@ -170,7 +175,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI, IConfi
 
 		int index = channelLists.get(player.getName()).indexOf(channel) + 1;
 		channelLists.get(player.getName()).remove(channel);
-		player.sendColouredMessage("Left channel %d. %s", index, channel.getName());
+		player.sendColouredMessage(leaveMessage, index, channel.getName());
 	}
 
 	@Override
@@ -186,26 +191,26 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI, IConfi
 	public void setDefaultChannel(ICommandExecutor player, IChatChannel channel)
 	{
 		defaultChannel.put(player.getName(), channel);
-		if (channelTimeoutSeconds > 0 && !channel.getName().equals(GlobalChatChannel.CHANNEL_NAME))
-			channelTimeouts.put(player.getName(), Instant.now().plusSeconds(channelTimeoutSeconds));
+		if (timeoutSeconds > 0 && !channel.getName().equals(GlobalChatChannel.CHANNEL_NAME))
+			channelTimeouts.put(player.getName(), Instant.now().plusSeconds(timeoutSeconds));
 		if (channel instanceof PrivateChannel)
-			player.sendMessage("Now talking in private channel.");
+			player.sendColouredMessage(privateMessage);
 		else
-			player.sendMessage("Now talking in channel " + channel.getName());
+			player.sendColouredMessage(switchMessage, channel.getName());
 	}
 
 	@Override
 	public IChatChannel getDefaultChannel(ICommandExecutor player)
 	{
-		if (channelTimeoutSeconds > 0 && channelTimeouts.containsKey(player.getName()))
+		if (timeoutSeconds > 0 && channelTimeouts.containsKey(player.getName()))
 		{
 			if (channelTimeouts.get(player.getName()).isAfter(Instant.now()))
-				channelTimeouts.put(player.getName(), Instant.now().plusSeconds(channelTimeoutSeconds));
+				channelTimeouts.put(player.getName(), Instant.now().plusSeconds(timeoutSeconds));
 			else
 			{
 				channelTimeouts.remove(player.getName());
 				defaultChannel.remove(player.getName());
-				player.sendMessage("Now talking in channel " + GlobalChatChannel.CHANNEL_NAME);
+				player.sendColouredMessage(switchMessage, GlobalChatChannel.CHANNEL_NAME);
 			}
 		}
 		if (!defaultChannel.containsKey(player.getName()))
@@ -271,5 +276,9 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI, IConfi
 	private final IConsole console;
 	private final ChatFormatter chatFormatter;
 	private final Map<String, Instant> channelTimeouts = new HashMap<>(0);
-	private int channelTimeoutSeconds;
+	private int timeoutSeconds;
+	private String joinMessage;
+	private String leaveMessage;
+	private String privateMessage;
+	private String switchMessage;
 }
