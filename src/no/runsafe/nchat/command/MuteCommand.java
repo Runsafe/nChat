@@ -8,6 +8,7 @@ import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.nchat.chat.MuteHandler;
 
+import java.time.Duration;
 
 public class MuteCommand extends ExecutableCommand
 {
@@ -26,7 +27,10 @@ public class MuteCommand extends ExecutableCommand
 	{
 		IPlayer player = executor instanceof IPlayer ? (IPlayer) executor : null;
 		IPlayer mutePlayer = parameters.getRequired("player");
-		org.joda.time.Period duration = parameters.getValue("duration");
+		org.joda.time.Period durationJoda = parameters.getValue("duration");
+		Duration duration = null;
+		if (durationJoda != null)
+			duration = Duration.ofMillis(durationJoda.getMillis());
 
 		if (player != null && mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^

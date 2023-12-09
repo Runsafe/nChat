@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.time.Instant;
 
 public class MuteDatabase extends Repository
 {
@@ -57,12 +58,16 @@ public class MuteDatabase extends Repository
 		return update;
 	}
 
-	public Map<IPlayer, DateTime> getMuteList()
+	public Map<IPlayer, Instant> getMuteList()
 	{
-		Map<IPlayer, DateTime> mutes = new HashMap<>(0);
+		Map<IPlayer, Instant> mutes = new HashMap<>(0);
 		for (IRow row : database.query("SELECT player, temp_mute FROM nchat_muted"))
 		{
-			DateTime expiry = row.DateTime("temp_mute");
+			DateTime expiryJoda = row.DateTime("temp_mute");
+			Instant expiry = null;
+			if (expiryJoda != null)
+				expiry = Instant.ofEpochMilli(expiryJoda.getMillis());
+
 			String player = row.String("player");
 			if (player != null && player.length() == 36)
 				mutes.put(playerProvider.getPlayer(UUID.fromString(player)), expiry == null ? END_OF_TIME : expiry);
@@ -76,9 +81,12 @@ public class MuteDatabase extends Repository
 		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", player);
 	}
 
-	public void tempMutePlayer(IPlayer player, DateTime expire)
+	public void tempMutePlayer(IPlayer player, Instant expire)
 	{
-		database.update("INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)", player, expire);
+		database.update(
+			"INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)",
+			player, new DateTime(expire.toEpochMilli())
+		);
 	}
 
 	public void unMutePlayer(IPlayer player)
@@ -89,5 +97,5 @@ public class MuteDatabase extends Repository
 
 	private final IDebug debugger;
 	private final IPlayerProvider playerProvider;
-	public static final DateTime END_OF_TIME = new DateTime(Long.MAX_VALUE);
+	public static final Instant END_OF_TIME = Instant.ofEpochMilli(Long.MAX_VALUE);
 }
