@@ -17,8 +17,8 @@ public class EmoteEvent extends InternalChatEvent
 	{
 		if (target == null)
 			return String.format(emote, getPlayer().getPrettyName());
-		else
-			return String.format(emote, getPlayer().getPrettyName(), target.getPrettyName());
+
+		return String.format(emote, getPlayer().getPrettyName(), target.getPrettyName());
 	}
 
 	private final String emote;

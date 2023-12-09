@@ -41,14 +41,12 @@ public class IgnoreCommand extends PlayerCommand
 			ignoreHandler.removeIgnorePlayer(executor, ignorePlayer);
 			return String.format("&aYou are no longer ignoring %s.", ignorePlayer.getName());
 		}
-		else
-		{
-			if (isMuteExempt(ignorePlayer))
-				return "&cYou cannot ignore that player.";
 
-			ignoreHandler.ignorePlayer(executor, ignorePlayer);
-			return String.format("&aYou are now ignoring %s. Repeat the command again to un-ignore.", ignorePlayer.getName());
-		}
+		if (isMuteExempt(ignorePlayer))
+			return "&cYou cannot ignore that player.";
+
+		ignoreHandler.ignorePlayer(executor, ignorePlayer);
+		return String.format("&aYou are now ignoring %s. Repeat the command again to un-ignore.", ignorePlayer.getName());
 	}
 
 	private final IgnoreHandler ignoreHandler;

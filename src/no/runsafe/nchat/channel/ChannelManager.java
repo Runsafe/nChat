@@ -72,15 +72,14 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public void closePrivateChannels(ICommandExecutor player)
 	{
-		if (privateChannels.containsKey(player.getName()))
+		if (!privateChannels.containsKey(player.getName()))
+			return;
+
+		for (String channel : privateChannels.get(player.getName()))
 		{
-			for (String channel : privateChannels.get(player.getName()))
-			{
-				if (channels.containsKey(channel))
-					channels.remove(channel);
-			}
-			privateChannels.remove(player.getName());
+			channels.remove(channel);
 		}
+		privateChannels.remove(player.getName());
 	}
 
 	@Override
@@ -158,12 +157,12 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public void removeChannelFromList(ICommandExecutor player, IChatChannel channel)
 	{
-		if (channelLists.containsKey(player.getName()) && channelLists.get(player.getName()).contains(channel))
-		{
-			int index = channelLists.get(player.getName()).indexOf(channel) + 1;
-			channelLists.get(player.getName()).remove(channel);
-			player.sendColouredMessage("Left channel %d. %s", index, channel.getName());
-		}
+		if (!channelLists.containsKey(player.getName()) || !channelLists.get(player.getName()).contains(channel))
+			return;
+
+		int index = channelLists.get(player.getName()).indexOf(channel) + 1;
+		channelLists.get(player.getName()).remove(channel);
+		player.sendColouredMessage("Left channel %d. %s", index, channel.getName());
 	}
 
 	@Override
@@ -216,14 +215,13 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	@Override
 	public void unregisterChannel(IChatChannel channel)
 	{
-		if (channels.containsKey(channel.getName()))
-			channels.remove(channel.getName());
+		channels.remove(channel.getName());
 	}
 
 	@Override
 	public IChatChannel getChannelByName(String name)
 	{
-		return channels.containsKey(name) ? channels.get(name) : null;
+		return channels.getOrDefault(name, null);
 	}
 
 	@Override

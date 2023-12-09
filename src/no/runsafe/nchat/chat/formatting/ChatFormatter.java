@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChanged
 {
@@ -84,7 +83,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		if (tag != null)
 			return tag;
 		tag = channel.getName();
-		return channelTags.containsKey(tag) ? channelTags.get(tag) : tag;
+		return channelTags.getOrDefault(tag, tag);
 	}
 
 	private String getWorldPrefix(IPlayer player, String worldName)
@@ -119,7 +118,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 
 		String worldName = player.isOnline() && !player.isVanished() && player.getWorld() != null ? player.getWorldName() : "console";
 
-		HashMap<String, String> replacements = new HashMap<String, String>(2);
+		HashMap<String, String> replacements = new HashMap<>(2);
 		replacements.put("#op", player.isOP() ? opTagFormat : "");
 		replacements.put("#ban", player.isNotBanned() ? "" : banTagFormat);
 
@@ -159,7 +158,7 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 		channelTags = configuration.getConfigValuesAsMap("channelTags");
 	}
 
-	private final List<ILocationTagManipulator> manipulators = new ArrayList<ILocationTagManipulator>(0);
+	private final List<ILocationTagManipulator> manipulators = new ArrayList<>(0);
 	private Map<String, String> chatGroupPrefixes;
 	private Map<String, String> worldPrefixes;
 	private Map<String, String> channelTags;

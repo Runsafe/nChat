@@ -57,13 +57,13 @@ public class BasicChatChannel implements IChatChannel
 			return;
 
 		String incoming = message.isFake() ? message.getMessage() : manager.filter(message.getPlayer(), message.getMessage());
-		if (incoming != null && !incoming.isEmpty())
-		{
-			if (message instanceof EmoteEvent)
-				SendSystem(((EmoteEvent) message).getEmote());
-			else
-				SendFiltered(message.getPlayer(), incoming);
-		}
+		if (incoming == null || incoming.isEmpty())
+			return;
+
+		if (message instanceof EmoteEvent)
+			SendSystem(((EmoteEvent) message).getEmote());
+		else
+			SendFiltered(message.getPlayer(), incoming);
 	}
 
 	@Override

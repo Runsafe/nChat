@@ -49,15 +49,15 @@ public class IgnoreHandler implements IServerReady
 	{
 		database.removeIgnorePlayer(player, ignorePlayer);
 
-		if (ignoreList.containsKey(ignorePlayer))
-		{
-			List<IPlayer> playersIgnoring = ignoreList.get(ignorePlayer);
-			playersIgnoring.remove(player);
+		if (!ignoreList.containsKey(ignorePlayer))
+			return;
 
-			// Check if we still have anyone ignoring the player, no need to keep empty lists.
-			if (playersIgnoring.isEmpty())
-				ignoreList.remove(ignorePlayer);
-		}
+		List<IPlayer> playersIgnoring = ignoreList.get(ignorePlayer);
+		playersIgnoring.remove(player);
+
+		// Check if we still have anyone ignoring the player, no need to keep empty lists.
+		if (playersIgnoring.isEmpty())
+			ignoreList.remove(ignorePlayer);
 	}
 
 	/**
