@@ -63,3 +63,4 @@ channelTags:
 connect:
   prefix: '&3[RS]'
 enableChatBridge: false
+channelTimeoutSeconds: 120
