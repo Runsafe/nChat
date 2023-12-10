@@ -89,9 +89,8 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI, IConfi
 			return;
 
 		for (String channel : privateChannels.get(player.getName()))
-		{
 			channels.remove(channel);
-		}
+
 		privateChannels.remove(player.getName());
 	}
 

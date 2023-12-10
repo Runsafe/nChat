@@ -40,7 +40,6 @@ public class MuteHandler implements IConfigurationChanged
 
 	public void tempMutePlayer(IPlayer player, Duration expire)
 	{
-		//expire.
 		Instant limit = Instant.now().plus(expire);
 		mutedPlayers.put(player, limit);
 		muteDatabase.tempMutePlayer(player, limit);

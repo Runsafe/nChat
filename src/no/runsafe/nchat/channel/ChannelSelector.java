@@ -27,9 +27,7 @@ public class ChannelSelector implements IPlayerCommandPreprocessEvent
 		event.cancel();
 		manager.setDefaultChannel(event.getPlayer(), channel);
 		if (indexMatcher.groupCount() > 2)
-		{
 			new InternalRealChatEvent(event.getPlayer(), indexMatcher.group(3)).Fire();
-		}
 	}
 
 	private final IChannelManager manager;
