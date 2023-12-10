@@ -83,5 +83,8 @@ public class ChatPlugin extends RunsafeConfigurablePlugin
 
 		// Connect (Huckleberry)
 		addComponent(PipeHandler.class);
+
+		// Config
+		addComponent(Config.class);
 	}
 }
