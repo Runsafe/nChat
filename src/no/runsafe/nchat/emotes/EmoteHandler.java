@@ -36,6 +36,7 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		maxEmotes = configuration.getConfigValueAsInt("antiSpam.maxEmotes");
 		maxEmotesPeriod = configuration.getConfigValueAsInt("antiSpam.maxEmotesPeriod");
 		maxEmotesMessage = configuration.getConfigValueAsString("antiSpam.maxEmotesMessage");
+		noPermissionMessage = configuration.getConfigValueAsString("antiSpam.noPermissionMessage");
 		emotes.clear(); // Clear existing emotes.
 
 		List<String> definitions = emoteFile.getLines(); // Grab all emotes from the file.
@@ -64,7 +65,10 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 			return false;
 
 		if (!executor.hasPermission("runsafe.nchat.emotes"))
+		{
+			executor.sendColouredMessage(noPermissionMessage);
 			return true; // Cancel event so command the emote is hiding doesn't go through.
+		}
 
 		EmoteDefinition emote = emotes.get(matcher.group(1));
 		IPlayer targetPlayer = matcher.groupCount() > 2 ? playerProvider.getPlayer(matcher.group(3)) : null;
@@ -114,5 +118,6 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 	private int maxEmotes;
 	private int maxEmotesPeriod;
 	private String maxEmotesMessage;
+	private String noPermissionMessage;
 	private Pattern emoteChecker;
 }

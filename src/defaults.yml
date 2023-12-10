@@ -14,6 +14,7 @@ antiSpam:
   maxEmotes: 2
   maxEmotesPeriod: 10
   maxEmotesMessage: Please refrain from spamming emotes.
+  noPermissionMessage: '&cYou do not have permission to use emotes.'
 hideDeaths:
   - pvparena
 console:
