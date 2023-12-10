@@ -63,3 +63,10 @@ channelTags:
 connect:
   prefix: '&3[RS]'
 enableChatBridge: false
+channel:
+  timeoutSeconds: 120
+  message:
+    join: 'Joined channel %d. %s'
+    leave: 'Left channel %d. %s'
+    private: 'Now talking in private channel.'
+    switch: 'Now talking in channel %s'

@@ -73,9 +73,7 @@ public class BasicChatChannel implements IChatChannel
 		console.logInformation(message + " ");
 		PipeHandler.handleMessage(message, name);
 		for (ICommandExecutor member : members.values())
-		{
 			member.sendColouredMessage(message);
-		}
 	}
 
 	@Override
@@ -85,13 +83,8 @@ public class BasicChatChannel implements IChatChannel
 		console.logInformation(message + " ");
 		PipeHandler.handleMessage(message, name);
 		for (ICommandExecutor member : members.values())
-		{
-			if ((member instanceof IPlayer) && ((IPlayer)member).shouldNotSee(context))
-			{
-				continue;
-			}
-			member.sendColouredMessage(message);
-		}
+			if (!(member instanceof IPlayer) || !((IPlayer) member).shouldNotSee(context))
+				member.sendColouredMessage(message);
 	}
 
 	@Override

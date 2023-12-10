@@ -13,7 +13,6 @@ import no.runsafe.framework.minecraft.event.player.RunsafePlayerCommandPreproces
 import no.runsafe.nchat.channel.IChatChannel;
 import no.runsafe.nchat.chat.EmoteEvent;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.time.Instant;
 
 public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurationChanged
 {
@@ -86,15 +86,15 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 		if (!limiter.containsKey(player))
 		{
 			limiter.put(player, new ArrayList<>(1));
-			limiter.get(player).add(DateTime.now());
+			limiter.get(player).add(Instant.now());
 			emote.Fire();
 			return;
 		}
 
-		List<DateTime> expired = new ArrayList<>(0);
-		for(DateTime time : limiter.get(player))
+		List<Instant> expired = new ArrayList<>(0);
+		for(Instant time : limiter.get(player))
 		{
-			if (time.plusSeconds(maxEmotesPeriod).isBeforeNow())
+			if (time.plusSeconds(maxEmotesPeriod).isBefore(Instant.now()))
 				expired.add(time);
 		}
 		limiter.get(player).removeAll(expired);
@@ -103,14 +103,14 @@ public class EmoteHandler implements IPlayerCommandPreprocessEvent, IConfigurati
 			emote.getPlayer().sendColouredMessage(maxEmotesMessage);
 			return;
 		}
-		limiter.get(player).add(DateTime.now());
+		limiter.get(player).add(Instant.now());
 		emote.Fire();
 	}
 
 	private final IPlayerProvider playerProvider;
 	private final IPluginDataFile emoteFile;
 	private final Map<String, EmoteDefinition> emotes = new HashMap<>(0);
-	private final Map<String, List<DateTime>> limiter = new HashMap<>(0);
+	private final Map<String, List<Instant>> limiter = new HashMap<>(0);
 	private int maxEmotes;
 	private int maxEmotesPeriod;
 	private String maxEmotesMessage;

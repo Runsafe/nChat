@@ -51,9 +51,7 @@ public class DeathHandler implements IPlayerDeathEvent, IConfigurationChanged
 			message = message.replaceAll("#killer", killerPlayer.getPrettyName());
 		}
 		else
-		{
 			message = messages.get(random.nextInt(messages.size()));
-		}
 
 		message = message.replaceAll("#player", player.getPrettyName());
 		channel.SendSystem(message);

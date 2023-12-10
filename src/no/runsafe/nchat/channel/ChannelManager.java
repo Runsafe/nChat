@@ -2,7 +2,9 @@ package no.runsafe.nchat.channel;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IGlobalPluginAPI;
 import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
@@ -11,14 +13,14 @@ import no.runsafe.nchat.chat.IgnoreHandler;
 import no.runsafe.nchat.chat.formatting.ChatFormatter;
 import no.runsafe.nchat.filter.IChatFilter;
 import no.runsafe.nchat.filter.ISpamFilter;
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.Instant;
 
-public class ChannelManager implements IChannelManager, IGlobalPluginAPI
+public class ChannelManager implements IChannelManager, IGlobalPluginAPI, IConfigurationChanged
 {
 	public ChannelManager(List<ISpamFilter> inboundFilters, List<IChatFilter> outboundFilters, IgnoreHandler ignoreHandler, IConsole console, ChatFormatter chatFormatter)
 	{
@@ -27,6 +29,17 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 		this.ignoreHandler = ignoreHandler;
 		this.console = console;
 		this.chatFormatter = chatFormatter;
+	}
+
+	@Override
+	public void OnConfigurationChanged(IConfiguration config)
+	{
+		timeoutSeconds = config.getConfigValueAsInt("channel.timeoutSeconds");
+
+		joinMessage = config.getConfigValueAsString("channel.message.join");
+		leaveMessage = config.getConfigValueAsString("channel.message.leave");
+		privateMessage = config.getConfigValueAsString("channel.message.private");
+		switchMessage = config.getConfigValueAsString("channel.message.switch");
 	}
 
 	@Override
@@ -76,9 +89,8 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 			return;
 
 		for (String channel : privateChannels.get(player.getName()))
-		{
 			channels.remove(channel);
-		}
+
 		privateChannels.remove(player.getName());
 	}
 
@@ -151,7 +163,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 			channelLists.put(player.getName(), new ArrayList<>(1));
 		channelLists.get(player.getName()).add(channel);
 		int index = channelLists.get(player.getName()).indexOf(channel) + 1;
-		player.sendColouredMessage("Joined channel %d. %s", index, channel.getName());
+		player.sendColouredMessage(joinMessage, index, channel.getName());
 	}
 
 	@Override
@@ -162,7 +174,7 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 
 		int index = channelLists.get(player.getName()).indexOf(channel) + 1;
 		channelLists.get(player.getName()).remove(channel);
-		player.sendColouredMessage("Left channel %d. %s", index, channel.getName());
+		player.sendColouredMessage(leaveMessage, index, channel.getName());
 	}
 
 	@Override
@@ -178,25 +190,26 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	public void setDefaultChannel(ICommandExecutor player, IChatChannel channel)
 	{
 		defaultChannel.put(player.getName(), channel);
-		if (!channel.getName().equals(GlobalChatChannel.CHANNEL_NAME))
-			channelTimeouts.put(player.getName(), DateTime.now().plusMinutes(2));
+		if (timeoutSeconds > 0 && !channel.getName().equals(GlobalChatChannel.CHANNEL_NAME))
+			channelTimeouts.put(player.getName(), Instant.now().plusSeconds(timeoutSeconds));
 		if (channel instanceof PrivateChannel)
-			player.sendMessage("Now talking in private channel.");
+			player.sendColouredMessage(privateMessage);
 		else
-			player.sendMessage("Now talking in channel " + channel.getName());
+			player.sendColouredMessage(switchMessage, channel.getName());
 	}
 
 	@Override
 	public IChatChannel getDefaultChannel(ICommandExecutor player)
 	{
-		if (channelTimeouts.containsKey(player.getName()))
+		if (timeoutSeconds > 0 && channelTimeouts.containsKey(player.getName()))
 		{
-			if (channelTimeouts.get(player.getName()).isAfterNow())
-				channelTimeouts.put(player.getName(), DateTime.now().plusMinutes(2));
+			if (channelTimeouts.get(player.getName()).isAfter(Instant.now()))
+				channelTimeouts.put(player.getName(), Instant.now().plusSeconds(timeoutSeconds));
 			else
 			{
 				channelTimeouts.remove(player.getName());
 				defaultChannel.remove(player.getName());
+				player.sendColouredMessage(switchMessage, GlobalChatChannel.CHANNEL_NAME);
 			}
 		}
 		if (!defaultChannel.containsKey(player.getName()))
@@ -261,5 +274,10 @@ public class ChannelManager implements IChannelManager, IGlobalPluginAPI
 	private final IgnoreHandler ignoreHandler;
 	private final IConsole console;
 	private final ChatFormatter chatFormatter;
-	private final Map<String, DateTime> channelTimeouts = new HashMap<>(0);
+	private final Map<String, Instant> channelTimeouts = new HashMap<>(0);
+	private int timeoutSeconds;
+	private String joinMessage;
+	private String leaveMessage;
+	private String privateMessage;
+	private String switchMessage;
 }

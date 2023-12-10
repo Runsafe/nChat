@@ -25,18 +25,14 @@ public class DuplicationFilter implements IConfigurationChanged, ISpamFilter
 			return message;
 
 		final String playerName = player.getName();
-		if (cooldowns.containsKey(playerName))
-		{
-			if (cooldowns.get(playerName).contains(message.toLowerCase()))
+		if (!cooldowns.containsKey(playerName))
+			cooldowns.put(playerName, new ArrayList<>(1));
+		else if (cooldowns.get(playerName).contains(message.toLowerCase()))
 			{
 				player.sendColouredMessage("&cYou cannot send the same message that quickly.");
 				return null;
 			}
-		}
-		else
-		{
-			cooldowns.put(playerName, new ArrayList<>(1));
-		}
+
 
 		cooldowns.get(playerName).add(message.toLowerCase());
 

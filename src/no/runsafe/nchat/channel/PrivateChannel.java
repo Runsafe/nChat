@@ -5,9 +5,8 @@ import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeConsole;
 import no.runsafe.framework.minecraft.player.RunsafeFakePlayer;
-import org.joda.time.DateTime;
 
-import javax.annotation.Nullable;
+import java.time.Instant;
 
 public class PrivateChannel extends BasicChatChannel
 {
@@ -33,7 +32,7 @@ public class PrivateChannel extends BasicChatChannel
 	@Override
 	protected void SendFiltered(ICommandExecutor sender, String message)
 	{
-		if (unblockedOnHiddenUntil != null && unblockedOnHiddenUntil.isBeforeNow())
+		if (unblockedOnHiddenUntil != null && unblockedOnHiddenUntil.isBefore(Instant.now()))
 			unblockedOnHiddenUntil = null;
 
 		ICommandExecutor from = null;
@@ -55,7 +54,7 @@ public class PrivateChannel extends BasicChatChannel
 				appearOffline |= isToHidden && unblockedOnHiddenUntil == null;
 
 				if (!appearOffline && toPlayer.shouldNotSee(fromPlayer))
-					unblockedOnHiddenUntil = DateTime.now().plusMinutes(2);
+					unblockedOnHiddenUntil = Instant.now().plusSeconds(120);
 			}
 			if (appearOffline)
 			{
@@ -69,5 +68,5 @@ public class PrivateChannel extends BasicChatChannel
 			console.logInformation(manager.FormatPrivateMessageLog(from, to, message).replace("%", "%%")+" ");
 	}
 
-	private DateTime unblockedOnHiddenUntil;
+	private Instant unblockedOnHiddenUntil;
 }

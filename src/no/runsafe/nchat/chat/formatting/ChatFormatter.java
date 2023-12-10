@@ -99,13 +99,14 @@ public class ChatFormatter implements IPlayerNameDecorator, IConfigurationChange
 
 	public String getGroupPrefix(IPlayerPermissions player)
 	{
-		if (!player.getGroups().isEmpty())
-		{
-			String groupName = player.getGroups().get(0).toLowerCase();
-			Map<String, String> prefixes = chatGroupPrefixes;
-			if (prefixes.containsKey(groupName))
-				return prefixes.get(groupName);
-		}
+		if (player.getGroups().isEmpty())
+			return "";
+
+		String groupName = player.getGroups().get(0).toLowerCase();
+		Map<String, String> prefixes = chatGroupPrefixes;
+		if (prefixes.containsKey(groupName))
+			return prefixes.get(groupName);
+
 		return "";
 	}
 

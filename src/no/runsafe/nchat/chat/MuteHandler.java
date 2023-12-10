@@ -6,11 +6,11 @@ import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.internal.wrapper.player.BukkitPlayer;
 import no.runsafe.nchat.database.MuteDatabase;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.time.Instant;
+import java.time.Duration;
 
 public class MuteHandler implements IConfigurationChanged
 {
@@ -33,14 +33,14 @@ public class MuteHandler implements IConfigurationChanged
 		if (((BukkitPlayer) player).getRaw() == null)
 			return false;
 
-		if (mutedPlayers.containsKey(player) && mutedPlayers.get(player).isBeforeNow())
+		if (mutedPlayers.containsKey(player) && mutedPlayers.get(player).isBefore(Instant.now()))
 			unMutePlayer(player);
 		return (serverMute || mutedPlayers.containsKey(player)) && !player.hasPermission("runsafe.nchat.mute.exempt");
 	}
 
-	public void tempMutePlayer(IPlayer player, Period expire)
+	public void tempMutePlayer(IPlayer player, Duration expire)
 	{
-		DateTime limit = DateTime.now().plus(expire);
+		Instant limit = Instant.now().plus(expire);
 		mutedPlayers.put(player, limit);
 		muteDatabase.tempMutePlayer(player, limit);
 	}
@@ -64,7 +64,7 @@ public class MuteHandler implements IConfigurationChanged
 		loadMuteList();
 	}
 
-	private final Map<IPlayer, DateTime> mutedPlayers = new ConcurrentHashMap<>(0);
+	private final Map<IPlayer, Instant> mutedPlayers = new ConcurrentHashMap<>(0);
 	private final MuteDatabase muteDatabase;
 	private final IConsole console;
 	private boolean serverMute;
