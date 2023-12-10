@@ -40,7 +40,7 @@ public class MuteCommand extends ExecutableCommand
 
 		muteHandler.tempMutePlayer(mutePlayer, duration);
 		return returnMessage + String.format(" &bDuration: &r%s&b.", duration);
-	};
+	}
 
 	private final MuteHandler muteHandler;
 }
