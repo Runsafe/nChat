@@ -31,13 +31,16 @@ public class MuteCommand extends ExecutableCommand
 		if (player != null && mutePlayer.hasPermission("runsafe.nchat.mute.exempt"))
 			return "&cNice try, but you cannot mute that player."; // Unless you are the console ^w^
 
-		if (duration != null)
-			muteHandler.tempMutePlayer(mutePlayer, duration);
-		else
+		String returnMessage = String.format("&bYou muted %s&b.", mutePlayer.getPrettyName());
+		if (duration == null)
+		{
 			muteHandler.mutePlayer(mutePlayer);
+			return returnMessage;
+		}
 
-		return String.format("&bYou muted %s.", mutePlayer.getPrettyName());
-	}
+		muteHandler.tempMutePlayer(mutePlayer, duration);
+		return returnMessage + String.format(" &bDuration: &r%s&b.", duration);
+	};
 
 	private final MuteHandler muteHandler;
 }
