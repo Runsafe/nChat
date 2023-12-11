@@ -74,13 +74,19 @@ public class MuteDatabase extends Repository
 	public void mutePlayer(IPlayer player)
 	{
 		debugger.debugFine("Updating mute database with " + player.getName());
-		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", player);
+		database.update(
+			"INSERT INTO nchat_muted (`player`) VALUES (?)" +
+			"ON DUPLICATE KEY UPDATE `temp_mute`=null",
+			player
+		);
 	}
 
 	public void tempMutePlayer(IPlayer player, Instant expire)
 	{
+		debugger.debugFine("Updating mute database with " + player.getName() + " with expiration date: " + expire.toString());
 		database.update(
-			"INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)",
+			"INSERT nchat_muted (`player`,`temp_mute`) VALUES (?, ?)" +
+			"ON DUPLICATE KEY UPDATE `temp_mute`=VALUES(`temp_mute`)",
 			player, expire
 		);
 	}
