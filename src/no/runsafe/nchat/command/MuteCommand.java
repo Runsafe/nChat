@@ -39,7 +39,7 @@ public class MuteCommand extends ExecutableCommand
 		}
 
 		muteHandler.tempMutePlayer(mutePlayer, duration);
-		return returnMessage + String.format(" &bDuration: &r%s&b.", duration);
+		return returnMessage + String.format(" &bDuration: &r%s&b.", duration.toString().replace("PT", ""));
 	}
 
 	private final MuteHandler muteHandler;

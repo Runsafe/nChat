@@ -7,7 +7,6 @@ import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.api.server.IPlayerProvider;
-import org.joda.time.DateTime;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -63,10 +62,7 @@ public class MuteDatabase extends Repository
 		Map<IPlayer, Instant> mutes = new HashMap<>(0);
 		for (IRow row : database.query("SELECT player, temp_mute FROM nchat_muted"))
 		{
-			DateTime expiryJoda = row.DateTime("temp_mute");
-			Instant expiry = null;
-			if (expiryJoda != null)
-				expiry = Instant.ofEpochMilli(expiryJoda.getMillis());
+			Instant expiry = row.Instant("temp_mute");
 
 			String player = row.String("player");
 			if (player != null && player.length() == 36)
@@ -78,14 +74,20 @@ public class MuteDatabase extends Repository
 	public void mutePlayer(IPlayer player)
 	{
 		debugger.debugFine("Updating mute database with " + player.getName());
-		database.update("INSERT IGNORE INTO nchat_muted (`player`) VALUES (?)", player);
+		database.update(
+			"INSERT INTO nchat_muted (`player`) VALUES (?)" +
+			"ON DUPLICATE KEY UPDATE `temp_mute`=null",
+			player
+		);
 	}
 
 	public void tempMutePlayer(IPlayer player, Instant expire)
 	{
+		debugger.debugFine("Updating mute database with " + player.getName() + " with expiration date: " + expire.toString());
 		database.update(
-			"INSERT IGNORE INTO nchat_muted (`player`,`temp_mute`) VALUES (?, ?)",
-			player, new DateTime(expire.toEpochMilli())
+			"INSERT nchat_muted (`player`,`temp_mute`) VALUES (?, ?)" +
+			"ON DUPLICATE KEY UPDATE `temp_mute`=VALUES(`temp_mute`)",
+			player, expire
 		);
 	}
 
