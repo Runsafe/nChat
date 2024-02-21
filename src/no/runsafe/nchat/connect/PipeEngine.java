@@ -24,25 +24,76 @@ public class PipeEngine implements Runnable
 		}
 	}
 
+	public void close()
+	{
+		halt = true;
+		try
+		{
+			server.close();
+		}
+		catch (IOException e)
+		{
+			// ignored
+		}
+	}
+
 	@Override
 	public void run()
 	{
 		if (server == null)
 			return;
 
-		while (true)
+		while (!Thread.interrupted())
 		{
 			try
 			{
 				Socket socket = server.accept();
+				if (halt)
+				{
+					try
+					{
+						socket.close();
+					}
+					catch (Exception e)
+					{
+						// ignored
+					}
+					break;
+				}
 				console.logInformation("Chat connection spawned for " + socket.getInetAddress().getHostName());
 				Pipe pipe = new Pipe(socket);
 				pipes.add(pipe);
-				new Thread(pipe).start();
+				Thread thread = new Thread(pipe);
+				thread.start();
+				threads.add(thread);
 			}
 			catch (IOException e)
 			{
 				// Cancel.
+			}
+		}
+		stop();
+	}
+
+	public void stop()
+	{
+		console.logInformation("Chat connection server shutting down");
+		for (Pipe pipe : pipes)
+		{
+			pipe.close();
+		}
+		for (Thread thread : threads)
+		{
+			try
+			{
+				if (thread.isAlive())
+				{
+					thread.interrupt();
+				}
+			}
+			catch (Exception e)
+			{
+				// ignored
 			}
 		}
 	}
@@ -63,6 +114,8 @@ public class PipeEngine implements Runnable
 	}
 
 	private final List<Pipe> pipes = new ArrayList<>(0);
+	private final List<Thread> threads = new ArrayList<>(0);
 	private ServerSocket server;
+	private Boolean halt;
 	private final IConsole console;
 }

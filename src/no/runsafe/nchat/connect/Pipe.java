@@ -2,6 +2,7 @@ package no.runsafe.nchat.connect;
 
 import no.runsafe.framework.text.ChatColour;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -18,8 +19,9 @@ public class Pipe implements Runnable
 	{
 		try
 		{
-			new Thread(new PipeIn(client)).start();
-			while (true)
+			Thread thread = new Thread(new PipeIn(client));
+			thread.start();
+			while (!Thread.interrupted())
 			{
 				if (stream == null)
 					stream = new PrintWriter(client.getOutputStream(), true);
@@ -27,6 +29,8 @@ public class Pipe implements Runnable
 				String message = ChatColour.ToMinecraft(PipeHandler.prefix + ' ' + chatTunnel.take()); // Grab message.
 				stream.println(message);
 			}
+			thread.interrupt();
+			thread.join(200);
 		}
 		catch (Exception e)
 		{
@@ -37,4 +41,16 @@ public class Pipe implements Runnable
 	public final LinkedBlockingQueue<String> chatTunnel = new LinkedBlockingQueue<>();
 	private final Socket client;
 	private PrintWriter stream;
+
+	public void close()
+	{
+		try
+		{
+			client.close();
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 }

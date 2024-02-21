@@ -21,13 +21,23 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	{
 		if (!enabled) return;
 		engine = new PipeEngine(console);
-		(new Thread(engine)).start();
+		thread = new Thread(engine);
+		thread.start();
 	}
 
 	@Override
 	public void stop()
 	{
-		// Do nothing?
+		try
+		{
+			engine.close();
+			thread.interrupt();
+			thread.join(2000);
+		}
+		catch (Exception e)
+		{
+			console.logException(e);
+		}
 	}
 
 	public static void handleMessage(String message, String channel)
@@ -51,6 +61,7 @@ public class PipeHandler implements Startable, IConfigurationChanged
 	public static String prefix;
 	public static ChannelManager manager;
 	private boolean enabled = false;
+	private Thread thread;
 	private final IConsole console;
 	private static IOutput output;
 	private static PipeEngine engine;

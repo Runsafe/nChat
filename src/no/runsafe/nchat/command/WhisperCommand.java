@@ -22,7 +22,7 @@ public class WhisperCommand extends ExecutableCommand
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		whisperHandler.sendWhisper(executor, (IPlayer) parameters.getValue("player"), (String) parameters.getRequired("message"));
+		whisperHandler.sendWhisper(executor, (IPlayer) parameters.getValue("player"), parameters.getRequired("message"));
 		return null;
 	}
 

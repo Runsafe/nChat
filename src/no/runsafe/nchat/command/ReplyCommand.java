@@ -25,7 +25,7 @@ public class ReplyCommand extends PlayerCommand
 		if (channel == null)
 			return "&cYou have nothing to reply to.";
 
-		whisperHandler.sendWhisper(executor, channel, (String) parameters.getRequired("message"));
+		whisperHandler.sendWhisper(executor, channel, parameters.getRequired("message"));
 		return null;
 	}
 

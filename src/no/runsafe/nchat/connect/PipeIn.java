@@ -20,8 +20,14 @@ public class PipeIn implements Runnable
 			BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			String output;
 
-			while ((output = reader.readLine()) != null)
+			while (!Thread.interrupted() && (output = reader.readLine()) != null)
+			{
 				PipeHandler.takeMessage(output);
+			}
+			if (client.isConnected())
+			{
+				client.close();
+			}
 		}
 		catch (IOException e)
 		{

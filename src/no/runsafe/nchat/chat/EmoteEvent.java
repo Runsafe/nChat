@@ -1,7 +1,6 @@
 package no.runsafe.nchat.chat;
 
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.event.player.RunsafePlayerFakeChatEvent;
 import no.runsafe.nchat.channel.IChatChannel;
 
 public class EmoteEvent extends InternalChatEvent

@@ -56,7 +56,7 @@ public class PrivateChannel extends BasicChatChannel
 				if (!appearOffline && toPlayer.shouldNotSee(fromPlayer))
 					unblockedOnHiddenUntil = Instant.now().plusSeconds(120);
 			}
-			if (appearOffline)
+			if (appearOffline && from != null)
 			{
 				from.sendColouredMessage("&cThe player %s is currently offline.", toPlayer.getPrettyName());
 				return;
