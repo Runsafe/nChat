@@ -73,7 +73,7 @@ public class IgnoreHandler implements IServerReady
 	}
 
 	/**
-	 * Checks to see if either player is ignoring eachother.
+	 * Checks to see if either player is ignoring each-other.
 	 *
 	 * @param playerOne The first player argument.
 	 * @param playerTwo The second player argument.
@@ -101,7 +101,7 @@ public class IgnoreHandler implements IServerReady
 	/**
 	 * Returns a list of players being ignored by a player.
 	 *
-	 * @param player The player who's list to return.
+	 * @param player The player whose list to return.
 	 * @return A list of players being ignored.
 	 */
 	public List<IPlayer> getIgnoredPlayers(IPlayer player)
