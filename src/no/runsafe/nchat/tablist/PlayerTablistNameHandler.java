@@ -24,10 +24,6 @@ public class PlayerTablistNameHandler implements IPlayerCustomEvent, IConfigurat
 		if (playerName == null)
 			return null;
 
-		// Don't allow fake znpcs to show up on the tab list
-		if (playerName.contains("[ZNPC]"))
-			return null;
-
 		String prefix = prefixes.getOrDefault(firstGroup, "");
 		int nameLength = MAX_NAME_LENGTH - prefix.length();
 		String displayName = playerName.length() > nameLength ? playerName.substring(0, nameLength) : playerName;
