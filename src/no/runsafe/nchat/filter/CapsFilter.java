@@ -17,7 +17,7 @@ public class CapsFilter implements ISpamFilter, IConfigurationChanged
 		String check = IGNORE.matcher(message).replaceAll("");
 		String uppercaseOnly = NONCAPS.matcher(check).replaceAll("");
 
-		if (!check.isEmpty() && uppercaseOnly.length() * 100 / check.length() >= percent)
+		if (!check.isEmpty() && message.length() > 3 && uppercaseOnly.length() * 100 / check.length() >= percent)
 			return message.toLowerCase();
 
 		return message;
